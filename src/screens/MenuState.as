@@ -17,13 +17,14 @@ package screens
 			super.create();
 			
 			FlxG.bgColor = 0xff0000ff;
-			
+			 
 			displayTimer = new FlxTimer();
 			displayTimer.start(1, 1, onTimerFlickerDisplay);
 			
 			displayText = new FlxText(0, FlxG.height - 16, FlxG.width, "Click to play game.");
 			displayText.alignment = "center";
 			add(displayText);
+			
 		}
 		
 		private function onTimerFlickerDisplay(Timer:FlxTimer = null):void

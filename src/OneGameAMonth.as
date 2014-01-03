@@ -11,6 +11,7 @@ package
 		{
 			super(256, 240, MenuState, 2.0, 60, 60, true);
 			forceDebugger = true;
+			useSoundHotKeys = false;
 		}
 	}
 }

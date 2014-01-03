@@ -20,6 +20,7 @@ package screens
 		override public function update():void
 		{	
 			super.update();
+			GameInput.update();
 		}
 	}
 }
