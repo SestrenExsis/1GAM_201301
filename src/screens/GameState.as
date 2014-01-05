@@ -4,6 +4,7 @@ package screens
 	
 	public class GameState extends ScreenState
 	{
+		private var puzzle:PuzzleWindow;
 		
 		public function GameState()
 		{
@@ -14,7 +15,10 @@ package screens
 		{
 			super.create();
 			
-			FlxG.bgColor = 0xffff0000;
+			FlxG.bgColor = 0xff464646;
+			
+			puzzle = new PuzzleWindow(126, 94);
+			add(puzzle);
 		}
 		
 		override public function update():void

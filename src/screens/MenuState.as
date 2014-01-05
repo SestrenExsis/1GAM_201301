@@ -16,13 +16,13 @@ package screens
 		{
 			super.create();
 			
-			FlxG.bgColor = 0xff0000ff;
+			FlxG.bgColor = 0xff464646;
 			 
 			displayTimer = new FlxTimer();
 			displayTimer.start(1, 1, onTimerFlickerDisplay);
 			
-			displayText = new FlxText(0, FlxG.height - 16, FlxG.width, "Click to play game.");
-			displayText.alignment = "center";
+			displayText = new FlxText(0, FlxG.height - 32, FlxG.width, "Click to play REDRAWN.");
+			displayText.setFormat(null, 16, 0xffffff, "center");
 			add(displayText);
 			
 		}

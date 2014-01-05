@@ -4,6 +4,23 @@ package
 	
 	public class GameInput
 	{
+		public static const NUMPADZERO:uint 	= 0x0000;
+		public static const NUMPADONE:uint 		= 0x0001;
+		public static const NUMPADTWO:uint 		= 0x0010;
+		public static const NUMPADTHREE:uint 	= 0x0011;
+		public static const NUMPADFOUR:uint 	= 0x0100;
+		public static const NUMPADFIVE:uint 	= 0x0101;
+		public static const NUMPADSIX:uint 		= 0x0110;
+		public static const NUMPADSEVEN:uint 	= 0x0111;
+		public static const NUMPADEIGHT:uint 	= 0x1000;
+		public static const NUMPADNINE:uint 	= 0x1001;
+		public static const NUMPADSLASH:uint	= 0x1010;
+		public static const NUMPADASTERISK:uint	= 0x1011; //not currently in Keyboard class. Needs to be added.
+		public static const NUMPADMINUS:uint	= 0x1100;
+		public static const NUMPADPLUS:uint		= 0x1101;
+		public static const ENTER:uint			= 0x1110;
+		public static const NUMPADPERIOD:uint	= 0x1111;
+		
 		public static var keyUndo:Boolean;
 		public static var keyCenter:Boolean;
 		public static var keyNorth:Boolean;
