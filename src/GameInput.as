@@ -4,6 +4,11 @@ package
 	
 	public class GameInput
 	{
+		public static const NORTHWEST:uint = 0;
+		public static const NORTHEAST:uint = 1;
+		public static const SOUTHWEST:uint = 2;
+		public static const SOUTHEAST:uint = 3;
+		
 		public static const NUMPADZERO:uint 	= 0x0000;
 		public static const NUMPADONE:uint 		= 0x0001;
 		public static const NUMPADTWO:uint 		= 0x0010;
