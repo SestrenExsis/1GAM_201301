@@ -15,6 +15,16 @@ package
 		protected static const HEART:uint = 1;
 		protected static const TREASURE_CHEST:uint = 2;
 		
+		// tools
+		protected static const TOOLBOX:uint = 0;
+		protected static const FILL:uint = 1;
+		protected static const PALETTE:uint = 2;
+		protected static const SELECTION:uint = 3;
+		
+		// different selection modes
+		protected static const NUDGE:uint = 0;
+		protected static const DRAG_CORNER:uint = 1;
+		
 		// the bounding boxes for the various images within the imgPixelArt spritesheet itself
 		protected var frameRects:Array = [
 			new Rectangle(0, 0, 9, 9),
@@ -25,8 +35,12 @@ package
 		protected var _currentFrame:int;
 		protected var _selection:Rectangle;
 		protected var _selectionCorner:int;
+		protected var selectionMode:int = 0;
 		protected var selectionBorderWidth:uint = 2;
-		protected var selectionColor:uint = 0xffed008c;
+		protected var selectionBorderColor:uint = 0xffed008c;
+		
+		protected var currentTool:int = 0;
+		protected var currentFill:int = 0xffff0000;
 		
 		protected var showGrid:Boolean = true;
 		protected var windowColor:uint = 0xff5b5b5b;
@@ -94,63 +108,114 @@ package
 			return _selection;
 		}
 		
-		public function set selection(Value:Rectangle):void
-		{
-			Value.x = FlxU.bound(Value.x, 0, frameWidth - 1);
-			Value.width = FlxU.bound(Value.width, 1, frameWidth - Value.x);
-			Value.y = FlxU.bound(Value.y, 0, frameHeight - 1);
-			Value.height = FlxU.bound(Value.height, 1, frameHeight - Value.y);
-		}
-		
 		public function set selectionCorner(Value:int):void
 		{
 			Value = FlxU.bound(Value, 0, 3);
 			_selectionCorner = Value;
 		}
 		
+		public function clampSelection():void
+		{
+			_selection.x = FlxU.bound(_selection.x, 0, frameWidth - 1);
+			_selection.width = FlxU.bound(_selection.width, 1, frameWidth - _selection.x);
+			_selection.y = FlxU.bound(_selection.y, 0, frameHeight - 1);
+			_selection.height = FlxU.bound(_selection.height, 1, frameHeight - _selection.y);
+		}
+		
 		protected function updateSelection():void
 		{
 			var _x:int = 0;
 			var _y:int = 0;
-			if (GameInput.keyWest)
+			if (GameInput.keyCenter)
+			{
+				selectionMode += 1;
+				if (selectionMode > 1)
+					selectionMode = 0;
+			}
+			else if (GameInput.keyWest)
 				_x = -1;
 			else if (GameInput.keyEast)
 				_x = 1;
-			if (GameInput.keyNorth)
+			else if (GameInput.keyNorth)
 				_y = -1;
 			else if (GameInput.keySouth)
 				_y = 1;
 			
-			if (GameInput.keyNorthwest) selectionCorner = GameInput.NORTHWEST;
-			else if (GameInput.keyNortheast) selectionCorner = GameInput.NORTHEAST;
-			else if (GameInput.keySouthwest) selectionCorner = GameInput.SOUTHWEST;
-			else if (GameInput.keySoutheast) selectionCorner = GameInput.SOUTHEAST;
-			
-			FlxG.log(_selectionCorner);
-			
-			switch (_selectionCorner)
+			if (selectionMode == DRAG_CORNER)
 			{
-				case GameInput.NORTHWEST:
-					selection.x += _x;
-					selection.width -= _x;
-					selection.y += _y;
-					selection.height -= _y;
-					break;
-				case GameInput.NORTHEAST:
-					selection.width += _x;
-					selection.y += _y;
-					selection.height -= _y;
-					break;
-				case GameInput.SOUTHWEST:
-					selection.x += _x;
-					selection.width -= _x;
-					selection.height += _y;
-					break;
-				case GameInput.SOUTHEAST:
-					selection.width += _x;
-					selection.height += _y;
-					break;
+				if (GameInput.keyNorthwest) selectionCorner = GameInput.NORTHWEST;
+				else if (GameInput.keyNortheast) selectionCorner = GameInput.NORTHEAST;
+				else if (GameInput.keySouthwest) selectionCorner = GameInput.SOUTHWEST;
+				else if (GameInput.keySoutheast) selectionCorner = GameInput.SOUTHEAST;
+				
+				switch (_selectionCorner)
+				{
+					case GameInput.NORTHWEST:
+						selection.x += _x;
+						selection.width -= _x;
+						selection.y += _y;
+						selection.height -= _y;
+						break;
+					case GameInput.NORTHEAST:
+						selection.width += _x;
+						selection.y += _y;
+						selection.height -= _y;
+						break;
+					case GameInput.SOUTHWEST:
+						selection.x += _x;
+						selection.width -= _x;
+						selection.height += _y;
+						break;
+					case GameInput.SOUTHEAST:
+						selection.width += _x;
+						selection.height += _y;
+						break;
+				}
 			}
+			else if (selectionMode == NUDGE)
+			{
+				selection.x += _x;
+				selection.y += _y;
+			}
+			if (_x != 0 || _y != 0)
+				clampSelection();
+		}
+		
+		protected function updateFill():void
+		{
+			var _x:int = 0;
+			var _y:int = 0;
+			if (GameInput.keyWest || GameInput.keyNorthwest || GameInput.keySouthwest)
+				_x = -1;
+			else if (GameInput.keyEast || GameInput.keyNortheast || GameInput.keySoutheast)
+				_x = 1;
+			else if (GameInput.keyNorth || GameInput.keyNorthwest || GameInput.keyNortheast)
+				_y = -1;
+			else if (GameInput.keySouth || GameInput.keySouthwest || GameInput.keySoutheast)
+				_y = 1;
+
+			selection.x += _x * selection.width;
+			selection.y += _y * selection.height;
+			
+			if (_x != 0 || _y != 0 || GameInput.keyCenter)
+				fillArea(selection, currentFill);
+		}
+		
+		public function fillArea(FillArea:Rectangle, FillColor:uint):void
+		{
+			for (var _x:int = selection.x; _x < selection.x + selection.width; _x++)
+			{
+				for (var _y:int = selection.y; _y < selection.y + selection.height; _y++)
+				{
+					if (_x >= 0 && _x < framePixels.width && _y >= 0 && _y < framePixels.height)
+						framePixels.setPixel32(_x, _y, FillColor);
+				}
+			}
+		}
+		
+		public function updatePalette():void
+		{
+			
 		}
 		
 		override public function update():void
@@ -158,11 +223,21 @@ package
 			super.update();
 			
 			if (FlxG.keys.justPressed("UP"))
-				currentFrame++;
+				currentTool++;
 			else if (FlxG.keys.justPressed("DOWN"))
-				currentFrame--;
+				currentTool--;
 			
-			updateSelection();	
+			if (currentTool > 3)
+				currentTool = 0;
+			else if (currentTool < 0)
+				currentTool = 3;
+			
+			if (currentTool == SELECTION)
+				updateSelection();
+			else if (currentTool == FILL)
+				updateFill();
+			else if (currentTool == PALETTE)
+				updatePalette();
 		}
 		
 		override public function draw():void
@@ -240,22 +315,22 @@ package
 					_flashRect.y = y + buffer.y - selectionBorderWidth + selection.y * block.y;
 					_flashRect.width = block.x * selection.width + 2 * selectionBorderWidth;
 					_flashRect.height = selectionBorderWidth;
-					FlxG.camera.buffer.fillRect(_flashRect, selectionColor);
+					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
 					
 					//bottom of selection box
 					_flashRect.y = y + buffer.y + block.y * selection.height + selection.y * block.y;
-					FlxG.camera.buffer.fillRect(_flashRect, selectionColor);
+					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
 					
 					//left side of selection box
 					_flashRect.x = x + buffer.x - selectionBorderWidth + selection.x * block.x;
 					_flashRect.y = y + buffer.y + selection.y * block.y;
 					_flashRect.width = selectionBorderWidth;
 					_flashRect.height = block.y * selection.height;
-					FlxG.camera.buffer.fillRect(_flashRect, selectionColor);
+					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
 					
 					//right side of selection box
 					_flashRect.x = x + buffer.y + block.x * selection.width + selection.x * block.x;
-					FlxG.camera.buffer.fillRect(_flashRect, selectionColor);
+					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
 				}
 			}
 			

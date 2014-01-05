@@ -57,6 +57,8 @@ package
 			
 			if (FlxG.keys.justPressed("NUMPADZERO"))
 				keyUndo = true;
+			else if (FlxG.keys.justPressed("NUMPADFIVE"))
+				keyCenter = true;
 			else if (FlxG.keys.justPressed("NUMPADEIGHT"))
 				keyNorth = true;
 			else if (FlxG.keys.justPressed("NUMPADSIX"))
@@ -73,8 +75,7 @@ package
 				keySouthwest = true;
 			else if (FlxG.keys.justPressed("NUMPADSEVEN"))
 				keyNorthwest = true;
-			else if (FlxG.keys.justPressed("NUMPADFIVE"))
-				keyCenter = true;
+
 		}
 	}
 }
