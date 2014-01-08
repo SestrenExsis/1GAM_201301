@@ -6,7 +6,7 @@ package
 	
 	import org.flixel.*;
 	
-	public class PuzzleWindow extends FlxSprite
+	public class PuzzleFrame extends WindowFrame
 	{
 		[Embed(source="../assets/images/pixelart.png")] public var imgPixelArt:Class;
 				
@@ -25,35 +25,19 @@ package
 		public var selectionMode:int = 0;
 		
 		protected var _currentFrame:int;
-		protected var _selection:Rectangle;
-		protected var selectionBorderWidth:uint = 2;
-		protected var selectionBorderColor:uint = 0xffed008c;
 		
 		protected var currentTool:int = 0;
 		protected var currentFill:int = 0xffff0000;
 		
-		protected var showGrid:Boolean = true;
-		protected var windowColor:uint = 0xff5b5b5b;
-		protected var dropShadowColor:uint = 0xff000000;
-		protected var maxSize:FlxPoint;
-		protected var buffer:FlxPoint;
-		protected var dropShadowOffset:FlxPoint;
-		protected var block:FlxPoint;
-		
 		protected var keyPresses:int = 0;
 						
-		public function PuzzleWindow(X:Number, Y:Number)
+		public function PuzzleFrame(X:Number, Y:Number)
 		{
-			super(X, Y);
-			
-			maxSize = new FlxPoint(292, 292);
-			buffer = new FlxPoint(4, 4);
-			dropShadowOffset = new FlxPoint(2, 3);
-			block = new FlxPoint();
+			super(X, Y, 292, 292);
 			
 			loadGraphic(imgPixelArt);
 			currentFrame = TREASURE_CHEST;
-			_selection = new Rectangle(0, 0, frameWidth, frameHeight);
+			setSelection(0, 0, frameWidth, frameHeight);
 		}
 		
 		public function get currentFrame():int
@@ -85,11 +69,6 @@ package
 			var _blockY:Number = (maxSize.y - 2 * buffer.y) / frameHeight;
 			block.x = _blockX;
 			block.y = _blockY;
-		}
-		
-		public function get selection():Rectangle
-		{
-			return _selection;
 		}
 		
 		public function clampSelection():void
@@ -146,7 +125,7 @@ package
 			FlxG.log(keyPresses++);
 		}
 		
-		public function updateFill():void
+		public function updateFill(Color:uint):void
 		{
 			var _x:int = 0;
 			var _y:int = 0;
@@ -162,7 +141,7 @@ package
 			selection.x += _x * selection.width;
 			selection.y += _y * selection.height;
 			
-			fillArea(selection, currentFill);
+			fillArea(selection, Color);
 			
 			FlxG.log(keyPresses++);
 		}
@@ -179,112 +158,24 @@ package
 			}
 		}
 		
-		public function updatePalette():void
-		{
-			FlxG.log(keyPresses++);
-		}
-		
 		override public function update():void
 		{
 			super.update();
 		}
 		
-		override public function draw():void
+		override public function drawElement(X:uint, Y:uint):void
 		{
-			var _width:Number = frameWidth * block.x + 2 * buffer.x;
-			var _height:Number = frameHeight * block.y + 2 * buffer.y;
+			_flashRect.width = block.x;
+			_flashRect.height = block.y;
 			
-			// draw the dropshadow in two pieces since the window background would otherwise cover up most of it
-			_flashRect.x = x + _width;
-			_flashRect.y = y + dropShadowOffset.y;
-			_flashRect.width = dropShadowOffset.x;
-			_flashRect.height = _height;
-			FlxG.camera.buffer.fillRect(_flashRect, dropShadowColor);
-			_flashRect.x = x + dropShadowOffset.x;
-			_flashRect.y = y + _height;
-			_flashRect.width = _width;
-			_flashRect.height = dropShadowOffset.y;
-			FlxG.camera.buffer.fillRect(_flashRect, dropShadowColor);
+			_flashRect.x = x + buffer.x + block.x * X;
+			_flashRect.y = y + buffer.y + block.y * Y;
 			
-			// draw the window background
-			_flashRect.x = x;
-			_flashRect.y = y;
-			_flashRect.width = _width;
-			_flashRect.height = _height;
-			FlxG.camera.buffer.fillRect(_flashRect, windowColor);
+			var _pixelColor:uint = framePixels.getPixel32(X, Y);
+			var _pixelAlpha:uint = 0xff & (_pixelColor >> 24);
 			
-			// draw the pixels
-			if (framePixels)
-			{
-				var _color:uint;
-				var _alpha:uint;
-				var _i:uint;
-				for (var _y:int = 0; _y < frameHeight; _y++)
-				{
-					for (var _x:int = 0; _x < frameWidth; _x++)
-					{
-						_flashRect.width = block.x;
-						_flashRect.height = block.y;
-						
-						_flashRect.x = x + buffer.x + block.x * _x;
-						_flashRect.y = y + buffer.y + block.y * _y;
-						
-						_color = framePixels.getPixel32(_x, _y);
-						_alpha = 0xff & (_color >> 24);
-						
-						if (_alpha > 0)
-							FlxG.camera.buffer.fillRect(_flashRect, _color);
-						
-						// draw the grid overlay
-						if (showGrid)
-						{
-							if (_x > 0 && _x < frameWidth)
-							{
-								for (_i = 0; _i < block.y; _i += 2)
-								{
-									FlxG.camera.buffer.setPixel32(_flashRect.x, _flashRect.y + _i, windowColor);
-								}
-							}
-							if (_y > 0 && _y < frameHeight)
-							{
-								for (_i = 0; _i < block.x; _i += 2)
-								{
-									FlxG.camera.buffer.setPixel32(_flashRect.x + _i, _flashRect.y, windowColor);
-								}
-							}
-						}
-					}
-				}
-				
-				// draw the selection box
-				if (selection.width > 0 && selection.height > 0)
-				{
-					//top of selection box
-					_flashRect.x = x + buffer.x- selectionBorderWidth + selection.x * block.x;
-					_flashRect.y = y + buffer.y - selectionBorderWidth + selection.y * block.y;
-					_flashRect.width = block.x * selection.width + 2 * selectionBorderWidth;
-					_flashRect.height = selectionBorderWidth;
-					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
-					
-					//bottom of selection box
-					_flashRect.y = y + buffer.y + block.y * selection.height + selection.y * block.y;
-					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
-					
-					//left side of selection box
-					_flashRect.x = x + buffer.x - selectionBorderWidth + selection.x * block.x;
-					_flashRect.y = y + buffer.y + selection.y * block.y;
-					_flashRect.width = selectionBorderWidth;
-					_flashRect.height = block.y * selection.height;
-					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
-					
-					//right side of selection box
-					_flashRect.x = x + buffer.y + block.x * selection.width + selection.x * block.x;
-					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
-				}
-			}
-			
-			if(FlxG.visualDebug && !ignoreDrawDebug)
-				drawDebug(FlxG.camera);
+			if (_pixelAlpha > 0)
+				FlxG.camera.buffer.fillRect(_flashRect, _pixelColor);
 		}
 	}
 }
