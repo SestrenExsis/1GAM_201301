@@ -15,16 +15,6 @@ package
 		protected static const HEART:uint = 1;
 		protected static const TREASURE_CHEST:uint = 2;
 		
-		// tools
-		protected static const TOOLBOX:uint = 0;
-		protected static const FILL:uint = 1;
-		protected static const PALETTE:uint = 2;
-		protected static const SELECTION:uint = 3;
-		
-		// different selection modes
-		protected static const NUDGE:uint = 0;
-		protected static const DRAG_CORNER:uint = 1;
-		
 		// the bounding boxes for the various images within the imgPixelArt spritesheet itself
 		protected var frameRects:Array = [
 			new Rectangle(0, 0, 9, 9),
@@ -32,10 +22,10 @@ package
 			new Rectangle(0, 9, 18, 18)
 		];
 		
+		public var selectionMode:int = 0;
+		
 		protected var _currentFrame:int;
 		protected var _selection:Rectangle;
-		protected var _selectionCorner:int;
-		protected var selectionMode:int = 0;
 		protected var selectionBorderWidth:uint = 2;
 		protected var selectionBorderColor:uint = 0xffed008c;
 		
@@ -50,8 +40,7 @@ package
 		protected var dropShadowOffset:FlxPoint;
 		protected var block:FlxPoint;
 		
-		public static var group:FlxGroup;
-		protected var elements:Array;
+		protected var keyPresses:int = 0;
 						
 		public function PuzzleWindow(X:Number, Y:Number)
 		{
@@ -65,11 +54,6 @@ package
 			loadGraphic(imgPixelArt);
 			currentFrame = TREASURE_CHEST;
 			_selection = new Rectangle(0, 0, frameWidth, frameHeight);
-			
-			FlxG.watch(_selection, "x");
-			FlxG.watch(_selection, "y");
-			FlxG.watch(_selection, "width");
-			FlxG.watch(_selection, "height");
 		}
 		
 		public function get currentFrame():int
@@ -108,12 +92,6 @@ package
 			return _selection;
 		}
 		
-		public function set selectionCorner(Value:int):void
-		{
-			Value = FlxU.bound(Value, 0, 3);
-			_selectionCorner = Value;
-		}
-		
 		public function clampSelection():void
 		{
 			_selection.x = FlxU.bound(_selection.x, 0, frameWidth - 1);
@@ -122,66 +100,7 @@ package
 			_selection.height = FlxU.bound(_selection.height, 1, frameHeight - _selection.y);
 		}
 		
-		protected function updateSelection():void
-		{
-			var _x:int = 0;
-			var _y:int = 0;
-			if (GameInput.keyCenter)
-			{
-				selectionMode += 1;
-				if (selectionMode > 1)
-					selectionMode = 0;
-			}
-			else if (GameInput.keyWest)
-				_x = -1;
-			else if (GameInput.keyEast)
-				_x = 1;
-			else if (GameInput.keyNorth)
-				_y = -1;
-			else if (GameInput.keySouth)
-				_y = 1;
-			
-			if (selectionMode == DRAG_CORNER)
-			{
-				if (GameInput.keyNorthwest) selectionCorner = GameInput.NORTHWEST;
-				else if (GameInput.keyNortheast) selectionCorner = GameInput.NORTHEAST;
-				else if (GameInput.keySouthwest) selectionCorner = GameInput.SOUTHWEST;
-				else if (GameInput.keySoutheast) selectionCorner = GameInput.SOUTHEAST;
-				
-				switch (_selectionCorner)
-				{
-					case GameInput.NORTHWEST:
-						selection.x += _x;
-						selection.width -= _x;
-						selection.y += _y;
-						selection.height -= _y;
-						break;
-					case GameInput.NORTHEAST:
-						selection.width += _x;
-						selection.y += _y;
-						selection.height -= _y;
-						break;
-					case GameInput.SOUTHWEST:
-						selection.x += _x;
-						selection.width -= _x;
-						selection.height += _y;
-						break;
-					case GameInput.SOUTHEAST:
-						selection.width += _x;
-						selection.height += _y;
-						break;
-				}
-			}
-			else if (selectionMode == NUDGE)
-			{
-				selection.x += _x;
-				selection.y += _y;
-			}
-			if (_x != 0 || _y != 0)
-				clampSelection();
-		}
-		
-		protected function updateFill():void
+		public function updateSelection(SelectionMode:int):void
 		{
 			var _x:int = 0;
 			var _y:int = 0;
@@ -189,16 +108,63 @@ package
 				_x = -1;
 			else if (GameInput.keyEast || GameInput.keyNortheast || GameInput.keySoutheast)
 				_x = 1;
-			else if (GameInput.keyNorth || GameInput.keyNorthwest || GameInput.keyNortheast)
+			if (GameInput.keyNorth || GameInput.keyNorthwest || GameInput.keyNortheast)
 				_y = -1;
 			else if (GameInput.keySouth || GameInput.keySouthwest || GameInput.keySoutheast)
 				_y = 1;
-
+			
+			switch (SelectionMode)
+			{
+				case GameInput.NORTHWEST:
+					selection.x += _x;
+					selection.width -= _x;
+					selection.y += _y;
+					selection.height -= _y;
+					break;
+				case GameInput.NORTHEAST:
+					selection.width += _x;
+					selection.y += _y;
+					selection.height -= _y;
+					break;
+				case GameInput.SOUTHWEST:
+					selection.x += _x;
+					selection.width -= _x;
+					selection.height += _y;
+					break;
+				case GameInput.SOUTHEAST:
+					selection.width += _x;
+					selection.height += _y;
+					break;
+				case GameInput.CENTER:
+					selection.x += _x;
+					selection.y += _y;
+					break;
+			}
+			if (_x != 0 || _y != 0)
+				clampSelection();
+			
+			FlxG.log(keyPresses++);
+		}
+		
+		public function updateFill():void
+		{
+			var _x:int = 0;
+			var _y:int = 0;
+			if (GameInput.keyWest || GameInput.keyNorthwest || GameInput.keySouthwest)
+				_x = -1;
+			else if (GameInput.keyEast || GameInput.keyNortheast || GameInput.keySoutheast)
+				_x = 1;
+			if (GameInput.keyNorth || GameInput.keyNorthwest || GameInput.keyNortheast)
+				_y = -1;
+			else if (GameInput.keySouth || GameInput.keySouthwest || GameInput.keySoutheast)
+				_y = 1;
+			
 			selection.x += _x * selection.width;
 			selection.y += _y * selection.height;
 			
-			if (_x != 0 || _y != 0 || GameInput.keyCenter)
-				fillArea(selection, currentFill);
+			fillArea(selection, currentFill);
+			
+			FlxG.log(keyPresses++);
 		}
 		
 		public function fillArea(FillArea:Rectangle, FillColor:uint):void
@@ -215,29 +181,12 @@ package
 		
 		public function updatePalette():void
 		{
-			
+			FlxG.log(keyPresses++);
 		}
 		
 		override public function update():void
 		{
 			super.update();
-			
-			if (FlxG.keys.justPressed("UP"))
-				currentTool++;
-			else if (FlxG.keys.justPressed("DOWN"))
-				currentTool--;
-			
-			if (currentTool > 3)
-				currentTool = 0;
-			else if (currentTool < 0)
-				currentTool = 3;
-			
-			if (currentTool == SELECTION)
-				updateSelection();
-			else if (currentTool == FILL)
-				updateFill();
-			else if (currentTool == PALETTE)
-				updatePalette();
 		}
 		
 		override public function draw():void

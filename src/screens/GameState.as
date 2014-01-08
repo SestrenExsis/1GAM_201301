@@ -3,9 +3,7 @@ package screens
 	import org.flixel.*;
 	
 	public class GameState extends ScreenState
-	{
-		private var puzzle:PuzzleWindow;
-		
+	{		
 		public function GameState()
 		{
 			super();
@@ -17,8 +15,11 @@ package screens
 			
 			FlxG.bgColor = 0xff464646;
 			
-			puzzle = new PuzzleWindow(126, 94);
+			var puzzle:PuzzleWindow = new PuzzleWindow(126, 94);
 			add(puzzle);
+			
+			var toolbox:Toolbox = new Toolbox(8, 8, puzzle)
+			add(toolbox);
 		}
 		
 		override public function update():void

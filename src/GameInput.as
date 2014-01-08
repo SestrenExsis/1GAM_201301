@@ -4,10 +4,19 @@ package
 	
 	public class GameInput
 	{
-		public static const NORTHWEST:uint = 0;
-		public static const NORTHEAST:uint = 1;
-		public static const SOUTHWEST:uint = 2;
-		public static const SOUTHEAST:uint = 3;
+		public static var keyPressed:int = -1;
+		
+		public static const NONE:int = -1;
+		public static const SPECIAL:int = 0;
+		public static const SOUTHWEST:int = 1;
+		public static const SOUTH:int = 2;
+		public static const SOUTHEAST:int = 3;
+		public static const WEST:int = 4;
+		public static const CENTER:int = 5;
+		public static const EAST:int = 6;
+		public static const NORTHWEST:int = 7;
+		public static const NORTH:int = 8;
+		public static const NORTHEAST:int = 9;
 		
 		public static const NUMPADZERO:uint 	= 0x0000;
 		public static const NUMPADONE:uint 		= 0x0001;
@@ -55,27 +64,58 @@ package
 			keyWest = false;
 			keyNorthwest = false;
 			
+			keyPressed = -1;
+			
 			if (FlxG.keys.justPressed("NUMPADZERO"))
+			{
 				keyUndo = true;
+				keyPressed = SPECIAL;
+			}
 			else if (FlxG.keys.justPressed("NUMPADFIVE"))
+			{
 				keyCenter = true;
+				keyPressed = CENTER;
+			}
 			else if (FlxG.keys.justPressed("NUMPADEIGHT"))
+			{
 				keyNorth = true;
+				keyPressed = NORTH;
+			}
 			else if (FlxG.keys.justPressed("NUMPADSIX"))
+			{
 				keyEast = true;
+				keyPressed = EAST;
+			}
 			else if (FlxG.keys.justPressed("NUMPADTWO"))
+			{
 				keySouth = true;
+				keyPressed = SOUTH;
+			}
 			else if (FlxG.keys.justPressed("NUMPADFOUR"))
+			{
 				keyWest = true;
+				keyPressed = WEST;
+			}
 			else if (FlxG.keys.justPressed("NUMPADNINE"))
+			{
 				keyNortheast = true;
+				keyPressed = NORTHEAST;
+			}
 			else if (FlxG.keys.justPressed("NUMPADTHREE"))
+			{
 				keySoutheast = true;
+				keyPressed = SOUTHEAST;
+			}
 			else if (FlxG.keys.justPressed("NUMPADONE"))
+			{
 				keySouthwest = true;
+				keyPressed = SOUTHWEST;
+			}
 			else if (FlxG.keys.justPressed("NUMPADSEVEN"))
+			{
 				keyNorthwest = true;
-
+				keyPressed = NORTHWEST;
+			}
 		}
 	}
 }
