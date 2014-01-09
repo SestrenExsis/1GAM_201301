@@ -25,16 +25,73 @@ package
 		public var currentTool:int = 0;
 		public var lastToolSelected:int = 0;
 		public var currentFill:int = 0xff000000;
-								
-		public function ToolboxFrame(X:Number, Y:Number, Puzzle:PuzzleFrame)
+		protected var colorPalette:Array;
+
+		public function ToolboxFrame(X:Number, Y:Number, Target:TargetFrame, Puzzle:PuzzleFrame)
 		{
 			super(X, Y, 100, 100);
 			
 			block.x = block.y = 32;
+			target = Target;
 			puzzle = Puzzle;
 			loadGraphic(imgToolbox);
+			loadColorPalette();
 			frameWidth = frameHeight = 3;
 			showGrid = false;
+		}
+		
+		protected function loadColorPalette():void
+		{
+			if (!colorPalette)
+				colorPalette = new Array(8);
+			
+			// reset all the palette colors to BLACK
+			for (var i:int = 0; i < colorPalette.length; i++)
+				colorPalette[i] = 0xff000000;
+			
+			// go through each pixel in the target image, and find the first 8 unique colors and load them into the palette
+			var _currentPixel:uint;
+			var _colorsInPalette:uint = 0;
+			var _colorAlreadyInPalette:Boolean;
+			if (target.framePixels)
+			{
+				for (var _x:int = 0; _x < target.frameWidth; _x++)
+				{
+					for (var _y:int = 0; _y < target.frameHeight; _y++)
+					{
+						_currentPixel = target.framePixels.getPixel32(_x, _y);
+						_colorAlreadyInPalette = false;
+						for (i = 0; i < colorPalette.length; i++)
+						{
+							if (_currentPixel == colorPalette[i])
+								_colorAlreadyInPalette = true;
+
+						}
+						if (!_colorAlreadyInPalette && _colorsInPalette < colorPalette.length)
+						{
+							colorPalette[_colorsInPalette] = _currentPixel;
+							_colorsInPalette++;
+						}
+					}
+				}
+				FlxG.log(_colorsInPalette);
+			}
+			
+			// recolor the toolbox palette circles to match the color palette
+			if (framePixels)
+			{
+				for (i = 0; i < colorPalette.length; i++)
+				{
+					for (_x = 0; _x < block.x; _x++)
+					{
+						for (_y = 0; _y < block.y; _y++)
+						{
+							if(framePixels.getPixel32(i * block.x + _x, COLOR_PALETTE * block.y + _y) == 0xffffffff)
+								framePixels.setPixel32(i * block.x + _x, COLOR_PALETTE * block.y + _y, colorPalette[i]);
+						}
+					}
+				}
+			}
 		}
 		
 		protected function updateTool():void
@@ -69,7 +126,7 @@ package
 		
 		public function updatePalette():void
 		{
-			//
+			currentFill = colorPalette[GameInput.keyPressed];
 		}
 		
 		override public function update():void

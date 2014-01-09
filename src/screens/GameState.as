@@ -24,7 +24,7 @@ package screens
 			var tracker:TrackerFrame = new TrackerFrame(126, 8, target, puzzle);
 			add(tracker);
 			
-			var toolbox:ToolboxFrame = new ToolboxFrame(8, 128, puzzle)
+			var toolbox:ToolboxFrame = new ToolboxFrame(8, 128, target, puzzle)
 			add(toolbox);
 		}
 		
