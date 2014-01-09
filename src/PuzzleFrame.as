@@ -8,35 +8,16 @@ package
 	
 	public class PuzzleFrame extends WindowFrame
 	{
-		[Embed(source="../assets/images/pixelart.png")] public var imgPixelArt:Class;
-				
-		// references for the frameRects array below
-		protected static const FLOWER:uint = 0;
-		protected static const HEART:uint = 1;
-		protected static const TREASURE_CHEST:uint = 2;
-		
-		// the bounding boxes for the various images within the imgPixelArt spritesheet itself
-		protected var frameRects:Array = [
-			new Rectangle(0, 0, 9, 9),
-			new Rectangle(9, 0, 9, 9),
-			new Rectangle(0, 9, 18, 18)
-		];
-		
-		public var selectionMode:int = 0;
-		
-		protected var _currentFrame:int;
-		
 		protected var currentTool:int = 0;
 		protected var currentFill:int = 0xffff0000;
-		
-		protected var keyPresses:int = 0;
+		protected var _currentFrame:int;
 						
-		public function PuzzleFrame(X:Number, Y:Number)
+		public function PuzzleFrame(X:Number, Y:Number, Target:TargetFrame)
 		{
 			super(X, Y, 292, 292);
 			
-			loadGraphic(imgPixelArt);
-			currentFrame = TREASURE_CHEST;
+			target = Target;
+			resetFrame(target.frameWidth, target.frameHeight, 0xffff00ff);
 			setSelection(0, 0, frameWidth, frameHeight);
 		}
 		
@@ -45,25 +26,11 @@ package
 			return _currentFrame;
 		}
 		
-		public function set currentFrame(Value:int):void
+		public function resetFrame(Width:uint, Height:uint, DefaultColor:uint = 0x00000000):void
 		{
-			if (Value >= frameRects.length)
-				_currentFrame = 0;
-			else if (Value < 0)
-				_currentFrame = frameRects.length - 1;
-			else
-				_currentFrame = Value;
-			
-			var _rect:Rectangle = frameRects[_currentFrame];
-			if((framePixels == null) || (framePixels.width != _rect.width) || (framePixels.height != _rect.height))
-				framePixels = new BitmapData(_rect.width, _rect.height);
-			_flashRect.x = _rect.x;
-			_flashRect.y = _rect.y;
-			_flashRect.width = _rect.width;
-			_flashRect.height = _rect.height;
-			framePixels.copyPixels(pixels, _flashRect, _flashPointZero, null, null, false);
-			frameWidth = framePixels.width;
-			frameHeight = framePixels.height;
+			makeGraphic(Width, Height, DefaultColor);
+			frameWidth = Width;
+			frameHeight = Height;
 			
 			var _blockX:Number = (maxSize.x - 2 * buffer.x) / frameWidth;
 			var _blockY:Number = (maxSize.y - 2 * buffer.y) / frameHeight;
@@ -121,8 +88,6 @@ package
 			}
 			if (_x != 0 || _y != 0)
 				clampSelection();
-			
-			FlxG.log(keyPresses++);
 		}
 		
 		public function updateFill(Color:uint):void
@@ -142,8 +107,6 @@ package
 			selection.y += _y * selection.height;
 			
 			fillArea(selection, Color);
-			
-			FlxG.log(keyPresses++);
 		}
 		
 		public function fillArea(FillArea:Rectangle, FillColor:uint):void

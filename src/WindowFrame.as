@@ -18,7 +18,10 @@ package
 		protected var buffer:FlxPoint;
 		protected var dropShadowOffset:FlxPoint;
 		protected var block:FlxPoint;
-								
+		
+		public var puzzle:PuzzleFrame;
+		public var target:TargetFrame;
+		
 		public function WindowFrame(X:Number, Y:Number, Width:Number, Height:Number)
 		{
 			super(X, Y);

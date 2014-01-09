@@ -6,7 +6,7 @@ package
 	
 	import org.flixel.*;
 	
-	public class Toolbox extends WindowFrame
+	public class ToolboxFrame extends WindowFrame
 	{
 		[Embed(source="../assets/images/toolbox.png")] public var imgToolbox:Class;
 		
@@ -21,14 +21,12 @@ package
 		protected static const SELECTION_DRAG_UPPER_LEFT:uint = 7;
 		protected static const FILL_SELECTED_AREA:uint = 8;
 		protected static const SELECTION_DRAG_UPPER_RIGHT:uint = 9;
-		
-		public var puzzle:PuzzleFrame;
-				
+						
 		public var currentTool:int = 0;
 		public var lastToolSelected:int = 0;
-		public var currentFill:int = 0xffff0000;
+		public var currentFill:int = 0xff000000;
 								
-		public function Toolbox(X:Number, Y:Number, Puzzle:PuzzleFrame)
+		public function ToolboxFrame(X:Number, Y:Number, Puzzle:PuzzleFrame)
 		{
 			super(X, Y, 100, 100);
 			
