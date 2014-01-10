@@ -18,13 +18,13 @@ package screens
 			var target:TargetFrame = new TargetFrame(8, 8);
 			add(target);
 			
-			var puzzle:PuzzleFrame = new PuzzleFrame(126, 94, target);
+			var puzzle:PuzzleFrame = new PuzzleFrame(126, 82, target);
 			add(puzzle);
 			
 			var tracker:TrackerFrame = new TrackerFrame(126, 8, target, puzzle);
 			add(tracker);
 			
-			var toolbox:ToolboxFrame = new ToolboxFrame(8, 128, target, puzzle)
+			var toolbox:ToolboxFrame = new ToolboxFrame(8, 140, target, puzzle)
 			add(toolbox);
 		}
 		
