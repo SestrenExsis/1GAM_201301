@@ -29,6 +29,7 @@ package
 		{
 			super(X, Y, 112, 112);
 			
+			selectionBorderWidth = 1;
 			loadGraphic(imgPixelArt);
 			currentFrame = TREASURE_CHEST;
 			setSelection(0, 0, frameWidth, frameHeight);

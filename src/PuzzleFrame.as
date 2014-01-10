@@ -44,6 +44,7 @@ package
 			_selection.width = FlxU.bound(_selection.width, 1, frameWidth - _selection.x);
 			_selection.y = FlxU.bound(_selection.y, 0, frameHeight - 1);
 			_selection.height = FlxU.bound(_selection.height, 1, frameHeight - _selection.y);
+			target.setSelection(_selection.x, _selection.y, _selection.width, _selection.height);
 		}
 		
 		public function updateSelection(SelectionMode:int):void

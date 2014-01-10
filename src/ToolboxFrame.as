@@ -21,6 +21,8 @@ package
 		protected static const SELECTION_DRAG_UPPER_LEFT:uint = 7;
 		protected static const FILL_SELECTED_AREA:uint = 8;
 		protected static const SELECTION_DRAG_UPPER_RIGHT:uint = 9;
+		
+		protected static const COLOR_PALETTE_INDEXES:Array = [1, 2, 3, 4, 6, 7, 8, 9];
 						
 		public var currentTool:int = 0;
 		public var lastToolSelected:int = 0;
@@ -80,14 +82,16 @@ package
 			// recolor the toolbox palette circles to match the color palette
 			if (framePixels)
 			{
+				var _index:uint;
 				for (i = 0; i < colorPalette.length; i++)
 				{
 					for (_x = 0; _x < block.x; _x++)
 					{
 						for (_y = 0; _y < block.y; _y++)
 						{
-							if(framePixels.getPixel32(i * block.x + _x, COLOR_PALETTE * block.y + _y) == 0xffffffff)
-								framePixels.setPixel32(i * block.x + _x, COLOR_PALETTE * block.y + _y, colorPalette[i]);
+							_index = COLOR_PALETTE_INDEXES[i];
+							if(framePixels.getPixel32(_index * block.x + _x, COLOR_PALETTE * block.y + _y) == 0xffffffff)
+								framePixels.setPixel32(_index * block.x + _x, COLOR_PALETTE * block.y + _y, colorPalette[i]);
 						}
 					}
 				}
@@ -126,7 +130,10 @@ package
 		
 		public function updatePalette():void
 		{
-			currentFill = colorPalette[GameInput.keyPressed];
+			var _index:uint = GameInput.keyPressed - 1;
+			if (_index > 3)
+				_index--;
+			currentFill = colorPalette[_index];
 		}
 		
 		override public function update():void

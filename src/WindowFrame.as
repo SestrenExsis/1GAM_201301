@@ -10,7 +10,7 @@ package
 	{
 		protected var _selection:Rectangle;
 		protected var selectionBorderWidth:uint = 2;
-		protected var selectionBorderColor:uint = 0xffed008c;		
+		protected var selectionBorderColor:uint = 0xffed008c;
 		protected var showGrid:Boolean = true;
 		protected var windowColor:uint = 0xff5b5b5b;
 		protected var dropShadowColor:uint = 0xff000000;
