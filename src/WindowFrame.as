@@ -22,6 +22,9 @@ package
 		public var puzzle:PuzzleFrame;
 		public var target:TargetFrame;
 		
+		protected var labelName:FlxText;
+		protected var labelDescription:FlxText;
+		
 		public function WindowFrame(X:Number, Y:Number, Width:Number, Height:Number)
 		{
 			super(X, Y);

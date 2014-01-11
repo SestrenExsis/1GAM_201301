@@ -116,6 +116,9 @@ package
 				keyNorthwest = true;
 				keyPressed = NORTHWEST;
 			}
+			
+			if (keyPressed >= 0)
+				FlxG.score++;
 		}
 	}
 }

@@ -11,12 +11,14 @@ package
 		[Embed(source="../assets/images/pixelart.png")] public var imgPixelArt:Class;
 				
 		// references for the frameRects array below
-		protected static const FLOWER:uint = 0;
-		protected static const HEART:uint = 1;
-		protected static const TREASURE_CHEST:uint = 2;
+		protected static const NONE:uint = 0;
+		protected static const FLOWER:uint = 1;
+		protected static const HEART:uint = 2;
+		protected static const TREASURE_CHEST:uint = 3;
 		
 		// the bounding boxes for the various images within the imgPixelArt spritesheet itself
 		protected var frameRects:Array = [
+			new Rectangle(0, 0, 1, 1),
 			new Rectangle(0, 0, 9, 9),
 			new Rectangle(9, 0, 9, 9),
 			new Rectangle(0, 9, 18, 18)
@@ -25,13 +27,13 @@ package
 		protected var _currentFrame:int;
 		protected var keyPresses:int = 0;
 								
-		public function TargetFrame(X:Number, Y:Number)
+		public function TargetFrame(X:Number, Y:Number, CurrentFrame:uint)
 		{
 			super(X, Y, 112, 112);
 			
 			selectionBorderWidth = 1;
 			loadGraphic(imgPixelArt);
-			currentFrame = TREASURE_CHEST;
+			currentFrame = CurrentFrame;
 			setSelection(0, 0, frameWidth, frameHeight);
 		}
 		

@@ -11,39 +11,44 @@ package
 		[Embed(source="../assets/images/toolbox.png")] public var imgToolbox:Class;
 		
 		// tools
-		protected static const TOOLBOX:uint = 0;
-		protected static const SELECTION_DRAG_LOWER_LEFT:uint = 1;
-		protected static const CLONE:uint = 2;
-		protected static const SELECTION_DRAG_LOWER_RIGHT:uint = 3;
-		protected static const FLIP_ROTATE:uint = 4;
-		protected static const SELECTION_NUDGE:uint = 5;
-		protected static const COLOR_PALETTE:uint = 6;
-		protected static const SELECTION_DRAG_UPPER_LEFT:uint = 7;
-		protected static const FILL_SELECTED_AREA:uint = 8;
-		protected static const SELECTION_DRAG_UPPER_RIGHT:uint = 9;
+		public static const TOOLBOX:uint = 0;
+		public static const SELECTION_DRAG_LOWER_LEFT:uint = 1;
+		public static const CLONE:uint = 2;
+		public static const SELECTION_DRAG_LOWER_RIGHT:uint = 3;
+		public static const FLIP_ROTATE:uint = 4;
+		public static const SELECTION_NUDGE:uint = 5;
+		public static const COLOR_PALETTE:uint = 6;
+		public static const SELECTION_DRAG_UPPER_LEFT:uint = 7;
+		public static const FILL_SELECTED_AREA:uint = 8;
+		public static const SELECTION_DRAG_UPPER_RIGHT:uint = 9;
+		
+		// selection mode
+		public static const ONE_PIXEL:uint = 0;
+		public static const SELECTION_BOX:uint = 1;
+		
+		protected static const TOOLBOX_TIP:String = "\n[0] : Return to the Toolbox.";
 		
 		protected static const COLOR_PALETTE_INDEXES:Array = [1, 2, 3, 4, 6, 7, 8, 9];
 		protected static const TOOL_NAMES:Array = ["Toolbox", "Drag Selection", "Clone",
 			"Drag Selection", "Flip/Rotate", "Move Selection", "Color Palette", "Drag Selection", "Paintbrush", "Drag Selection"]
 		protected static const TOOL_DESCRIPTIONS:Array = [
 			"[1-9] : Select a tool.",
-			"[1-4 or 6-9] : Move the LOWER LEFT corner of the selection box in that direction.\n[0] : Return to the Toolbox.",
-			"[1-4 or 6-9] : Copy the contents of the selection to an adjacent cell.\n[0] : Return to the Toolbox.",
-			"[1-4 or 6-9] : Move the LOWER RIGHT corner of the selection box in that direction.\n[0] : Return to the Toolbox.",
-			"[1-9] : Choose a new orientation and/or facing for the contents of the selection.\n[0] : Return to the Toolbox.",
-			"[1-4 or 6-9] : Move the entire selection box in that direction.\n[0] : Return to the Toolbox.",
-			"[1-9] : Choose a color.\n[0] : Return to the Toolbox.",
-			"[1-4 or 6-9] : Move the UPPER LEFT corner of the selection box in that direction.\n[0] : Return to the Toolbox.",
-			"[1-9] : Fill the selection area or an adjacent one with the current color.\n[0] : Return to the Toolbox.",
-			"[1-4 or 6-9] : Move the UPPER RIGHT corner of the selection box in that direction.\n[0] : Return to the Toolbox."];
+			"[1-4 or 6-9] : Move the LOWER LEFT corner of the selection box in that direction.",
+			"[1-4 or 6-9] : Copy the contents of the selection to an adjacent cell.",
+			"[1-4 or 6-9] : Move the LOWER RIGHT corner of the selection box in that direction.",
+			"[1-9] : Choose a new orientation and/or facing for the contents of the selection.",
+			"[1-4 or 6-9] : Move the entire selection box in that direction.",
+			"[1-9] : Choose a color.",
+			"[1-4 or 6-9] : Move the UPPER LEFT corner of the selection box in that direction.",
+			"[1-9] : Fill the selection area or an adjacent one with the current color.",
+			"[1-4 or 6-9] : Move the UPPER RIGHT corner of the selection box in that direction."];
 						
-		public var currentTool:int = 0;
+		public var currentTool:int = TOOLBOX;
 		public var lastToolSelected:int = 0;
 		public var currentFill:int = 0xff000000;
-		protected var colorPalette:Array;
+		public var currentSelectionMode:uint = ONE_PIXEL;
 		
-		protected var labelName:FlxText;
-		protected var labelDescription:FlxText;
+		protected var colorPalette:Array;
 
 		public function ToolboxFrame(X:Number, Y:Number, Target:TargetFrame, Puzzle:PuzzleFrame)
 		{
@@ -122,28 +127,35 @@ package
 		
 		protected function updateTool():void
 		{
+			if ((currentTool % 2) == 1 && GameInput.keyCenter)
+			{
+				currentSelectionMode += 1;
+				if (currentSelectionMode > SELECTION_BOX)
+					currentSelectionMode = ONE_PIXEL;
+			}
+				
 			switch (currentTool)
 			{
 				case SELECTION_DRAG_LOWER_LEFT:
-					puzzle.updateSelection(currentTool);
+					puzzle.updateSelection(currentTool, currentSelectionMode);
 					break;
 				case SELECTION_DRAG_LOWER_RIGHT:
-					puzzle.updateSelection(currentTool);
+					puzzle.updateSelection(currentTool, currentSelectionMode);
 					break;
 				case SELECTION_NUDGE:
-					puzzle.updateSelection(currentTool);
+					puzzle.updateSelection(currentTool, currentSelectionMode);
 					break;
 				case COLOR_PALETTE:
 					updatePalette();
 					break;
 				case SELECTION_DRAG_UPPER_LEFT:
-					puzzle.updateSelection(currentTool);
+					puzzle.updateSelection(currentTool, currentSelectionMode);
 					break;
 				case FILL_SELECTED_AREA:
 					puzzle.updateFill(currentFill);
 					break;
 				case SELECTION_DRAG_UPPER_RIGHT:
-					puzzle.updateSelection(currentTool);
+					puzzle.updateSelection(currentTool, currentSelectionMode);
 					break;
 			}
 			
@@ -171,15 +183,12 @@ package
 			}
 			else if (GameInput.keyPressed == GameInput.SPECIAL)
 			{
-				if (currentTool == TOOLBOX)
-				{
-					//currentTool = lastToolSelected;
-				}
-				else
-					currentTool = TOOLBOX;
+				currentTool = TOOLBOX;
 			}
 			labelName.text = TOOL_NAMES[currentTool];
 			labelDescription.text = TOOL_DESCRIPTIONS[currentTool];
+			if (currentTool > TOOLBOX)
+				labelDescription.text += TOOLBOX_TIP;
 		}
 		
 		override public function draw():void
@@ -188,6 +197,12 @@ package
 			
 			labelName.draw();
 			labelDescription.draw();
+			
+			_flashRect.x = x + buffer.x;
+			_flashRect.y = y + buffer.y + block.y * (frameHeight + 0.5);
+			_flashRect.width = 3 * block.x;
+			_flashRect.height = 32;
+			FlxG.camera.buffer.fillRect(_flashRect, currentFill);
 		}
 		
 		override public function drawElement(X:uint, Y:uint):void
@@ -199,6 +214,13 @@ package
 			_flashRect.height = block.y;
 			_flashPoint.x = x + buffer.x + block.x * X;
 			_flashPoint.y = y + buffer.y + block.y * (frameHeight - Y - 1);
+			
+			// all the selection tools are odd-numbered tools, and their center key is reserved for toggling the selection mode
+			if ((currentTool % 2) == 1 && _i == 5)
+			{
+				_flashRect.x = currentSelectionMode * block.x;
+				_flashRect.y = 10 * block.y;
+			}
 			FlxG.camera.buffer.copyPixels(framePixels, _flashRect, _flashPoint, null, null, true);
 		}
 	}

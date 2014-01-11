@@ -3,7 +3,9 @@ package screens
 	import org.flixel.*;
 	
 	public class GameState extends ScreenState
-	{		
+	{
+		private var tracker:TrackerFrame;
+		
 		public function GameState()
 		{
 			super();
@@ -13,15 +15,16 @@ package screens
 		{
 			super.create();
 			
+			FlxG.score = 0;
 			FlxG.bgColor = 0xff464646;
 			
-			var target:TargetFrame = new TargetFrame(8, 8);
+			var target:TargetFrame = new TargetFrame(8, 8, FlxG.level);
 			add(target);
 			
 			var puzzle:PuzzleFrame = new PuzzleFrame(126, 82, target);
 			add(puzzle);
 			
-			var tracker:TrackerFrame = new TrackerFrame(126, 8, target, puzzle);
+			tracker = new TrackerFrame(126, 16, target, puzzle);
 			add(tracker);
 			
 			var toolbox:ToolboxFrame = new ToolboxFrame(8, 140, target, puzzle)
@@ -32,6 +35,12 @@ package screens
 		{	
 			super.update();
 			GameInput.update();
+			
+			if (tracker.solved)
+			{
+				ScreenState.infoText = "\nActions Previous Level: " + FlxG.score;
+				fadeToMenu();
+			}
 		}
 	}
 }

@@ -21,10 +21,10 @@ package screens
 			displayTimer = new FlxTimer();
 			displayTimer.start(1, 1, onTimerFlickerDisplay);
 			
-			displayText = new FlxText(0, FlxG.height - 32, FlxG.width, "Click to play REDRAWN.");
+			displayText = new FlxText(0, FlxG.height - 48, FlxG.width, "Press NUMPAD keys [1-3] to start a level.");
 			displayText.setFormat(null, 16, 0xffffff, "center");
+			displayText.text += ScreenState.infoText;
 			add(displayText);
-			
 		}
 		
 		private function onTimerFlickerDisplay(Timer:FlxTimer = null):void
@@ -40,8 +40,12 @@ package screens
 		{	
 			super.update();
 			
-			if (FlxG.mouse.justPressed())
+			GameInput.update();
+			if (GameInput.keyPressed > 0 && GameInput.keyPressed < 4)
+			{
+				FlxG.level = GameInput.keyPressed;
 				fadeToGame();
+			}
 		}
 	}
 }

@@ -1,10 +1,12 @@
 package
 {
 	import org.flixel.*;
+	
 	import screens.*;
 	
 	public class ScreenState extends FlxState
 	{
+		public static var infoText:String = "";
 		
 		public function ScreenState()
 		{

@@ -11,6 +11,9 @@ package
 		protected static const CORRECT_COLOR:uint = 0xff00ff00;
 		protected static const INCORRECT_COLOR:uint = 0xffff0000;
 		
+		private var incorrectPixelCount:int;
+		public var solved:Boolean;
+		
 		public function TrackerFrame(X:Number, Y:Number, Target:TargetFrame, Puzzle:PuzzleFrame)
 		{
 			super(X, Y, 56, 56);
@@ -19,6 +22,10 @@ package
 			puzzle = Puzzle;
 			resetFrame(target.frameWidth, target.frameHeight);
 			showGrid = false;
+			solved = false;
+			
+			labelName = new FlxText(X, Y - 8, 100, "Moves: " + FlxG.score);
+			labelName.setFormat(null, 8, 0xffff00, "left");
 		}
 		
 		public function resetFrame(Width:uint, Height:uint, DefaultColor:uint = 0x00000000):void
@@ -31,13 +38,26 @@ package
 			var _blockY:Number = (maxSize.y - 2 * buffer.y) / frameHeight;
 			block.x = _blockX;
 			block.y = _blockY;
-			
-			FlxG.log("width: " + block.x + ", height: " + block.y);
 		}
 		
 		override public function update():void
 		{
 			super.update();
+			
+			labelName.text = "Actions: " + FlxG.score;
+		}
+		
+		override public function draw():void
+		{
+			incorrectPixelCount = 0;
+			super.draw();
+			
+			labelName.draw();
+			
+			if (incorrectPixelCount == 0)
+				solved = true;
+			else
+				solved = false;
 		}
 		
 		override public function drawElement(X:uint, Y:uint):void
@@ -54,7 +74,10 @@ package
 			if (_targetColor == _puzzleColor)
 				FlxG.camera.buffer.fillRect(_flashRect, CORRECT_COLOR);
 			else
+			{
 				FlxG.camera.buffer.fillRect(_flashRect, INCORRECT_COLOR);
+				incorrectPixelCount++;
+			}
 		}
 	}
 }

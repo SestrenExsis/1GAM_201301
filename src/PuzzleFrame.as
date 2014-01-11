@@ -17,7 +17,7 @@ package
 			super(X, Y, 292, 292);
 			
 			target = Target;
-			resetFrame(target.frameWidth, target.frameHeight, 0xffff00ff);
+			resetFrame(target.frameWidth, target.frameHeight, 0x00000000);
 			setSelection(0, 0, frameWidth, frameHeight);
 		}
 		
@@ -47,7 +47,7 @@ package
 			target.setSelection(_selection.x, _selection.y, _selection.width, _selection.height);
 		}
 		
-		public function updateSelection(SelectionMode:int):void
+		public function updateSelection(CurrentTool:int, SelectionMode:int):void
 		{
 			var _x:int = 0;
 			var _y:int = 0;
@@ -60,7 +60,12 @@ package
 			else if (GameInput.keySouth || GameInput.keySouthwest || GameInput.keySoutheast)
 				_y = 1;
 			
-			switch (SelectionMode)
+			var _originalX:int = selection.x;
+			var _originalY:int = selection.y;
+			var _originalWidth:int = selection.width;
+			var _originalHeight:int = selection.height;
+			
+			switch (CurrentTool)
 			{
 				case GameInput.NORTHWEST:
 					selection.x += _x;
@@ -87,6 +92,57 @@ package
 					selection.y += _y;
 					break;
 			}
+
+			if (SelectionMode == ToolboxFrame.SELECTION_BOX)
+			{
+				if (CurrentTool == GameInput.CENTER)
+				{
+					selection.x = _originalX + _x * _originalWidth;
+					selection.y = _originalY + _y * _originalHeight;
+				}
+				else
+				{
+					var _halfWidth:int = Math.max(1, Math.floor(0.5 * _originalWidth));
+					var _halfHeight:int = Math.max(1, Math.floor(0.5 * _originalHeight));
+					var _twiceWidth:int = 2 * _originalWidth;
+					var _twiceHeight:int = 2 * _originalHeight;
+					
+					if (selection.width > _originalWidth)
+						selection.width = _twiceWidth;
+					else if (selection.width < _originalWidth)
+						selection.width = _halfWidth;
+					
+					if (selection.height > _originalHeight)
+						selection.height = _twiceHeight;
+					else if (selection.height < _originalHeight)
+						selection.height = _halfHeight;
+					
+					switch (CurrentTool)
+					{
+						case GameInput.NORTHWEST:
+							selection.x = _originalX + _originalWidth - selection.width;
+							selection.y = _originalY + _originalHeight - selection.height;
+							break;
+						case GameInput.NORTHEAST:
+							selection.x = _originalX;
+							selection.y = _originalY + _originalHeight - selection.height;
+							break;
+						case GameInput.SOUTHWEST:
+							selection.x = _originalX + _originalWidth - selection.width;
+							selection.y = _originalY;
+							break;
+						case GameInput.SOUTHEAST:
+							selection.x = _originalX;
+							selection.y = _originalY
+							break;
+						case GameInput.CENTER:
+							selection.x += _x;
+							selection.y += _y;
+							break;
+					}
+				}
+			}
+			
 			if (_x != 0 || _y != 0)
 				clampSelection();
 		}
