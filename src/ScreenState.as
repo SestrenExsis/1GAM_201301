@@ -36,7 +36,7 @@ package
 		
 		public function goToGame():void
 		{
-			FlxG.switchState(new GameState);
+			FlxG.switchState(new GameScreen);
 		}
 		
 		public function onButtonMenu():void
@@ -51,7 +51,7 @@ package
 		
 		public function goToMenu():void
 		{
-			FlxG.switchState(new MenuState);
+			FlxG.switchState(new MenuScreen);
 		}
 	}
 }

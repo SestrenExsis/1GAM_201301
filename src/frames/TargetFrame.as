@@ -1,4 +1,4 @@
-package
+package frames
 {
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
@@ -6,7 +6,7 @@ package
 	
 	import org.flixel.*;
 	
-	public class TargetFrame extends WindowFrame
+	public class TargetFrame extends FrameSprite
 	{
 		[Embed(source="../assets/images/pixelart.png")] public var imgPixelArt:Class;
 				

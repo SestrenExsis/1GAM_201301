@@ -2,12 +2,12 @@ package screens
 {
 	import org.flixel.*;
 	
-	public class MenuState extends ScreenState
+	public class MenuScreen extends ScreenState
 	{
 		private var displayText:FlxText;
 		private var displayTimer:FlxTimer;
 		
-		public function MenuState()
+		public function MenuScreen()
 		{
 			super();
 		}

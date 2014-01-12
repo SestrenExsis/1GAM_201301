@@ -5,8 +5,10 @@ package
 	import flash.utils.getTimer;
 	
 	import org.flixel.*;
+	import frames.PuzzleFrame;
+	import frames.TargetFrame;
 	
-	public class WindowFrame extends FlxSprite
+	public class FrameSprite extends FlxSprite
 	{
 		protected var _selection:Rectangle;
 		protected var selectionBorderWidth:uint = 2;
@@ -25,7 +27,7 @@ package
 		protected var labelName:FlxText;
 		protected var labelDescription:FlxText;
 		
-		public function WindowFrame(X:Number, Y:Number, Width:Number, Height:Number)
+		public function FrameSprite(X:Number, Y:Number, Width:Number, Height:Number)
 		{
 			super(X, Y);
 			
@@ -33,6 +35,22 @@ package
 			buffer = new FlxPoint(4, 4);
 			dropShadowOffset = new FlxPoint(2, 3);
 			block = new FlxPoint();
+		}
+		
+		public function resetFrame(Width:uint, Height:uint, DefaultColor:uint = 0x00000000):void
+		{
+			makeGraphic(Width, Height, DefaultColor);
+			frameWidth = Width;
+			frameHeight = Height;
+			
+			var _blockX:Number = (maxSize.x - 2 * buffer.x) / frameWidth;
+			var _blockY:Number = (maxSize.y - 2 * buffer.y) / frameHeight;
+			
+			if (block)
+			{
+				block.x = _blockX;
+				block.y = _blockY;
+			}
 		}
 		
 		public function get selection():Rectangle

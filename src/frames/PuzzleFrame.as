@@ -1,4 +1,4 @@
-package
+package frames
 {
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
@@ -6,7 +6,7 @@ package
 	
 	import org.flixel.*;
 	
-	public class PuzzleFrame extends WindowFrame
+	public class PuzzleFrame extends FrameSprite
 	{
 		protected var currentTool:int = 0;
 		protected var currentFill:int = 0xffff0000;
@@ -24,18 +24,6 @@ package
 		public function get currentFrame():int
 		{
 			return _currentFrame;
-		}
-		
-		public function resetFrame(Width:uint, Height:uint, DefaultColor:uint = 0x00000000):void
-		{
-			makeGraphic(Width, Height, DefaultColor);
-			frameWidth = Width;
-			frameHeight = Height;
-			
-			var _blockX:Number = (maxSize.x - 2 * buffer.x) / frameWidth;
-			var _blockY:Number = (maxSize.y - 2 * buffer.y) / frameHeight;
-			block.x = _blockX;
-			block.y = _blockY;
 		}
 		
 		public function clampSelection():void

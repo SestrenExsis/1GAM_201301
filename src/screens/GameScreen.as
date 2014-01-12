@@ -1,12 +1,16 @@
 package screens
 {
 	import org.flixel.*;
+	import frames.PuzzleFrame;
+	import frames.TargetFrame;
+	import frames.ToolboxFrame;
+	import frames.TrackerFrame;
 	
-	public class GameState extends ScreenState
+	public class GameScreen extends ScreenState
 	{
 		private var tracker:TrackerFrame;
 		
-		public function GameState()
+		public function GameScreen()
 		{
 			super();
 		}

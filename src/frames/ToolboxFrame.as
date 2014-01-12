@@ -1,4 +1,4 @@
-package
+package frames
 {
 	import flash.display.BitmapData;
 	import flash.geom.Rectangle;
@@ -6,7 +6,7 @@ package
 	
 	import org.flixel.*;
 	
-	public class ToolboxFrame extends WindowFrame
+	public class ToolboxFrame extends FrameSprite
 	{
 		[Embed(source="../assets/images/toolbox.png")] public var imgToolbox:Class;
 		
