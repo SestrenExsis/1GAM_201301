@@ -13,13 +13,13 @@ package
 		protected var _selection:Rectangle;
 		protected var selectionBorderWidth:uint = 2;
 		protected var selectionBorderColor:uint = 0xffed008c;
-		protected var showGrid:Boolean = true;
+		protected var showGrid:Boolean = false;
 		protected var windowColor:uint = 0xff5b5b5b;
 		protected var dropShadowColor:uint = 0xff000000;
 		protected var maxSize:FlxPoint;
-		protected var buffer:FlxPoint;
+		public var buffer:FlxPoint;
 		protected var dropShadowOffset:FlxPoint;
-		protected var block:FlxPoint;
+		public var block:FlxPoint;
 		
 		public var puzzle:PuzzleFrame;
 		public var target:TargetFrame;

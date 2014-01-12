@@ -21,7 +21,6 @@ package frames
 			target = Target;
 			puzzle = Puzzle;
 			resetFrame(target.frameWidth, target.frameHeight);
-			showGrid = false;
 			solved = false;
 			
 			labelName = new FlxText(X, Y - 8, 100, "Moves: " + FlxG.score);

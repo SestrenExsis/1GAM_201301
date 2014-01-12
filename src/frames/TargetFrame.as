@@ -35,6 +35,8 @@ package frames
 			loadGraphic(imgPixelArt);
 			currentFrame = CurrentFrame;
 			setSelection(0, 0, frameWidth, frameHeight);
+			
+			showGrid = true;
 		}
 		
 		public function get currentFrame():int

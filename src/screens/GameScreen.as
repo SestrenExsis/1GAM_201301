@@ -1,14 +1,19 @@
 package screens
 {
-	import org.flixel.*;
 	import frames.PuzzleFrame;
 	import frames.TargetFrame;
 	import frames.ToolboxFrame;
 	import frames.TrackerFrame;
 	
+	import org.flixel.*;
+	
 	public class GameScreen extends ScreenState
 	{
+		[Embed(source="../assets/images/cursor.png")] public var imgCursor:Class;
+
 		private var tracker:TrackerFrame;
+		private var toolbox:ToolboxFrame;
+		private var cursor:FlxSprite;
 		
 		public function GameScreen()
 		{
@@ -31,14 +36,24 @@ package screens
 			tracker = new TrackerFrame(126, 16, target, puzzle);
 			add(tracker);
 			
-			var toolbox:ToolboxFrame = new ToolboxFrame(8, 140, target, puzzle)
+			toolbox = new ToolboxFrame(8, 140, target, puzzle)
 			add(toolbox);
+			
+			cursor = new FlxSprite(-100, -100);
+			cursor.loadGraphic(imgCursor, true, false, 32, 32);
+			cursor.addAnimation("grab",[0]);
+			cursor.play("grab");
+			add(cursor);
 		}
 		
 		override public function update():void
 		{	
 			super.update();
 			GameInput.update();
+			
+			var _cursorPos:FlxPoint = toolbox.cursorLocation;
+			cursor.x = _cursorPos.x - 0.5 * cursor.width;
+			cursor.y = _cursorPos.y - 0.5 * cursor.height;
 			
 			if (tracker.solved)
 			{

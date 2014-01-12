@@ -49,6 +49,7 @@ package frames
 		public var currentSelectionMode:uint = ONE_PIXEL;
 		
 		protected var colorPalette:Array;
+		protected var _cursorLocation:FlxPoint;
 
 		public function ToolboxFrame(X:Number, Y:Number, Target:TargetFrame, Puzzle:PuzzleFrame)
 		{
@@ -60,13 +61,36 @@ package frames
 			loadGraphic(imgToolbox);
 			loadColorPalette();
 			frameWidth = frameHeight = 3;
-			showGrid = false;
 			
 			labelName = new FlxText(X, Y - 12, 100, "Name");
 			labelName.setFormat(null, 8, 0xffff00, "center");
 			
 			labelDescription = new FlxText(0, FlxG.height - 24, FlxG.width, "Description");
 			labelDescription.setFormat(null, 8, 0xffffff, "center");
+			
+			_cursorLocation = new FlxPoint(-32, -32);
+		}
+		
+		public function get cursorLocation():FlxPoint
+		{
+			if (puzzle && puzzle.selection)
+			{
+				_cursorLocation.x = puzzle.x + puzzle.buffer.x + puzzle.block.x * puzzle.selection.x;
+				_cursorLocation.y = puzzle.y + puzzle.buffer.y + puzzle.block.y * puzzle.selection.y;
+				
+				if (currentTool == SELECTION_DRAG_UPPER_RIGHT || currentTool == SELECTION_DRAG_LOWER_RIGHT)
+					_cursorLocation.x += puzzle.block.x * puzzle.selection.width;
+				if (currentTool == SELECTION_DRAG_LOWER_LEFT || currentTool == SELECTION_DRAG_LOWER_RIGHT)
+					_cursorLocation.y += puzzle.block.y * puzzle.selection.height;
+				if (currentTool == SELECTION_NUDGE)
+				{
+					_cursorLocation.x += 0.5 * puzzle.block.x * puzzle.selection.width;
+					_cursorLocation.y += 0.5 * puzzle.block.y * puzzle.selection.height;
+				}
+			}
+			else
+				_cursorLocation.x = _cursorLocation.y = -32;
+			return _cursorLocation;
 		}
 		
 		protected function loadColorPalette():void
