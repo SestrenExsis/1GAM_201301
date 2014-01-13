@@ -4,28 +4,29 @@ package
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
 	
-	import org.flixel.*;
 	import frames.PuzzleFrame;
 	import frames.TargetFrame;
+	
+	import org.flixel.*;
 	
 	public class FrameSprite extends FlxSprite
 	{
 		protected var _selection:Rectangle;
+		protected var _selectionVisual:Rectangle;
 		protected var selectionBorderWidth:uint = 2;
 		protected var selectionBorderColor:uint = 0xffed008c;
 		protected var showGrid:Boolean = false;
 		protected var windowColor:uint = 0xff5b5b5b;
 		protected var dropShadowColor:uint = 0xff000000;
 		protected var maxSize:FlxPoint;
-		public var buffer:FlxPoint;
 		protected var dropShadowOffset:FlxPoint;
-		public var block:FlxPoint;
-		
-		public var puzzle:PuzzleFrame;
-		public var target:TargetFrame;
-		
 		protected var labelName:FlxText;
 		protected var labelDescription:FlxText;
+		
+		public var buffer:FlxPoint;
+		public var block:FlxPoint;
+		public var puzzle:PuzzleFrame;
+		public var target:TargetFrame;
 		
 		public function FrameSprite(X:Number, Y:Number, Width:Number, Height:Number)
 		{
@@ -58,10 +59,17 @@ package
 			return _selection;
 		}
 		
+		public function get selectionVisual():Rectangle
+		{
+			return _selectionVisual;
+		}
+		
 		public function setSelection(X:int, Y:int, Width:int, Height:int):void
 		{
 			if (_selection == null)
 				_selection = new Rectangle();
+			if (_selectionVisual == null)
+				_selectionVisual = new Rectangle(0, 0, 1, 1);
 			
 			_selection.x = X;
 			_selection.y = Y;
@@ -72,6 +80,34 @@ package
 		override public function update():void
 		{
 			super.update();
+			
+			if (selection && selectionVisual)
+			{
+				var _lerp:Number = 0.2;
+				var _diff:Number = selection.x - selectionVisual.x;
+				if ((block.x * Math.abs(_diff)) < 1)
+					selectionVisual.x = selection.x;
+				else
+					selectionVisual.x = FlxTween.linear(_lerp, selectionVisual.x, _diff, 1);
+				
+				_diff = selection.y - selectionVisual.y;
+				if ((block.y * Math.abs(_diff)) < 1)
+					selectionVisual.y = selection.y;
+				else
+					selectionVisual.y = FlxTween.linear(_lerp, selectionVisual.y, _diff, 1);
+				
+				_diff = selection.width - selectionVisual.width;
+				if ((block.x * Math.abs(_diff)) < 1)
+					selectionVisual.width = selection.width;
+				else
+					selectionVisual.width = FlxTween.linear(_lerp, selectionVisual.width, _diff, 1);
+				
+				_diff = selection.height - selectionVisual.height;
+				if ((block.y * Math.abs(_diff)) < 1)
+					selectionVisual.height = selection.height;
+				else
+					selectionVisual.height = FlxTween.linear(_lerp, selectionVisual.height, _diff, 1);
+			}
 		}
 		
 		public function drawElement(X:uint, Y:uint):void
@@ -142,28 +178,28 @@ package
 				}
 				
 				// draw the selection box
-				if (selection && selection.width > 0 && selection.height > 0)
+				if (selectionVisual && selectionVisual.width > 0 && selectionVisual.height > 0)
 				{
 					//top of selection box
-					_flashRect.x = x + buffer.x - selectionBorderWidth + selection.x * block.x;
-					_flashRect.y = y + buffer.y - selectionBorderWidth + selection.y * block.y;
-					_flashRect.width = block.x * selection.width + 2 * selectionBorderWidth;
+					_flashRect.x = x + buffer.x - selectionBorderWidth + selectionVisual.x * block.x;
+					_flashRect.y = y + buffer.y - selectionBorderWidth + selectionVisual.y * block.y;
+					_flashRect.width = block.x * selectionVisual.width + 2 * selectionBorderWidth;
 					_flashRect.height = selectionBorderWidth;
 					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
 					
 					//bottom of selection box
-					_flashRect.y = y + buffer.y + block.y * selection.height + selection.y * block.y;
+					_flashRect.y = y + buffer.y + block.y * selectionVisual.height + selectionVisual.y * block.y;
 					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
 					
 					//left side of selection box
-					_flashRect.x = x + buffer.x - selectionBorderWidth + selection.x * block.x;
-					_flashRect.y = y + buffer.y + selection.y * block.y;
+					_flashRect.x = x + buffer.x - selectionBorderWidth + selectionVisual.x * block.x;
+					_flashRect.y = y + buffer.y + selectionVisual.y * block.y;
 					_flashRect.width = selectionBorderWidth;
-					_flashRect.height = block.y * selection.height;
+					_flashRect.height = block.y * selectionVisual.height;
 					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
 					
 					//right side of selection box
-					_flashRect.x = x + buffer.y + block.x * selection.width + selection.x * block.x;
+					_flashRect.x = x + buffer.y + block.x * selectionVisual.width + selectionVisual.x * block.x;
 					FlxG.camera.buffer.fillRect(_flashRect, selectionBorderColor);
 				}
 			}

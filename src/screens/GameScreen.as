@@ -51,7 +51,7 @@ package screens
 			super.update();
 			GameInput.update();
 			
-			var _cursorPos:FlxPoint = toolbox.cursorLocation;
+			var _cursorPos:FlxPoint = toolbox.cursorLocationVisual;
 			cursor.x = _cursorPos.x - 0.5 * cursor.width;
 			cursor.y = _cursorPos.y - 0.5 * cursor.height;
 			

@@ -11,7 +11,6 @@ package frames
 		protected var currentTool:int = 0;
 		protected var currentFill:int = 0xffff0000;
 		protected var _currentFrame:int;
-		
 						
 		public function PuzzleFrame(X:Number, Y:Number, Target:TargetFrame)
 		{

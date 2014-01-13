@@ -50,6 +50,7 @@ package frames
 		
 		protected var colorPalette:Array;
 		protected var _cursorLocation:FlxPoint;
+		protected var _cursorLocationVisual:FlxPoint;
 
 		public function ToolboxFrame(X:Number, Y:Number, Target:TargetFrame, Puzzle:PuzzleFrame)
 		{
@@ -69,10 +70,11 @@ package frames
 			labelDescription.setFormat(null, 8, 0xffffff, "center");
 			
 			_cursorLocation = new FlxPoint(-32, -32);
+			_cursorLocationVisual = new FlxPoint(-32, -32);
 		}
 		
-		public function get cursorLocation():FlxPoint
-		{
+		public function get cursorLocationVisual():FlxPoint
+		{			
 			if (puzzle && puzzle.selection)
 			{
 				_cursorLocation.x = puzzle.x + puzzle.buffer.x + puzzle.block.x * puzzle.selection.x;
@@ -90,7 +92,21 @@ package frames
 			}
 			else
 				_cursorLocation.x = _cursorLocation.y = -32;
-			return _cursorLocation;
+			
+			var _lerp:Number = 0.2;
+			var _diff:Number = _cursorLocation.x - _cursorLocationVisual.x;
+			if (Math.abs(_diff) < 1)
+				_cursorLocationVisual.x = _cursorLocationVisual.x;
+			else
+				_cursorLocationVisual.x = FlxTween.linear(_lerp, _cursorLocationVisual.x, _diff, 1);
+			
+			_diff = _cursorLocation.y - _cursorLocationVisual.y;
+			if (Math.abs(_diff) < 1)
+				_cursorLocationVisual.y = _cursorLocationVisual.y;
+			else
+				_cursorLocationVisual.y = FlxTween.linear(_lerp, _cursorLocationVisual.y, _diff, 1);
+			
+			return _cursorLocationVisual;
 		}
 		
 		protected function loadColorPalette():void
