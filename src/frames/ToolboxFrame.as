@@ -56,12 +56,12 @@ package frames
 		{
 			super(X, Y, 100, 100);
 			
-			block.x = block.y = 32;
+			elementSize.x = elementSize.y = 32;
 			target = Target;
 			puzzle = Puzzle;
-			loadGraphic(imgToolbox);
+			elements.loadGraphic(imgToolbox);
 			loadColorPalette();
-			frameWidth = frameHeight = 3;
+			elements.frameWidth = elements.frameHeight = 3;
 			
 			labelName = new FlxText(X, Y - 12, 100, "Name");
 			labelName.setFormat(null, 8, 0xffff00, "center");
@@ -77,17 +77,17 @@ package frames
 		{			
 			if (puzzle && puzzle.selection)
 			{
-				_cursorLocation.x = puzzle.x + puzzle.buffer.x + puzzle.block.x * puzzle.selection.x;
-				_cursorLocation.y = puzzle.y + puzzle.buffer.y + puzzle.block.y * puzzle.selection.y;
+				_cursorLocation.x = puzzle.x + puzzle.buffer.x + puzzle.elementSize.x * puzzle.selection.x;
+				_cursorLocation.y = puzzle.y + puzzle.buffer.y + puzzle.elementSize.y * puzzle.selection.y;
 				
 				if (currentTool == SELECTION_DRAG_UPPER_RIGHT || currentTool == SELECTION_DRAG_LOWER_RIGHT)
-					_cursorLocation.x += puzzle.block.x * puzzle.selection.width;
+					_cursorLocation.x += puzzle.elementSize.x * puzzle.selection.width;
 				if (currentTool == SELECTION_DRAG_LOWER_LEFT || currentTool == SELECTION_DRAG_LOWER_RIGHT)
-					_cursorLocation.y += puzzle.block.y * puzzle.selection.height;
+					_cursorLocation.y += puzzle.elementSize.y * puzzle.selection.height;
 				if (currentTool == SELECTION_NUDGE)
 				{
-					_cursorLocation.x += 0.5 * puzzle.block.x * puzzle.selection.width;
-					_cursorLocation.y += 0.5 * puzzle.block.y * puzzle.selection.height;
+					_cursorLocation.x += 0.5 * puzzle.elementSize.x * puzzle.selection.width;
+					_cursorLocation.y += 0.5 * puzzle.elementSize.y * puzzle.selection.height;
 				}
 			}
 			else
@@ -122,13 +122,13 @@ package frames
 			var _currentPixel:uint;
 			var _colorsInPalette:uint = 0;
 			var _colorAlreadyInPalette:Boolean;
-			if (target.framePixels)
+			if (target.elements.framePixels)
 			{
-				for (var _x:int = 0; _x < target.frameWidth; _x++)
+				for (var _x:int = 0; _x < target.elements.frameWidth; _x++)
 				{
-					for (var _y:int = 0; _y < target.frameHeight; _y++)
+					for (var _y:int = 0; _y < target.elements.frameHeight; _y++)
 					{
-						_currentPixel = target.framePixels.getPixel32(_x, _y);
+						_currentPixel = target.elements.framePixels.getPixel32(_x, _y);
 						_colorAlreadyInPalette = false;
 						for (i = 0; i < colorPalette.length; i++)
 						{
@@ -143,22 +143,21 @@ package frames
 						}
 					}
 				}
-				FlxG.log(_colorsInPalette);
 			}
 			
 			// recolor the toolbox palette circles to match the color palette
-			if (framePixels)
+			if (elements.framePixels)
 			{
 				var _index:uint;
 				for (i = 0; i < colorPalette.length; i++)
 				{
-					for (_x = 0; _x < block.x; _x++)
+					for (_x = 0; _x < elementSize.x; _x++)
 					{
-						for (_y = 0; _y < block.y; _y++)
+						for (_y = 0; _y < elementSize.y; _y++)
 						{
 							_index = COLOR_PALETTE_INDEXES[i];
-							if(framePixels.getPixel32(_index * block.x + _x, COLOR_PALETTE * block.y + _y) == 0xffffffff)
-								framePixels.setPixel32(_index * block.x + _x, COLOR_PALETTE * block.y + _y, colorPalette[i]);
+							if(elements.framePixels.getPixel32(_index * elementSize.x + _x, COLOR_PALETTE * elementSize.y + _y) == 0xffffffff)
+								elements.framePixels.setPixel32(_index * elementSize.x + _x, COLOR_PALETTE * elementSize.y + _y, colorPalette[i]);
 						}
 					}
 				}
@@ -239,29 +238,29 @@ package frames
 			labelDescription.draw();
 			
 			_flashRect.x = x + buffer.x;
-			_flashRect.y = y + buffer.y + block.y * (frameHeight + 0.5);
-			_flashRect.width = 3 * block.x;
+			_flashRect.y = y + buffer.y + elementSize.y * (frameHeight + 0.5);
+			_flashRect.width = 3 * elementSize.x;
 			_flashRect.height = 32;
 			FlxG.camera.buffer.fillRect(_flashRect, currentFill);
 		}
 		
 		override public function drawElement(X:uint, Y:uint):void
 		{
-			var _i:int = Y * frameWidth + X + 1;
-			_flashRect.x = _i * block.x;
-			_flashRect.y = currentTool * block.y;
-			_flashRect.width = block.x;
-			_flashRect.height = block.y;
-			_flashPoint.x = x + buffer.x + block.x * X;
-			_flashPoint.y = y + buffer.y + block.y * (frameHeight - Y - 1);
+			var _i:int = Y * elements.frameWidth + X + 1;
+			_flashRect.x = _i * elementSize.x;
+			_flashRect.y = currentTool * elementSize.y;
+			_flashRect.width = elementSize.x;
+			_flashRect.height = elementSize.y;
+			_flashPoint.x = x + buffer.x + elementSize.x * X;
+			_flashPoint.y = y + buffer.y + elementSize.y * (elements.frameHeight - Y - 1);
 			
 			// all the selection tools are odd-numbered tools, and their center key is reserved for toggling the selection mode
 			if ((currentTool % 2) == 1 && _i == 5)
 			{
-				_flashRect.x = currentSelectionMode * block.x;
-				_flashRect.y = 10 * block.y;
+				_flashRect.x = currentSelectionMode * elementSize.x;
+				_flashRect.y = 10 * elementSize.y;
 			}
-			FlxG.camera.buffer.copyPixels(framePixels, _flashRect, _flashPoint, null, null, true);
+			FlxG.camera.buffer.copyPixels(elements.framePixels, _flashRect, _flashPoint, null, null, true);
 		}
 	}
 }

@@ -17,8 +17,8 @@ package frames
 			super(X, Y, 292, 292);
 			
 			target = Target;
-			resetFrame(target.frameWidth, target.frameHeight, 0x00000000);
-			setSelection(0, 0, frameWidth, frameHeight);
+			resetElementFrame(target.elements.frameWidth, target.elements.frameHeight, 0x00000000);
+			setSelection(0, 0, elements.frameWidth, elements.frameHeight);
 			
 			showGrid = true;
 		}
@@ -30,10 +30,10 @@ package frames
 		
 		public function clampSelection():void
 		{
-			_selection.x = FlxU.bound(_selection.x, 0, frameWidth - 1);
-			_selection.width = FlxU.bound(_selection.width, 1, frameWidth - _selection.x);
-			_selection.y = FlxU.bound(_selection.y, 0, frameHeight - 1);
-			_selection.height = FlxU.bound(_selection.height, 1, frameHeight - _selection.y);
+			_selection.x = FlxU.bound(_selection.x, 0, elements.frameWidth - 1);
+			_selection.width = FlxU.bound(_selection.width, 1, elements.frameWidth - _selection.x);
+			_selection.y = FlxU.bound(_selection.y, 0, elements.frameHeight - 1);
+			_selection.height = FlxU.bound(_selection.height, 1, elements.frameHeight - _selection.y);
 			target.setSelection(_selection.x, _selection.y, _selection.width, _selection.height);
 		}
 		
@@ -162,8 +162,8 @@ package frames
 			{
 				for (var _y:int = selection.y; _y < selection.y + selection.height; _y++)
 				{
-					if (_x >= 0 && _x < framePixels.width && _y >= 0 && _y < framePixels.height)
-						framePixels.setPixel32(_x, _y, FillColor);
+					if (_x >= 0 && _x < elements.framePixels.width && _y >= 0 && _y < elements.framePixels.height)
+						elements.framePixels.setPixel32(_x, _y, FillColor);
 				}
 			}
 		}
@@ -175,13 +175,13 @@ package frames
 		
 		override public function drawElement(X:uint, Y:uint):void
 		{
-			_flashRect.width = block.x;
-			_flashRect.height = block.y;
+			_flashRect.width = elementSize.x;
+			_flashRect.height = elementSize.y;
 			
-			_flashRect.x = x + buffer.x + block.x * X;
-			_flashRect.y = y + buffer.y + block.y * Y;
+			_flashRect.x = x + buffer.x + elementSize.x * X;
+			_flashRect.y = y + buffer.y + elementSize.y * Y;
 			
-			var _pixelColor:uint = framePixels.getPixel32(X, Y);
+			var _pixelColor:uint = elements.framePixels.getPixel32(X, Y);
 			var _pixelAlpha:uint = 0xff & (_pixelColor >> 24);
 			
 			if (_pixelAlpha > 0)

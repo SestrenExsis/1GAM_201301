@@ -32,7 +32,7 @@ package frames
 			super(X, Y, 112, 112);
 			
 			selectionBorderWidth = 1;
-			loadGraphic(imgPixelArt);
+			elements.loadGraphic(imgPixelArt);
 			currentFrame = CurrentFrame;
 			setSelection(0, 0, frameWidth, frameHeight);
 			
@@ -54,20 +54,20 @@ package frames
 				_currentFrame = Value;
 			
 			var _rect:Rectangle = frameRects[_currentFrame];
-			if((framePixels == null) || (framePixels.width != _rect.width) || (framePixels.height != _rect.height))
-				framePixels = new BitmapData(_rect.width, _rect.height);
+			if((elements.framePixels == null) || (elements.framePixels.width != _rect.width) || (elements.framePixels.height != _rect.height))
+				elements.framePixels = new BitmapData(_rect.width, _rect.height);
 			_flashRect.x = _rect.x;
 			_flashRect.y = _rect.y;
 			_flashRect.width = _rect.width;
 			_flashRect.height = _rect.height;
-			framePixels.copyPixels(pixels, _flashRect, _flashPointZero, null, null, false);
-			frameWidth = framePixels.width;
-			frameHeight = framePixels.height;
+			elements.framePixels.copyPixels(elements.pixels, _flashRect, _flashPointZero, null, null, false);
+			elements.frameWidth = elements.framePixels.width;
+			elements.frameHeight = elements.framePixels.height;
 			
-			var _blockX:Number = (maxSize.x - 2 * buffer.x) / frameWidth;
-			var _blockY:Number = (maxSize.y - 2 * buffer.y) / frameHeight;
-			block.x = _blockX;
-			block.y = _blockY;
+			var _blockX:Number = (maxSize.x - 2 * buffer.x) / elements.frameWidth;
+			var _blockY:Number = (maxSize.y - 2 * buffer.y) / elements.frameHeight;
+			elementSize.x = _blockX;
+			elementSize.y = _blockY;
 		}
 		
 		override public function update():void
@@ -77,13 +77,13 @@ package frames
 		
 		override public function drawElement(X:uint, Y:uint):void
 		{
-			_flashRect.width = block.x;
-			_flashRect.height = block.y;
+			_flashRect.width = elementSize.x;
+			_flashRect.height = elementSize.y;
 			
-			_flashRect.x = x + buffer.x + block.x * X;
-			_flashRect.y = y + buffer.y + block.y * Y;
+			_flashRect.x = x + buffer.x + elementSize.x * X;
+			_flashRect.y = y + buffer.y + elementSize.y * Y;
 			
-			var _pixelColor:uint = framePixels.getPixel32(X, Y);
+			var _pixelColor:uint = elements.framePixels.getPixel32(X, Y);
 			var _pixelAlpha:uint = 0xff & (_pixelColor >> 24);
 			
 			if (_pixelAlpha > 0)
