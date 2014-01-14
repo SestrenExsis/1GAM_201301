@@ -11,6 +11,7 @@ package screens
 	{
 		[Embed(source="../assets/images/cursor.png")] public var imgCursor:Class;
 
+		private var background:ScrollingSprite;
 		private var tracker:TrackerFrame;
 		private var toolbox:ToolboxFrame;
 		private var cursor:FlxSprite;
@@ -26,6 +27,9 @@ package screens
 			
 			FlxG.score = 0;
 			FlxG.bgColor = 0xff464646;
+			
+			background = new ScrollingSprite(0, 0, "hills");
+			add(background);
 			
 			var target:TargetFrame = new TargetFrame(8, 8, FlxG.level);
 			add(target);
