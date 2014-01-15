@@ -12,18 +12,21 @@ package
 	
 	public class FrameSprite extends FlxSprite
 	{
+		[Embed(source="../assets/images/frame.png")] public var imgFrame:Class;
+		
+		private static const WINDOW_FRAME_TILE_SIZE:int = 32;
+		
 		protected var maxSize:FlxPoint;
 		protected var _selection:Rectangle;
 		protected var _selectionVisual:Rectangle;
 		protected var selectionBorderWidth:uint = 2;
 		protected var selectionBorderColor:uint = 0xffed008c;
 		protected var showGrid:Boolean = false;
-		protected var windowColor:uint = 0xffffffff;
-		protected var dropShadowColor:uint = 0xff000000;
-		protected var dropShadowOffset:FlxPoint;
+		protected var windowColor:uint = 0x88ffffff;
 		protected var labelName:FlxText;
 		protected var labelDescription:FlxText;
 		
+		public var windowFrame:FlxSprite;
 		public var elements:FlxSprite;
 		public var elementSize:FlxPoint;
 		public var buffer:FlxPoint;
@@ -34,46 +37,76 @@ package
 		{
 			super(X, Y);
 			
+			windowFrame = new FlxSprite();
+			windowFrame.loadGraphic(imgFrame);
+			
 			elements = new FlxSprite(X, Y);
-			maxSize = new FlxPoint(Width, Height);
-			dropShadowOffset = new FlxPoint(2, 3);
-			buffer = new FlxPoint(4, 4);
-			makeGraphic(Width + 2 * buffer.x + dropShadowOffset.x, Height + 2 * buffer.y + dropShadowOffset.y, 0xff000000);
+			buffer = new FlxPoint(8, 8);
+			maxSize = new FlxPoint(Width - 2 * buffer.x, Height - 2 * buffer.y);
 			elementSize = new FlxPoint();
-			//alpha = 0.5;
-			
-			// draw the dropshadow in two pieces since the window background would cover up most of it, anyway
-			_flashRect.x = frameWidth;
-			_flashRect.y = dropShadowOffset.y;
-			_flashRect.width = dropShadowOffset.x;
-			_flashRect.height = frameHeight;
-			framePixels.fillRect(_flashRect, dropShadowColor);
-			_flashRect.x = dropShadowOffset.x;
-			_flashRect.y = frameHeight;
-			_flashRect.width = frameWidth;
-			_flashRect.height = dropShadowOffset.y;
-			framePixels.fillRect(_flashRect, dropShadowColor);
-			
+		}
+		
+		public function resetWindowFrame(Width:uint, Height:uint):void
+		{
 			// draw the window background
-			_flashRect.x = 0;
-			_flashRect.y = 0;
+			makeGraphic(Width, Height, 0x00000000);
+			_flashRect.x = _flashRect.y = 0;
 			_flashRect.width = frameWidth;
 			_flashRect.height = frameHeight;
 			framePixels.fillRect(_flashRect, windowColor);
+			
+			var _widthInFrameTiles:int = Math.ceil(Width / WINDOW_FRAME_TILE_SIZE);
+			var _heightInFrameTiles:int = Math.ceil(Height / WINDOW_FRAME_TILE_SIZE);
+			
+			_flashRect.width = _flashRect.height = WINDOW_FRAME_TILE_SIZE;
+			for (var _x:int = 0; _x < _widthInFrameTiles; _x++)
+			{
+				for (var _y:int = 0; _y < _heightInFrameTiles; _y++)
+				{
+					// Figure out which one of the 9 square tiles from the windowFrame graphic we're going to need for this part
+					if (_x == 0)
+						_flashRect.x = 0;
+					else if (_x == _widthInFrameTiles - 1)
+						_flashRect.x = 2;
+					else
+						_flashRect.x = 1;
+					_flashRect.x *= WINDOW_FRAME_TILE_SIZE;
+					
+					if (_y == 0)
+						_flashRect.y = 0;
+					else if (_y == _heightInFrameTiles - 1)
+						_flashRect.y = 2;
+					else
+						_flashRect.y = 1;
+					_flashRect.y *= WINDOW_FRAME_TILE_SIZE;
+					
+					// Draw edge and corner tiles flush with the outer rim of the framePixels. Fill the inside with the center tile.
+					_flashPoint.x = _x * WINDOW_FRAME_TILE_SIZE;
+					if (_flashPoint.x > frameWidth - WINDOW_FRAME_TILE_SIZE)
+						_flashPoint.x = frameWidth - WINDOW_FRAME_TILE_SIZE;
+					_flashPoint.y = _y * WINDOW_FRAME_TILE_SIZE;
+					if (_flashPoint.y > frameHeight - WINDOW_FRAME_TILE_SIZE)
+						_flashPoint.y = frameHeight - WINDOW_FRAME_TILE_SIZE;
+					
+					framePixels.copyPixels(windowFrame.framePixels, _flashRect, _flashPoint, null, null, true);
+				}
+			}
 		}
 		
 		public function resetElementFrame(Width:uint, Height:uint, DefaultColor:uint = 0x00000000):void
 		{
 			elements.makeGraphic(Width, Height, DefaultColor);
 			
-			var _blockX:Number = (maxSize.x - 2 * buffer.x) / elements.frameWidth;
-			var _blockY:Number = (maxSize.y - 2 * buffer.y) / elements.frameHeight;
+			var _blockX:Number = Math.floor(maxSize.x / elements.frameWidth);
+			var _blockY:Number = Math.floor(maxSize.y / elements.frameHeight);
 			
 			if (elementSize)
 			{
 				elementSize.x = _blockX;
 				elementSize.y = _blockY;
 			}
+			
+			resetWindowFrame(2 * buffer.x + elementSize.x * Width, 2 * buffer.y + elementSize.y * Height);
 		}
 		
 		public function get selection():Rectangle
@@ -139,19 +172,25 @@ package
 		
 		override public function draw():void
 		{
+			_flashRect.x = 0;
+			_flashRect.y = 0;
+			_flashRect.width = frameWidth;
+			_flashRect.height = frameHeight;
+			
 			super.draw();
 			
 			// draw the elements
-			if (framePixels)
+			if (elements.framePixels)
 			{
 				var _color:uint;
 				var _alpha:uint;
 				var _i:uint;
-				for (var _y:int = 0; _y < elements.frameHeight; _y++)
+				for (var _y:int = 0; _y <= elements.frameHeight; _y++)
 				{
-					for (var _x:int = 0; _x < elements.frameWidth; _x++)
+					for (var _x:int = 0; _x <= elements.frameWidth; _x++)
 					{
-						drawElement(_x, _y);
+						if (_y < elements.frameHeight && _x < elements.frameWidth)
+							drawElement(_x, _y);
 						
 						// draw the grid overlay
 						if (showGrid)
@@ -161,14 +200,14 @@ package
 							_flashRect.x = x + buffer.x + elementSize.x * _x;
 							_flashRect.y = y + buffer.y + elementSize.y * _y;
 							
-							if (_x > 0 && _x < elements.frameWidth)
+							if (_y < elements.frameHeight)
 							{
 								for (_i = 0; _i < elementSize.y; _i += 2)
 								{
 									FlxG.camera.buffer.setPixel32(_flashRect.x, _flashRect.y + _i, windowColor);
 								}
 							}
-							if (_y > 0 && _y < elements.frameHeight)
+							if (_x < elements.frameWidth)
 							{
 								for (_i = 0; _i < elementSize.x; _i += 2)
 								{

@@ -34,7 +34,7 @@ package frames
 			selectionBorderWidth = 1;
 			elements.loadGraphic(imgPixelArt);
 			currentFrame = CurrentFrame;
-			setSelection(0, 0, frameWidth, frameHeight);
+			setSelection(0, 0, elements.frameWidth, elements.frameHeight);
 			
 			showGrid = true;
 		}
@@ -64,10 +64,12 @@ package frames
 			elements.frameWidth = elements.framePixels.width;
 			elements.frameHeight = elements.framePixels.height;
 			
-			var _blockX:Number = (maxSize.x - 2 * buffer.x) / elements.frameWidth;
-			var _blockY:Number = (maxSize.y - 2 * buffer.y) / elements.frameHeight;
+			var _blockX:Number = maxSize.x / elements.frameWidth;
+			var _blockY:Number = maxSize.y / elements.frameHeight;
 			elementSize.x = _blockX;
 			elementSize.y = _blockY;
+			
+			resetWindowFrame(2 * buffer.x + elementSize.x * elements.frameWidth, 2 * buffer.y + elementSize.y * elements.frameHeight);
 		}
 		
 		override public function update():void

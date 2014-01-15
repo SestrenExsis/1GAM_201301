@@ -71,6 +71,8 @@ package frames
 			
 			_cursorLocation = new FlxPoint(-32, -32);
 			_cursorLocationVisual = new FlxPoint(-32, -32);
+			
+			resetWindowFrame(2 * buffer.x + elementSize.x * elements.frameWidth, 2 * buffer.y + elementSize.y * elements.frameHeight);
 		}
 		
 		public function get cursorLocationVisual():FlxPoint

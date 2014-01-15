@@ -20,7 +20,7 @@ package frames
 			
 			target = Target;
 			puzzle = Puzzle;
-			resetElementFrame(target.frameWidth, target.frameHeight);
+			resetElementFrame(target.elements.frameWidth, target.elements.frameHeight);
 			solved = false;
 			
 			labelName = new FlxText(X, Y - 8, 100, "Moves: " + FlxG.score);
