@@ -16,7 +16,7 @@ package frames
 		
 		public function TrackerFrame(X:Number, Y:Number, Target:TargetFrame, Puzzle:PuzzleFrame)
 		{
-			super(X, Y, 56, 56);
+			super(X, Y, 104, 104);
 			
 			target = Target;
 			puzzle = Puzzle;

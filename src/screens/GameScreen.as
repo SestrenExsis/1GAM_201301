@@ -11,7 +11,6 @@ package screens
 	{
 		[Embed(source="../assets/images/cursor.png")] public var imgCursor:Class;
 
-		private var background:ScrollingSprite;
 		private var tracker:TrackerFrame;
 		private var toolbox:ToolboxFrame;
 		private var cursor:FlxSprite;
@@ -34,13 +33,13 @@ package screens
 			var target:TargetFrame = new TargetFrame(8, 8, FlxG.level);
 			add(target);
 			
-			var puzzle:PuzzleFrame = new PuzzleFrame(126, 82, target);
+			var puzzle:PuzzleFrame = new PuzzleFrame(288, 8, target);
 			add(puzzle);
 			
-			tracker = new TrackerFrame(126, 16, target, puzzle);
+			tracker = new TrackerFrame(148, 232, target, puzzle);
 			add(tracker);
 			
-			toolbox = new ToolboxFrame(8, 140, target, puzzle)
+			toolbox = new ToolboxFrame(8, 232, target, puzzle)
 			add(toolbox);
 			
 			cursor = new FlxSprite(-100, -100);

@@ -20,7 +20,7 @@ package
 		{
 			super(X, Y);
 			
-			loadGraphic(imgBackground, true, false, 500, 400);
+			loadGraphic(imgBackground, true, false, FlxG.width, FlxG.height);
 			addAnimation("hills",[0]);
 			play(Animation);
 			

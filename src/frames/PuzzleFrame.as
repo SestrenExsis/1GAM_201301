@@ -14,7 +14,7 @@ package frames
 						
 		public function PuzzleFrame(X:Number, Y:Number, Target:TargetFrame)
 		{
-			super(X, Y, 292, 292);
+			super(X, Y, 336, 336);
 			
 			target = Target;
 			resetElementFrame(target.elements.frameWidth, target.elements.frameHeight, 0x00000000);

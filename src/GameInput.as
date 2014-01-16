@@ -5,6 +5,7 @@ package
 	public class GameInput
 	{
 		public static var keyPressed:int = -1;
+		public static var mouseJustClicked:Boolean;
 		
 		public static const NONE:int = -1;
 		public static const SPECIAL:int = 0;
@@ -65,6 +66,7 @@ package
 			keyNorthwest = false;
 			
 			keyPressed = -1;
+			mouseJustClicked = FlxG.mouse.justPressed();
 			
 			if (FlxG.keys.justPressed("NUMPADZERO"))
 			{

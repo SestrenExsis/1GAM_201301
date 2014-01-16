@@ -26,7 +26,7 @@ package frames
 		public static const ONE_PIXEL:uint = 0;
 		public static const SELECTION_BOX:uint = 1;
 		
-		protected static const TOOLBOX_TIP:String = "\n[0] : Return to the Toolbox.";
+		protected static const TOOLBOX_TIP:String = "  [0] : Return to the Toolbox.";
 		
 		protected static const COLOR_PALETTE_INDEXES:Array = [1, 2, 3, 4, 6, 7, 8, 9];
 		protected static const TOOL_NAMES:Array = ["Toolbox", "Drag Selection", "Clone",
@@ -54,7 +54,7 @@ package frames
 
 		public function ToolboxFrame(X:Number, Y:Number, Target:TargetFrame, Puzzle:PuzzleFrame)
 		{
-			super(X, Y, 100, 100);
+			super(X, Y, 104, 104);
 			
 			elementSize.x = elementSize.y = 32;
 			target = Target;
@@ -66,13 +66,15 @@ package frames
 			labelName = new FlxText(X, Y - 12, 100, "Name");
 			labelName.setFormat(null, 8, 0xffff00, "center");
 			
-			labelDescription = new FlxText(0, FlxG.height - 24, FlxG.width, "Description");
+			labelDescription = new FlxText(0, FlxG.height - 16, FlxG.width, "Description");
 			labelDescription.setFormat(null, 8, 0xffffff, "center");
 			
 			_cursorLocation = new FlxPoint(-32, -32);
 			_cursorLocationVisual = new FlxPoint(-32, -32);
 			
 			resetWindowFrame(2 * buffer.x + elementSize.x * elements.frameWidth, 2 * buffer.y + elementSize.y * elements.frameHeight);
+			
+			showGrid = true;
 		}
 		
 		public function get cursorLocationVisual():FlxPoint

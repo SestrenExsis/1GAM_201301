@@ -18,7 +18,7 @@ package frames
 		
 		// the bounding boxes for the various images within the imgPixelArt spritesheet itself
 		protected var frameRects:Array = [
-			new Rectangle(0, 0, 1, 1),
+			new Rectangle(0, 27, 40, 36),
 			new Rectangle(0, 0, 9, 9),
 			new Rectangle(9, 0, 9, 9),
 			new Rectangle(0, 9, 18, 18)
@@ -29,7 +29,7 @@ package frames
 								
 		public function TargetFrame(X:Number, Y:Number, CurrentFrame:uint)
 		{
-			super(X, Y, 112, 112);
+			super(X, Y, 208, 208);
 			
 			selectionBorderWidth = 1;
 			elements.loadGraphic(imgPixelArt);
@@ -66,6 +66,12 @@ package frames
 			
 			var _blockX:Number = maxSize.x / elements.frameWidth;
 			var _blockY:Number = maxSize.y / elements.frameHeight;
+			
+			if (_blockX > _blockY)
+				_blockX = _blockY;
+			else if (_blockY > _blockX)
+				_blockY = _blockX;
+			
 			elementSize.x = _blockX;
 			elementSize.y = _blockY;
 			

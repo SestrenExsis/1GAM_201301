@@ -17,12 +17,13 @@ package
 		private static const WINDOW_FRAME_TILE_SIZE:int = 32;
 		
 		protected var maxSize:FlxPoint;
+		protected var center:FlxPoint;
 		protected var _selection:Rectangle;
 		protected var _selectionVisual:Rectangle;
 		protected var selectionBorderWidth:uint = 2;
 		protected var selectionBorderColor:uint = 0xffed008c;
 		protected var showGrid:Boolean = false;
-		protected var windowColor:uint = 0x88ffffff;
+		protected var windowColor:uint = 0x44000000;
 		protected var labelName:FlxText;
 		protected var labelDescription:FlxText;
 		
@@ -36,6 +37,8 @@ package
 		public function FrameSprite(X:Number, Y:Number, Width:Number, Height:Number)
 		{
 			super(X, Y);
+			
+			center = new FlxPoint(X + 0.5 * Width, Y + 0.5 * Height);
 			
 			windowFrame = new FlxSprite();
 			windowFrame.loadGraphic(imgFrame);
@@ -91,14 +94,22 @@ package
 					framePixels.copyPixels(windowFrame.framePixels, _flashRect, _flashPoint, null, null, true);
 				}
 			}
+			
+			x = center.x - 0.5 * Width;
+			y = center.y - 0.5 * Height;
 		}
 		
 		public function resetElementFrame(Width:uint, Height:uint, DefaultColor:uint = 0x00000000):void
 		{
 			elements.makeGraphic(Width, Height, DefaultColor);
 			
-			var _blockX:Number = Math.floor(maxSize.x / elements.frameWidth);
-			var _blockY:Number = Math.floor(maxSize.y / elements.frameHeight);
+			var _blockX:Number = maxSize.x / elements.frameWidth;
+			var _blockY:Number = maxSize.y / elements.frameHeight;
+			
+			if (_blockX > _blockY)
+				_blockX = _blockY;
+			else if (_blockY > _blockX)
+				_blockY = _blockX;
 			
 			if (elementSize)
 			{
