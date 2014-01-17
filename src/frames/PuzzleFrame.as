@@ -179,12 +179,23 @@ package frames
 		
 		public function updateOrientation():void
 		{
-			_bitmapData = new BitmapData(selection.width, selection.height, true, 0x00000000);
-			//_bitmapData.copyPixels(elements.framePixels, selection, _flashPointZero, null, null, true);
-			
 			var _switchXAndY:Boolean = GameInput.keyNortheast || GameInput.keyEast || GameInput.keyWest || GameInput.keySouthwest;
 			var _switchXDirection:Boolean = GameInput.keyNorth || GameInput.keyNortheast || GameInput.keyEast || GameInput.keySoutheast;
 			var _switchYDirection:Boolean = GameInput.keyEast || GameInput.keySoutheast || GameInput.keySouth || GameInput.keySouthwest;
+			
+			var _sourceWidth:int;
+			var _sourceHeight:int;
+			if (_switchXAndY)
+			{
+				_sourceWidth = selection.height;
+				_sourceHeight = selection.width;
+			}
+			else
+			{
+				_sourceWidth = selection.width;
+				_sourceHeight = selection.height;
+			}
+			_bitmapData = new BitmapData(_sourceWidth, _sourceHeight, true, 0x00000000);
 			
 			var _fill:uint;
 			var _destX:int;
@@ -199,9 +210,13 @@ package frames
 					_fill = elements.framePixels.getPixel32(_destX, _destY);
 					
 					if (_switchXDirection)
-						_destX = selection.width - _x;
+						_destX = selection.width - _x - 1;
+					else
+						_destX = _x;
 					if (_switchYDirection)
-						_destY = selection.height - _y;
+						_destY = selection.height - _y - 1;
+					else
+						_destY = _y;
 					if (_switchXAndY)
 					{
 						_destTemp = _destX;
@@ -209,13 +224,20 @@ package frames
 						_destY = _destTemp;
 					}
 					_bitmapData.setPixel32(_destX, _destY, _fill);
-					FlxG.log("x: " + _destX + ", y: " + _destY + ", Color: " + _fill);
 				}
 			}
 			
 			_flashRect.x = _flashRect.y = 0;
 			_flashRect.width = _bitmapData.width;
 			_flashRect.height = _bitmapData.height;
+			
+			var _max:int = Math.max(selection.width, selection.height);
+			var _offsetX:int = 0;
+			var _offsetY:int = 0;
+			if (_switchXAndY)
+			{
+				//_offsetX = 
+			}
 			
 			_flashPoint.x = selection.x;
 			_flashPoint.y = selection.y;

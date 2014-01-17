@@ -11,6 +11,7 @@ package screens
 	{
 		[Embed(source="../assets/images/cursor.png")] public var imgCursor:Class;
 
+		private var puzzle:PuzzleFrame;
 		private var tracker:TrackerFrame;
 		private var toolbox:ToolboxFrame;
 		private var cursor:FlxSprite;
@@ -33,7 +34,7 @@ package screens
 			var target:TargetFrame = new TargetFrame(8, 8, 208, 208, FlxG.level);
 			add(target);
 			
-			var puzzle:PuzzleFrame = new PuzzleFrame(288, 8, 336, 336, target);
+			puzzle = new PuzzleFrame(288, 8, 336, 336, target);
 			add(puzzle);
 			
 			tracker = new TrackerFrame(148, 232, target, puzzle);
@@ -47,6 +48,13 @@ package screens
 			cursor.addAnimation("grab",[0]);
 			cursor.play("grab");
 			add(cursor);
+			
+			if (puzzle.elementSize.x <= 24)
+			{
+				cursor.scale.x = cursor.scale.y = puzzle.elementSize.x / 24;
+				cursor.width *= cursor.scale.x;
+				cursor.height *= cursor.scale.y;
+			}
 		}
 		
 		override public function update():void

@@ -79,7 +79,7 @@ package frames
 		
 		public function get cursorLocationVisual():FlxPoint
 		{			
-			if (puzzle && puzzle.selection)
+			if (puzzle && puzzle.selection && (currentTool % 2) == 1)
 			{
 				_cursorLocation.x = puzzle.x + puzzle.buffer.x + puzzle.elementSize.x * puzzle.selection.x;
 				_cursorLocation.y = puzzle.y + puzzle.buffer.y + puzzle.elementSize.y * puzzle.selection.y;
