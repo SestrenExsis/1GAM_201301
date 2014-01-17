@@ -1,6 +1,7 @@
 package frames
 {
 	import flash.display.BitmapData;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
 	
@@ -12,9 +13,9 @@ package frames
 		protected var currentFill:int = 0xffff0000;
 		protected var _currentFrame:int;
 						
-		public function PuzzleFrame(X:Number, Y:Number, Target:TargetFrame)
+		public function PuzzleFrame(X:Number, Y:Number, Width:Number, Height:Number, Target:TargetFrame)
 		{
-			super(X, Y, 336, 336);
+			super(X, Y, Width, Height);
 			
 			target = Target;
 			resetElementFrame(target.elements.frameWidth, target.elements.frameHeight, 0x00000000);
@@ -39,17 +40,6 @@ package frames
 		
 		public function updateSelection(CurrentTool:int, SelectionMode:int):void
 		{
-			var _x:int = 0;
-			var _y:int = 0;
-			if (GameInput.keyWest || GameInput.keyNorthwest || GameInput.keySouthwest)
-				_x = -1;
-			else if (GameInput.keyEast || GameInput.keyNortheast || GameInput.keySoutheast)
-				_x = 1;
-			if (GameInput.keyNorth || GameInput.keyNorthwest || GameInput.keyNortheast)
-				_y = -1;
-			else if (GameInput.keySouth || GameInput.keySouthwest || GameInput.keySoutheast)
-				_y = 1;
-			
 			var _originalX:int = selection.x;
 			var _originalY:int = selection.y;
 			var _originalWidth:int = selection.width;
@@ -58,28 +48,28 @@ package frames
 			switch (CurrentTool)
 			{
 				case GameInput.NORTHWEST:
-					selection.x += _x;
-					selection.width -= _x;
-					selection.y += _y;
-					selection.height -= _y;
+					selection.x += GameInput.x;
+					selection.width -= GameInput.x;
+					selection.y += GameInput.y;
+					selection.height -= GameInput.y;
 					break;
 				case GameInput.NORTHEAST:
-					selection.width += _x;
-					selection.y += _y;
-					selection.height -= _y;
+					selection.width += GameInput.x;
+					selection.y += GameInput.y;
+					selection.height -= GameInput.y;
 					break;
 				case GameInput.SOUTHWEST:
-					selection.x += _x;
-					selection.width -= _x;
-					selection.height += _y;
+					selection.x += GameInput.x;
+					selection.width -= GameInput.x;
+					selection.height += GameInput.y;
 					break;
 				case GameInput.SOUTHEAST:
-					selection.width += _x;
-					selection.height += _y;
+					selection.width += GameInput.x;
+					selection.height += GameInput.y;
 					break;
 				case GameInput.CENTER:
-					selection.x += _x;
-					selection.y += _y;
+					selection.x += GameInput.x;
+					selection.y += GameInput.y;
 					break;
 			}
 
@@ -87,8 +77,8 @@ package frames
 			{
 				if (CurrentTool == GameInput.CENTER)
 				{
-					selection.x = _originalX + _x * _originalWidth;
-					selection.y = _originalY + _y * _originalHeight;
+					selection.x = _originalX + GameInput.x * _originalWidth;
+					selection.y = _originalY + GameInput.y * _originalHeight;
 				}
 				else
 				{
@@ -126,44 +116,62 @@ package frames
 							selection.y = _originalY
 							break;
 						case GameInput.CENTER:
-							selection.x += _x;
-							selection.y += _y;
+							selection.x += GameInput.x;
+							selection.y += GameInput.y;
 							break;
 					}
 				}
 			}
 			
-			if (_x != 0 || _y != 0)
+			if (GameInput.x != 0 || GameInput.y != 0)
 				clampSelection();
 		}
 		
 		public function updateFill(Color:uint):void
 		{
-			var _x:int = 0;
-			var _y:int = 0;
-			if (GameInput.keyWest || GameInput.keyNorthwest || GameInput.keySouthwest)
-				_x = -1;
-			else if (GameInput.keyEast || GameInput.keyNortheast || GameInput.keySoutheast)
-				_x = 1;
-			if (GameInput.keyNorth || GameInput.keyNorthwest || GameInput.keyNortheast)
-				_y = -1;
-			else if (GameInput.keySouth || GameInput.keySouthwest || GameInput.keySoutheast)
-				_y = 1;
-			
-			selection.x += _x * selection.width;
-			selection.y += _y * selection.height;
+			selection.x += GameInput.x * selection.width;
+			selection.y += GameInput.y * selection.height;
 			
 			fillArea(selection, Color);
 		}
 		
 		public function fillArea(FillArea:Rectangle, FillColor:uint):void
 		{
-			for (var _x:int = selection.x; _x < selection.x + selection.width; _x++)
+			for (var _x:int = FillArea.x; _x < FillArea.x + FillArea.width; _x++)
 			{
-				for (var _y:int = selection.y; _y < selection.y + selection.height; _y++)
+				for (var _y:int = FillArea.y; _y < FillArea.y + FillArea.height; _y++)
 				{
 					if (_x >= 0 && _x < elements.framePixels.width && _y >= 0 && _y < elements.framePixels.height)
 						elements.framePixels.setPixel32(_x, _y, FillColor);
+				}
+			}
+		}
+		
+		public function updateClone():void
+		{
+			_flashPoint.x = selection.x;
+			_flashPoint.y = selection.y;
+			selection.x += GameInput.x * selection.width;
+			selection.y += GameInput.y * selection.height;
+			cloneArea(_flashPoint, selection);
+		}
+		
+		public function cloneArea(SourcePoint:Point, DestinationArea:Rectangle):void
+		{
+			var _fill:uint;
+			var _destX:Number;
+			var _destY:Number;
+			for (var _x:int = 0; _x < DestinationArea.width; _x++)
+			{
+				for (var _y:int = 0; _y < DestinationArea.height; _y++)
+				{
+					_destX = DestinationArea.x + _x;
+					_destY = DestinationArea.y + _y;
+					if (_destX >= 0 && _destX < elements.framePixels.width && _destY >= 0 && _destY < elements.framePixels.height)
+					{
+						_fill = elements.framePixels.getPixel32(SourcePoint.x + _x, SourcePoint.y + _y);
+						elements.framePixels.setPixel32(_destX, _destY, _fill);
+					}
 				}
 			}
 		}

@@ -30,16 +30,16 @@ package screens
 			background = new ScrollingSprite(0, 0, "hills");
 			add(background);
 			
-			var target:TargetFrame = new TargetFrame(8, 8, FlxG.level);
+			var target:TargetFrame = new TargetFrame(8, 8, 208, 208, FlxG.level);
 			add(target);
 			
-			var puzzle:PuzzleFrame = new PuzzleFrame(288, 8, target);
+			var puzzle:PuzzleFrame = new PuzzleFrame(288, 8, 336, 336, target);
 			add(puzzle);
 			
 			tracker = new TrackerFrame(148, 232, target, puzzle);
 			add(tracker);
 			
-			toolbox = new ToolboxFrame(8, 232, target, puzzle)
+			toolbox = new ToolboxFrame(8, 232, 104, 104, target, puzzle)
 			add(toolbox);
 			
 			cursor = new FlxSprite(-100, -100);

@@ -47,6 +47,9 @@ package
 		public static var keyWest:Boolean;
 		public static var keyNorthwest:Boolean;
 		
+		public static var x:int;
+		public static var y:int;
+		
 		public function GameInput()
 		{
 			super();
@@ -118,6 +121,17 @@ package
 				keyNorthwest = true;
 				keyPressed = NORTHWEST;
 			}
+			
+			x = y = 0;
+			if (keyNorth || keyNortheast || keyNorthwest)
+				y = -1;
+			else if (keySouth || keySoutheast || keySouthwest)
+				y = 1;
+			
+			if (keyWest || keyNorthwest || keySouthwest)
+				x = -1;
+			else if (keyEast || keyNortheast || keySoutheast)
+				x = 1;
 			
 			if (keyPressed >= 0)
 				FlxG.score++;

@@ -52,9 +52,9 @@ package frames
 		protected var _cursorLocation:FlxPoint;
 		protected var _cursorLocationVisual:FlxPoint;
 
-		public function ToolboxFrame(X:Number, Y:Number, Target:TargetFrame, Puzzle:PuzzleFrame)
+		public function ToolboxFrame(X:Number, Y:Number, Width:Number, Height:Number, Target:TargetFrame, Puzzle:PuzzleFrame)
 		{
-			super(X, Y, 104, 104);
+			super(X, Y, Width, Height);
 			
 			elementSize.x = elementSize.y = 32;
 			target = Target;
@@ -170,6 +170,7 @@ package frames
 		
 		protected function updateTool():void
 		{
+			// If one of the selection tools is active, the center key toggles the selection mode.
 			if ((currentTool % 2) == 1 && GameInput.keyCenter)
 			{
 				currentSelectionMode += 1;
@@ -181,6 +182,9 @@ package frames
 			{
 				case SELECTION_DRAG_LOWER_LEFT:
 					puzzle.updateSelection(currentTool, currentSelectionMode);
+					break;
+				case CLONE:
+					puzzle.updateClone();
 					break;
 				case SELECTION_DRAG_LOWER_RIGHT:
 					puzzle.updateSelection(currentTool, currentSelectionMode);

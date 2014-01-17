@@ -27,9 +27,9 @@ package frames
 		protected var _currentFrame:int;
 		protected var keyPresses:int = 0;
 								
-		public function TargetFrame(X:Number, Y:Number, CurrentFrame:uint)
+		public function TargetFrame(X:Number, Y:Number, Width:Number, Height:Number, CurrentFrame:uint)
 		{
-			super(X, Y, 208, 208);
+			super(X, Y, Width, Height);
 			
 			selectionBorderWidth = 1;
 			elements.loadGraphic(imgPixelArt);
