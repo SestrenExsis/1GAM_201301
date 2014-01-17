@@ -12,6 +12,7 @@ package frames
 		protected var currentTool:int = 0;
 		protected var currentFill:int = 0xffff0000;
 		protected var _currentFrame:int;
+		protected var _bitmapData:BitmapData;
 						
 		public function PuzzleFrame(X:Number, Y:Number, Width:Number, Height:Number, Target:TargetFrame)
 		{
@@ -174,6 +175,51 @@ package frames
 					}
 				}
 			}
+		}
+		
+		public function updateOrientation():void
+		{
+			_bitmapData = new BitmapData(selection.width, selection.height, true, 0x00000000);
+			//_bitmapData.copyPixels(elements.framePixels, selection, _flashPointZero, null, null, true);
+			
+			var _switchXAndY:Boolean = GameInput.keyNortheast || GameInput.keyEast || GameInput.keyWest || GameInput.keySouthwest;
+			var _switchXDirection:Boolean = GameInput.keyNorth || GameInput.keyNortheast || GameInput.keyEast || GameInput.keySoutheast;
+			var _switchYDirection:Boolean = GameInput.keyEast || GameInput.keySoutheast || GameInput.keySouth || GameInput.keySouthwest;
+			
+			var _fill:uint;
+			var _destX:int;
+			var _destY:int;
+			var _destTemp:int;
+			for (var _x:int = 0; _x < selection.width; _x++)
+			{
+				for (var _y:int = 0; _y < selection.height; _y++)
+				{
+					_destX = selection.x + _x;
+					_destY = selection.y + _y;
+					_fill = elements.framePixels.getPixel32(_destX, _destY);
+					
+					if (_switchXDirection)
+						_destX = selection.width - _x;
+					if (_switchYDirection)
+						_destY = selection.height - _y;
+					if (_switchXAndY)
+					{
+						_destTemp = _destX;
+						_destX = _destY;
+						_destY = _destTemp;
+					}
+					_bitmapData.setPixel32(_destX, _destY, _fill);
+					FlxG.log("x: " + _destX + ", y: " + _destY + ", Color: " + _fill);
+				}
+			}
+			
+			_flashRect.x = _flashRect.y = 0;
+			_flashRect.width = _bitmapData.width;
+			_flashRect.height = _bitmapData.height;
+			
+			_flashPoint.x = selection.x;
+			_flashPoint.y = selection.y;
+			elements.framePixels.copyPixels(_bitmapData, _flashRect, _flashPoint, null, null, true);
 		}
 		
 		override public function update():void

@@ -189,6 +189,9 @@ package frames
 				case SELECTION_DRAG_LOWER_RIGHT:
 					puzzle.updateSelection(currentTool, currentSelectionMode);
 					break;
+				case FLIP_ROTATE:
+					puzzle.updateOrientation();
+					break;
 				case SELECTION_NUDGE:
 					puzzle.updateSelection(currentTool, currentSelectionMode);
 					break;
