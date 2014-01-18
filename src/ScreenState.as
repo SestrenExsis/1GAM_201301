@@ -37,47 +37,47 @@ package
 				displayTimer.start(0.75, 1, onTimerFlickerDisplay);
 		}
 		
-		public function onButtonLevelSelect():void
+		public static function onButtonLevelSelect():void
 		{
 			fadeToLevelSelect();
 		}
 		
-		public function fadeToLevelSelect(Timer:FlxTimer = null):void
+		public static function fadeToLevelSelect(Timer:FlxTimer = null):void
 		{
 			FlxG.fade(0xff000000, 0.5, goToLevelSelect);
 		}
 		
-		public function goToLevelSelect():void
+		public static function goToLevelSelect():void
 		{
 			FlxG.switchState(new LevelSelectScreen);
 		}
 		
-		public function onButtonGame():void
+		public static function onButtonGame():void
 		{
 			fadeToGame();
 		}
 		
-		public function fadeToGame(Timer:FlxTimer = null):void
+		public static function fadeToGame(Timer:FlxTimer = null):void
 		{
 			FlxG.fade(0xff000000, 0.5, goToGame);
 		}
 		
-		public function goToGame():void
+		public static function goToGame():void
 		{
 			FlxG.switchState(new GameScreen);
 		}
 		
-		public function onButtonMenu():void
+		public static function onButtonMenu():void
 		{
 			fadeToMenu();
 		}
 		
-		public function fadeToMenu(Timer:FlxTimer = null):void
+		public static function fadeToMenu(Timer:FlxTimer = null):void
 		{
 			FlxG.fade(0xff000000, 0.5, goToMenu);
 		}
 		
-		public function goToMenu():void
+		public static function goToMenu():void
 		{
 			FlxG.switchState(new MenuScreen);
 		}

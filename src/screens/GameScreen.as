@@ -59,8 +59,8 @@ package screens
 		
 		override public function update():void
 		{	
-			super.update();
 			GameInput.update();
+			super.update();
 			
 			var _cursorPos:FlxPoint = toolbox.cursorLocationVisual;
 			cursor.x = _cursorPos.x - 0.5 * cursor.width;

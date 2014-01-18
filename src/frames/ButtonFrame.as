@@ -6,9 +6,10 @@ package frames
 	
 	import org.flixel.*;
 	
-	public class TargetFrame extends FrameSprite
+	public class ButtonFrame extends FrameSprite
 	{
 		[Embed(source="../assets/images/pixelart.png")] public var imgPixelArt:Class;
+		[Embed(source="../assets/images/numbers.png")] public var imgNumbers:Class;
 				
 		// references for the frameRects array below
 		protected static const TITLE:uint = 0;
@@ -33,18 +34,17 @@ package frames
 		];
 		
 		protected var _currentFrame:int;
-		protected var keyPresses:int = 0;
-								
-		public function TargetFrame(X:Number, Y:Number, Width:Number, Height:Number, CurrentFrame:uint)
+		protected var numbers:FlxSprite;
+		
+		public function ButtonFrame(X:Number, Y:Number, Width:Number, Height:Number, CurrentFrame:uint)
 		{
 			super(X, Y, Width, Height);
 			
-			selectionBorderWidth = 1;
+			numbers = new FlxSprite();
+			numbers.loadGraphic(imgNumbers, true, false, 14, 17);
+			
 			elements.loadGraphic(imgPixelArt);
 			currentFrame = CurrentFrame;
-			setSelection(0, 0, elements.frameWidth, elements.frameHeight);
-			
-			showGrid = true;
 		}
 		
 		public function get currentFrame():int
@@ -83,12 +83,31 @@ package frames
 			elementSize.x = _blockX;
 			elementSize.y = _blockY;
 			
-			resetWindowFrame(2 * buffer.x + elementSize.x * elements.frameWidth, 2 * buffer.y + elementSize.y * elements.frameHeight);
+			resetWindowFrame(2 * buffer.x + maxSize.x, 2 * buffer.y + maxSize.y);
 		}
 		
 		override public function update():void
 		{
 			super.update();
+			
+			if ((GameInput.keyPressed >= 0 && GameInput.keyPressed < 6) || (FlxG.mouse.justPressed() && overlapsPoint(FlxG.mouse)))
+			{
+				FlxG.level = _currentFrame;
+				ScreenState.fadeToGame();
+			}
+		}
+		
+		override public function draw():void
+		{
+			super.draw();
+			
+			_flashRect.x = numbers.width * (_currentFrame % 10);
+			_flashRect.y = 0;
+			_flashRect.width = numbers.width;
+			_flashRect.height = numbers.height;
+			_flashPoint.x = x + buffer.x;
+			_flashPoint.y = y + height - buffer.y - numbers.height;
+			FlxG.camera.buffer.copyPixels(numbers.pixels, _flashRect, _flashPoint, null, null, true);
 		}
 		
 		override public function drawElement(X:uint, Y:uint):void
