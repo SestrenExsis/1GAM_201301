@@ -11,16 +11,20 @@ package frames
 		[Embed(source="../assets/images/pixelart.png")] public var imgPixelArt:Class;
 				
 		// references for the frameRects array below
-		protected static const NONE:uint = 0;
+		protected static const TITLE:uint = 0;
 		protected static const FLOWER:uint = 1;
 		protected static const HEART:uint = 2;
-		protected static const TREASURE_CHEST:uint = 3;
+		protected static const LOG:uint = 3;
+		protected static const LEAF:uint = 4;
+		protected static const TREASURE_CHEST:uint = 5;
 		
 		// the bounding boxes for the various images within the imgPixelArt spritesheet itself
 		protected var frameRects:Array = [
 			new Rectangle(0, 27, 40, 36),
 			new Rectangle(0, 0, 9, 9),
 			new Rectangle(9, 0, 9, 9),
+			new Rectangle(18, 0, 8, 8),
+			new Rectangle(26, 0, 11, 12),
 			new Rectangle(0, 9, 18, 18)
 		];
 				

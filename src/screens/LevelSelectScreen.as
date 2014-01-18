@@ -31,7 +31,7 @@ package screens
 			super.update();
 			
 			GameInput.update();
-			if (GameInput.keyPressed >= 0 && GameInput.keyPressed < 4)
+			if (GameInput.keyPressed >= 0 && GameInput.keyPressed < 6)
 			{
 				FlxG.level = GameInput.keyPressed;
 				fadeToGame();
