@@ -179,9 +179,9 @@ package frames
 		
 		public function updateOrientation():void
 		{
-			var _switchXAndY:Boolean = GameInput.keyNortheast || GameInput.keyEast || GameInput.keyWest || GameInput.keySouthwest;
-			var _switchXDirection:Boolean = GameInput.keyNorth || GameInput.keyNortheast || GameInput.keyEast || GameInput.keySoutheast;
-			var _switchYDirection:Boolean = GameInput.keyEast || GameInput.keySoutheast || GameInput.keySouth || GameInput.keySouthwest;
+			var _switchXAndY:Boolean = GameInput.keySouthwest || GameInput.keyEast || GameInput.keyWest || GameInput.keyNortheast;
+			var _switchXDirection:Boolean = GameInput.keyNorth || GameInput.keySouthwest || GameInput.keyEast || GameInput.keySoutheast;
+			var _switchYDirection:Boolean = GameInput.keyEast || GameInput.keySoutheast || GameInput.keySouth || GameInput.keyNortheast;
 			
 			var _sourceWidth:int;
 			var _sourceHeight:int;
@@ -231,22 +231,47 @@ package frames
 			_flashRect.width = _bitmapData.width;
 			_flashRect.height = _bitmapData.height;
 			
-			var _max:int = Math.max(selection.width, selection.height);
-			var _offsetX:int = 0;
-			var _offsetY:int = 0;
 			if (_switchXAndY)
 			{
-				//_offsetX = 
+				var _bias:Number = 0;
+				_flashPoint.x = selection.x + Math.floor(0.5 * (selection.width + _bias)) - Math.floor(0.5 * (selection.height + _bias));
+				_flashPoint.y = selection.y + Math.floor(0.5 * (selection.height + _bias)) - Math.floor(0.5 * (selection.width + _bias));
+			}
+			else
+			{
+				_flashPoint.x = selection.x;
+				_flashPoint.y = selection.y;
+			}
+			elements.framePixels.copyPixels(_bitmapData, _flashRect, _flashPoint);
+			
+			if (_switchXAndY)
+			{
+				selection.x = _flashPoint.x;
+				selection.y = _flashPoint.y;
+				selection.width = _sourceWidth;
+				selection.height = _sourceHeight;
 			}
 			
-			_flashPoint.x = selection.x;
-			_flashPoint.y = selection.y;
-			elements.framePixels.copyPixels(_bitmapData, _flashRect, _flashPoint, null, null, true);
+		}
+		
+		public function cheat():void
+		{
+			var _fill:uint;
+			for (var _x:int = selection.x; _x < selection.x + selection.width; _x++)
+			{
+				for (var _y:int = selection.y; _y < selection.y + selection.height; _y++)
+				{
+					_fill = target.elements.framePixels.getPixel32(_x, _y);
+					elements.framePixels.setPixel32(_x, _y, _fill);
+				}
+			}
 		}
 		
 		override public function update():void
 		{
 			super.update();
+			
+			//if (FlxG.keys.justPressed("C")) cheat();
 		}
 		
 		override public function drawElement(X:uint, Y:uint):void
