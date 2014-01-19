@@ -49,9 +49,9 @@ package screens
 			cursor.play("grab");
 			add(cursor);
 			
-			if (puzzle.elementSize.x <= 24)
+			if (puzzle.element.width <= 24)
 			{
-				cursor.scale.x = cursor.scale.y = puzzle.elementSize.x / 24;
+				cursor.scale.x = cursor.scale.y = puzzle.element.width / 24;
 				cursor.width *= cursor.scale.x;
 				cursor.height *= cursor.scale.y;
 			}

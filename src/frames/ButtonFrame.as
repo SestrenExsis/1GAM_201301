@@ -80,8 +80,8 @@ package frames
 			else if (_blockY > _blockX)
 				_blockY = _blockX;
 			
-			elementSize.x = _blockX;
-			elementSize.y = _blockY;
+			element.width = _blockX;
+			element.height = _blockY;
 			
 			resetWindowFrame(2 * buffer.x + maxSize.x, 2 * buffer.y + maxSize.y);
 		}
@@ -112,11 +112,11 @@ package frames
 		
 		override public function drawElement(X:uint, Y:uint):void
 		{
-			_flashRect.width = elementSize.x;
-			_flashRect.height = elementSize.y;
+			_flashRect.width = element.width;
+			_flashRect.height = element.height;
 			
-			_flashRect.x = x + buffer.x + elementSize.x * X;
-			_flashRect.y = y + buffer.y + elementSize.y * Y;
+			_flashRect.x = x + buffer.x + element.width * X;
+			_flashRect.y = y + buffer.y + element.height * Y;
 			
 			var _pixelColor:uint = elements.framePixels.getPixel32(X, Y);
 			var _pixelAlpha:uint = 0xff & (_pixelColor >> 24);

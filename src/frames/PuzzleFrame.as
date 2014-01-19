@@ -19,10 +19,46 @@ package frames
 			super(X, Y, Width, Height);
 			
 			target = Target;
-			resetElementFrame(target.elements.frameWidth, target.elements.frameHeight, 0x00000000);
+			resetElements(target.elements.frameWidth, target.elements.frameHeight);
 			setSelection(0, 0, elements.frameWidth, elements.frameHeight);
 			
 			showGrid = true;
+		}
+		
+		override public function resetElements(Width:uint, Height:uint, DefaultColor:uint = 0x00000000):void
+		{
+			super.resetElements(Width, Height, DefaultColor);
+			
+			var _i:int;
+			var _color:uint;
+			for (var _x:int = 0; _x < element.width; _x++)
+			{
+				for (var _y:int = 0; _y < element.height; _y++)
+				{
+					_i = 0;
+					
+					if (_x == (element.width - 1))
+						_i += 2;
+					else if (_x > 0)
+						_i += 1;
+					
+					if (_y == (element.height - 1))
+						_i += 6;
+					else if (_y > 0)
+						_i += 3;
+					
+					if (_i == 2 || _i == 6)
+						_color = 0x80808080;
+					else if (_i <= 3)
+						_color = 0x80ffffff;
+					else if (_i == 4)
+						_color = 0x00000000;
+					else
+						_color = 0x80000000;
+					
+					element.pixels.setPixel32(_x, _y, _color);
+				}
+			}
 		}
 		
 		public function get currentFrame():int
@@ -276,17 +312,23 @@ package frames
 		
 		override public function drawElement(X:uint, Y:uint):void
 		{
-			_flashRect.width = elementSize.x;
-			_flashRect.height = elementSize.y;
+			_flashRect.width = element.width;
+			_flashRect.height = element.height;
 			
-			_flashRect.x = x + buffer.x + elementSize.x * X;
-			_flashRect.y = y + buffer.y + elementSize.y * Y;
+			_flashRect.x = x + buffer.x + element.width * X;
+			_flashRect.y = y + buffer.y + element.height * Y;
 			
 			var _pixelColor:uint = elements.framePixels.getPixel32(X, Y);
 			var _pixelAlpha:uint = 0xff & (_pixelColor >> 24);
 			
 			if (_pixelAlpha > 0)
+			{
 				FlxG.camera.buffer.fillRect(_flashRect, _pixelColor);
+				_flashPoint.x = _flashRect.x;
+				_flashPoint.y = _flashRect.y;
+				_flashRect.x = _flashRect.y = 0;
+				FlxG.camera.buffer.copyPixels(element.pixels, _flashRect, _flashPoint, null, null, true);
+			}
 		}
 	}
 }

@@ -20,7 +20,7 @@ package frames
 			
 			target = Target;
 			puzzle = Puzzle;
-			resetElementFrame(target.elements.frameWidth, target.elements.frameHeight);
+			resetElements(target.elements.frameWidth, target.elements.frameHeight);
 			solved = false;
 			
 			labelName = new FlxText(X, Y - 8, 100, "Moves: " + FlxG.score);
@@ -49,11 +49,11 @@ package frames
 		
 		override public function drawElement(X:uint, Y:uint):void
 		{
-			_flashRect.width = elementSize.x;
-			_flashRect.height = elementSize.y;
+			_flashRect.width = element.width;
+			_flashRect.height = element.height;
 			
-			_flashRect.x = x + buffer.x + elementSize.x * X;
-			_flashRect.y = y + buffer.y + elementSize.y * Y;
+			_flashRect.x = x + buffer.x + element.width * X;
+			_flashRect.y = y + buffer.y + element.height * Y;
 			
 			var _targetColor:uint = target.elements.framePixels.getPixel32(X, Y);
 			var _puzzleColor:uint = puzzle.elements.framePixels.getPixel32(X, Y);

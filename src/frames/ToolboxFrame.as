@@ -56,7 +56,7 @@ package frames
 		{
 			super(X, Y, Width, Height);
 			
-			elementSize.x = elementSize.y = 32;
+			element.width = element.height = 32;
 			target = Target;
 			puzzle = Puzzle;
 			elements.loadGraphic(imgToolbox);
@@ -72,7 +72,7 @@ package frames
 			_cursorLocation = new FlxPoint(-32, -32);
 			_cursorLocationVisual = new FlxPoint(-32, -32);
 			
-			resetWindowFrame(2 * buffer.x + elementSize.x * elements.frameWidth, 2 * buffer.y + elementSize.y * elements.frameHeight);
+			resetWindowFrame(2 * buffer.x + element.width * elements.frameWidth, 2 * buffer.y + element.height * elements.frameHeight);
 			
 			showGrid = true;
 		}
@@ -81,17 +81,17 @@ package frames
 		{			
 			if (puzzle && puzzle.selection && (currentTool % 2) == 1)
 			{
-				_cursorLocation.x = puzzle.x + puzzle.buffer.x + puzzle.elementSize.x * puzzle.selection.x;
-				_cursorLocation.y = puzzle.y + puzzle.buffer.y + puzzle.elementSize.y * puzzle.selection.y;
+				_cursorLocation.x = puzzle.x + puzzle.buffer.x + puzzle.element.width * puzzle.selection.x;
+				_cursorLocation.y = puzzle.y + puzzle.buffer.y + puzzle.element.height * puzzle.selection.y;
 				
 				if (currentTool == SELECTION_DRAG_UPPER_RIGHT || currentTool == SELECTION_DRAG_LOWER_RIGHT)
-					_cursorLocation.x += puzzle.elementSize.x * puzzle.selection.width;
+					_cursorLocation.x += puzzle.element.width * puzzle.selection.width;
 				if (currentTool == SELECTION_DRAG_LOWER_LEFT || currentTool == SELECTION_DRAG_LOWER_RIGHT)
-					_cursorLocation.y += puzzle.elementSize.y * puzzle.selection.height;
+					_cursorLocation.y += puzzle.element.height * puzzle.selection.height;
 				if (currentTool == SELECTION_NUDGE)
 				{
-					_cursorLocation.x += 0.5 * puzzle.elementSize.x * puzzle.selection.width;
-					_cursorLocation.y += 0.5 * puzzle.elementSize.y * puzzle.selection.height;
+					_cursorLocation.x += 0.5 * puzzle.element.width * puzzle.selection.width;
+					_cursorLocation.y += 0.5 * puzzle.element.height * puzzle.selection.height;
 				}
 			}
 			else
@@ -155,13 +155,13 @@ package frames
 				var _index:uint;
 				for (i = 0; i < colorPalette.length; i++)
 				{
-					for (_x = 0; _x < elementSize.x; _x++)
+					for (_x = 0; _x < element.width; _x++)
 					{
-						for (_y = 0; _y < elementSize.y; _y++)
+						for (_y = 0; _y < element.height; _y++)
 						{
 							_index = COLOR_PALETTE_INDEXES[i];
-							if(elements.framePixels.getPixel32(_index * elementSize.x + _x, COLOR_PALETTE * elementSize.y + _y) == 0xffffffff)
-								elements.framePixels.setPixel32(_index * elementSize.x + _x, COLOR_PALETTE * elementSize.y + _y, colorPalette[i]);
+							if(elements.framePixels.getPixel32(_index * element.width + _x, COLOR_PALETTE * element.height + _y) == 0xffffffff)
+								elements.framePixels.setPixel32(_index * element.width + _x, COLOR_PALETTE * element.height + _y, colorPalette[i]);
 						}
 					}
 				}
@@ -249,8 +249,8 @@ package frames
 			labelDescription.draw();
 			
 			_flashRect.x = x + buffer.x;
-			_flashRect.y = y + buffer.y + elementSize.y * (frameHeight + 0.5);
-			_flashRect.width = 3 * elementSize.x;
+			_flashRect.y = y + buffer.y + element.height * (frameHeight + 0.5);
+			_flashRect.width = 3 * element.width;
 			_flashRect.height = 32;
 			FlxG.camera.buffer.fillRect(_flashRect, currentFill);
 		}
@@ -258,18 +258,18 @@ package frames
 		override public function drawElement(X:uint, Y:uint):void
 		{
 			var _i:int = Y * elements.frameWidth + X + 1;
-			_flashRect.x = _i * elementSize.x;
-			_flashRect.y = currentTool * elementSize.y;
-			_flashRect.width = elementSize.x;
-			_flashRect.height = elementSize.y;
-			_flashPoint.x = x + buffer.x + elementSize.x * X;
-			_flashPoint.y = y + buffer.y + elementSize.y * (elements.frameHeight - Y - 1);
+			_flashRect.x = _i * element.width;
+			_flashRect.y = currentTool * element.height;
+			_flashRect.width = element.width;
+			_flashRect.height = element.height;
+			_flashPoint.x = x + buffer.x + element.width * X;
+			_flashPoint.y = y + buffer.y + element.height * (elements.frameHeight - Y - 1);
 			
 			// all the selection tools are odd-numbered tools, and their center key is reserved for toggling the selection mode
 			if ((currentTool % 2) == 1 && _i == 5)
 			{
-				_flashRect.x = currentSelectionMode * elementSize.x;
-				_flashRect.y = 10 * elementSize.y;
+				_flashRect.x = currentSelectionMode * element.width;
+				_flashRect.y = 10 * element.height;
 			}
 			FlxG.camera.buffer.copyPixels(elements.framePixels, _flashRect, _flashPoint, null, null, true);
 		}
