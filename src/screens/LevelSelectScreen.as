@@ -43,11 +43,11 @@ package screens
 		{	
 			GameInput.update();
 			super.update();
-			/*if (GameInput.keyPressed >= 0 && GameInput.keyPressed < 6)
+			if (GameInput.keyPressed >= 0)
 			{
 				FlxG.level = GameInput.keyPressed;
 				fadeToGame();
-			}*/
+			}
 		}
 	}
 }

@@ -90,7 +90,7 @@ package frames
 		{
 			super.update();
 			
-			if ((GameInput.keyPressed >= 0 && GameInput.keyPressed < 6) || (FlxG.mouse.justPressed() && overlapsPoint(FlxG.mouse)))
+			if (FlxG.mouse.justPressed() && overlapsPoint(FlxG.mouse))
 			{
 				FlxG.level = _currentFrame;
 				ScreenState.fadeToGame();

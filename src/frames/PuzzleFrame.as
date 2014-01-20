@@ -19,6 +19,7 @@ package frames
 			super(X, Y, Width, Height);
 			
 			target = Target;
+			spacing.x = spacing.y = 2;
 			resetElements(target.elements.frameWidth, target.elements.frameHeight);
 			setSelection(0, 0, elements.frameWidth, elements.frameHeight);
 			
@@ -37,12 +38,12 @@ package frames
 				{
 					_i = 0;
 					
-					if (_x == (element.width - 1))
+					if (_x >= (element.width - 1))
 						_i += 2;
 					else if (_x > 0)
 						_i += 1;
 					
-					if (_y == (element.height - 1))
+					if (_y >= (element.height - 1))
 						_i += 6;
 					else if (_y > 0)
 						_i += 3;
@@ -315,8 +316,8 @@ package frames
 			_flashRect.width = element.width;
 			_flashRect.height = element.height;
 			
-			_flashRect.x = x + buffer.x + element.width * X;
-			_flashRect.y = y + buffer.y + element.height * Y;
+			_flashRect.x = x + buffer.x + (element.width + spacing.x) * X + 0.5 * spacing.x;
+			_flashRect.y = y + buffer.y + (element.height + spacing.y) * Y + 0.5 * spacing.y;
 			
 			var _pixelColor:uint = elements.framePixels.getPixel32(X, Y);
 			var _pixelAlpha:uint = 0xff & (_pixelColor >> 24);
