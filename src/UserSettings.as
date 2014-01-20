@@ -7,7 +7,6 @@ package
 		private static var _save:FlxSave;
 		private static var _tempKeymap:Array;
 		private static var _loaded:Boolean = false;
-		private static var _tempHighScore:uint;
 		
 		public static function get keymap():Array
 		{
@@ -19,22 +18,22 @@ package
 		{
 			if (_loaded) _save.data.keymap = value;
 			else _tempKeymap = value;
+			FlxG.log("new keymap");
 		}
 
 		public static function load():void
 		{
 			_save = new FlxSave();
-			_loaded = _save.bind("redrawnSettings");
+			_loaded = _save.bind("RedrawnSettings");
 			
 			if (_loaded)
 			{
-				if (_save.data.keymappingP1 == null) 
+				if (_save.data.keymap == null) 
 				{
-					_save.data.keymap = new Array(
-						"NUMPADSEVEN", "NUMPADEIGHT", "NUMPADNINE",
+					_save.data.keymap = new Array( "NUMPADZERO", 
+						"NUMPADONE", "NUMPADTWO", "NUMPADTHREE", 
 						"NUMPADFOUR", "NUMPADFIVE", "NUMPADSIX",
-						"NUMPADONE", "NUMPADTWO", "NUMPADTHREE",
-						"NUMPADZERO");
+						"NUMPADSEVEN", "NUMPADEIGHT", "NUMPADNINE");
 					FlxG.log("Loading default keymap.");
 				}
 				else 

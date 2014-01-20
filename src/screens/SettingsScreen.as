@@ -105,10 +105,10 @@ package screens
 		public function defaultSettings():void
 		{
 			GameInput.keymap = [
-				"NUMPADSEVEN", "NUMPADEIGHT", "NUMPADNINE",
-				"NUMPADFOUR", "NUMPADFIVE", "NUMPADSIX",
+				"NUMPADZERO",
 				"NUMPADONE", "NUMPADTWO", "NUMPADTHREE",
-				"NUMPADZERO"];
+				"NUMPADFOUR", "NUMPADFIVE", "NUMPADSIX",
+				"NUMPADSEVEN", "NUMPADEIGHT", "NUMPADNINE"];
 			UserSettings.keymap = GameInput.keymap.slice();
 			displayText.text = "Default settings have been restored.";
 			
