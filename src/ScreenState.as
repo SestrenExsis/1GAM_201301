@@ -15,6 +15,7 @@ package
 		public function ScreenState()
 		{
 			super();
+			
 		}
 		
 		override public function create():void
@@ -50,6 +51,21 @@ package
 		public static function goToLevelSelect():void
 		{
 			FlxG.switchState(new LevelSelectScreen);
+		}
+		
+		public static function onButtonSettings():void
+		{
+			fadeToSettings();
+		}
+		
+		public static function fadeToSettings(Timer:FlxTimer = null):void
+		{
+			FlxG.fade(0xff000000, 0.5, goToSettings);
+		}
+		
+		public static function goToSettings():void
+		{
+			FlxG.switchState(new SettingsScreen);
 		}
 		
 		public static function onButtonGame():void

@@ -85,23 +85,23 @@ package frames
 			
 			switch (CurrentTool)
 			{
-				case GameInput.NORTHWEST:
+				case GameInput.UP_LEFT:
 					selection.x += GameInput.x;
 					selection.width -= GameInput.x;
 					selection.y += GameInput.y;
 					selection.height -= GameInput.y;
 					break;
-				case GameInput.NORTHEAST:
+				case GameInput.UP_RIGHT:
 					selection.width += GameInput.x;
 					selection.y += GameInput.y;
 					selection.height -= GameInput.y;
 					break;
-				case GameInput.SOUTHWEST:
+				case GameInput.DOWN_LEFT:
 					selection.x += GameInput.x;
 					selection.width -= GameInput.x;
 					selection.height += GameInput.y;
 					break;
-				case GameInput.SOUTHEAST:
+				case GameInput.DOWN_RIGHT:
 					selection.width += GameInput.x;
 					selection.height += GameInput.y;
 					break;
@@ -137,19 +137,19 @@ package frames
 					
 					switch (CurrentTool)
 					{
-						case GameInput.NORTHWEST:
+						case GameInput.UP_LEFT:
 							selection.x = _originalX + _originalWidth - selection.width;
 							selection.y = _originalY + _originalHeight - selection.height;
 							break;
-						case GameInput.NORTHEAST:
+						case GameInput.UP_RIGHT:
 							selection.x = _originalX;
 							selection.y = _originalY + _originalHeight - selection.height;
 							break;
-						case GameInput.SOUTHWEST:
+						case GameInput.DOWN_LEFT:
 							selection.x = _originalX + _originalWidth - selection.width;
 							selection.y = _originalY;
 							break;
-						case GameInput.SOUTHEAST:
+						case GameInput.DOWN_RIGHT:
 							selection.x = _originalX;
 							selection.y = _originalY
 							break;
@@ -216,9 +216,9 @@ package frames
 		
 		public function updateOrientation():void
 		{
-			var _switchXAndY:Boolean = GameInput.keySouthwest || GameInput.keyEast || GameInput.keyWest || GameInput.keyNortheast;
-			var _switchXDirection:Boolean = GameInput.keyNorth || GameInput.keySouthwest || GameInput.keyEast || GameInput.keySoutheast;
-			var _switchYDirection:Boolean = GameInput.keyEast || GameInput.keySoutheast || GameInput.keySouth || GameInput.keyNortheast;
+			var _switchXAndY:Boolean = GameInput.keyDownLeft || GameInput.keyRight || GameInput.keyLeft || GameInput.keyUpRight;
+			var _switchXDirection:Boolean = GameInput.keyUp || GameInput.keyDownLeft || GameInput.keyRight || GameInput.keyDownRight;
+			var _switchYDirection:Boolean = GameInput.keyRight || GameInput.keyDownRight || GameInput.keyDown || GameInput.keyUpRight;
 			
 			var _sourceWidth:int;
 			var _sourceHeight:int;

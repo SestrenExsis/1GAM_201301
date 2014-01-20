@@ -4,20 +4,27 @@ package
 	
 	public class GameInput
 	{
+		public static var actions:Array = ["Escape","Down/Left","Down","Down/Right","Left","Center","Right","Up/Left","Up","Up/Right"];
+		public static var keymap:Array = [
+			"NUMPADZERO",
+			"NUMPADONE", "NUMPADTWO", "NUMPADTHREE",
+			"NUMPADFOUR", "NUMPADFIVE", "NUMPADSIX",
+			"NUMPADSEVEN", "NUMPADEIGHT", "NUMPADNINE"];
+		
 		public static var keyPressed:int = -1;
 		public static var mouseJustClicked:Boolean;
 		
 		public static const NONE:int = -1;
-		public static const SPECIAL:int = 0;
-		public static const SOUTHWEST:int = 1;
-		public static const SOUTH:int = 2;
-		public static const SOUTHEAST:int = 3;
-		public static const WEST:int = 4;
+		public static const ESCAPE:int = 0;
+		public static const DOWN_LEFT:int = 1;
+		public static const DOWN:int = 2;
+		public static const DOWN_RIGHT:int = 3;
+		public static const LEFT:int = 4;
 		public static const CENTER:int = 5;
-		public static const EAST:int = 6;
-		public static const NORTHWEST:int = 7;
-		public static const NORTH:int = 8;
-		public static const NORTHEAST:int = 9;
+		public static const RIGHT:int = 6;
+		public static const UP_LEFT:int = 7;
+		public static const UP:int = 8;
+		public static const UP_RIGHT:int = 9;
 		
 		public static const NUMPADZERO:uint 	= 0x0000;
 		public static const NUMPADONE:uint 		= 0x0001;
@@ -36,16 +43,16 @@ package
 		public static const ENTER:uint			= 0x1110;
 		public static const NUMPADPERIOD:uint	= 0x1111;
 		
-		public static var keyUndo:Boolean;
+		public static var keyEscape:Boolean;
 		public static var keyCenter:Boolean;
-		public static var keyNorth:Boolean;
-		public static var keyNortheast:Boolean;
-		public static var keyEast:Boolean;
-		public static var keySoutheast:Boolean;
-		public static var keySouth:Boolean;
-		public static var keySouthwest:Boolean;
-		public static var keyWest:Boolean;
-		public static var keyNorthwest:Boolean;
+		public static var keyUp:Boolean;
+		public static var keyUpRight:Boolean;
+		public static var keyRight:Boolean;
+		public static var keyDownRight:Boolean;
+		public static var keyDown:Boolean;
+		public static var keyDownLeft:Boolean;
+		public static var keyLeft:Boolean;
+		public static var keyUpLeft:Boolean;
 		
 		public static var x:int;
 		public static var y:int;
@@ -57,80 +64,80 @@ package
 		
 		public static function update():void
 		{
-			keyUndo = false;
+			keyEscape = false;
 			keyCenter = false;
-			keyNorth = false;
-			keyNortheast = false;
-			keyEast = false;
-			keySoutheast = false;
-			keySouth = false;
-			keySouthwest = false;
-			keyWest = false;
-			keyNorthwest = false;
+			keyUp = false;
+			keyUpRight = false;
+			keyRight = false;
+			keyDownRight = false;
+			keyDown = false;
+			keyDownLeft = false;
+			keyLeft = false;
+			keyUpLeft = false;
 			
 			keyPressed = -1;
 			mouseJustClicked = FlxG.mouse.justPressed();
 			
-			if (FlxG.keys.justPressed("NUMPADZERO"))
+			if (FlxG.keys.justPressed(keymap[ESCAPE]))
 			{
-				keyUndo = true;
-				keyPressed = SPECIAL;
+				keyEscape = true;
+				keyPressed = ESCAPE;
 			}
-			else if (FlxG.keys.justPressed("NUMPADFIVE"))
+			else if (FlxG.keys.justPressed(keymap[CENTER]))
 			{
 				keyCenter = true;
 				keyPressed = CENTER;
 			}
-			else if (FlxG.keys.justPressed("NUMPADEIGHT"))
+			else if (FlxG.keys.justPressed(keymap[UP]))
 			{
-				keyNorth = true;
-				keyPressed = NORTH;
+				keyUp = true;
+				keyPressed = UP;
 			}
-			else if (FlxG.keys.justPressed("NUMPADSIX"))
+			else if (FlxG.keys.justPressed(keymap[RIGHT]))
 			{
-				keyEast = true;
-				keyPressed = EAST;
+				keyRight = true;
+				keyPressed = RIGHT;
 			}
-			else if (FlxG.keys.justPressed("NUMPADTWO"))
+			else if (FlxG.keys.justPressed(keymap[DOWN]))
 			{
-				keySouth = true;
-				keyPressed = SOUTH;
+				keyDown = true;
+				keyPressed = DOWN;
 			}
-			else if (FlxG.keys.justPressed("NUMPADFOUR"))
+			else if (FlxG.keys.justPressed(keymap[LEFT]))
 			{
-				keyWest = true;
-				keyPressed = WEST;
+				keyLeft = true;
+				keyPressed = LEFT;
 			}
-			else if (FlxG.keys.justPressed("NUMPADNINE"))
+			else if (FlxG.keys.justPressed(keymap[UP_RIGHT]))
 			{
-				keyNortheast = true;
-				keyPressed = NORTHEAST;
+				keyUpRight = true;
+				keyPressed = UP_RIGHT;
 			}
-			else if (FlxG.keys.justPressed("NUMPADTHREE"))
+			else if (FlxG.keys.justPressed(keymap[DOWN_RIGHT]))
 			{
-				keySoutheast = true;
-				keyPressed = SOUTHEAST;
+				keyDownRight = true;
+				keyPressed = DOWN_RIGHT;
 			}
-			else if (FlxG.keys.justPressed("NUMPADONE"))
+			else if (FlxG.keys.justPressed(keymap[DOWN_LEFT]))
 			{
-				keySouthwest = true;
-				keyPressed = SOUTHWEST;
+				keyDownLeft = true;
+				keyPressed = DOWN_LEFT;
 			}
-			else if (FlxG.keys.justPressed("NUMPADSEVEN"))
+			else if (FlxG.keys.justPressed(keymap[UP_LEFT]))
 			{
-				keyNorthwest = true;
-				keyPressed = NORTHWEST;
+				keyUpLeft = true;
+				keyPressed = UP_LEFT;
 			}
 			
 			x = y = 0;
-			if (keyNorth || keyNortheast || keyNorthwest)
+			if (keyUp || keyUpRight || keyUpLeft)
 				y = -1;
-			else if (keySouth || keySoutheast || keySouthwest)
+			else if (keyDown || keyDownRight || keyDownLeft)
 				y = 1;
 			
-			if (keyWest || keyNorthwest || keySouthwest)
+			if (keyLeft || keyUpLeft || keyDownLeft)
 				x = -1;
-			else if (keyEast || keyNortheast || keySoutheast)
+			else if (keyRight || keyUpRight || keyDownRight)
 				x = 1;
 			
 			if (keyPressed >= 0)

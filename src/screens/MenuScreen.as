@@ -4,7 +4,6 @@ package screens
 	
 	public class MenuScreen extends ScreenState
 	{
-		
 		public function MenuScreen()
 		{
 			super();
@@ -15,23 +14,15 @@ package screens
 			super.create();
 			
 			FlxG.bgColor = 0xff464646;
-			 
-			displayTimer = new FlxTimer();
-			displayTimer.start(1, 1, onTimerFlickerDisplay);
+			UserSettings.load();
 			
-			displayText = new FlxText(0, 0.5 * FlxG.height - 16, FlxG.width, "Click to play.");
-			displayText.setFormat(null, 16, 0xffffff, "center");
-			displayText.text += ScreenState.infoText;
-			add(displayText);
+			add(new FlxButton(FlxG.width / 2 - 40, FlxG.height / 2 + 10, "Play Game", onButtonLevelSelect));
+			add(new FlxButton(FlxG.width / 2 - 40, FlxG.height / 2 + 32, "Configure", onButtonSettings));
 		}
 		
 		override public function update():void
 		{	
 			super.update();
-			
-			GameInput.update();
-			if (GameInput.mouseJustClicked)
-				fadeToLevelSelect();
 		}
 	}
 }

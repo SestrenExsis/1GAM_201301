@@ -224,14 +224,14 @@ package frames
 		{
 			super.update();
 			
-			if (GameInput.keyPressed > GameInput.SPECIAL) 
+			if (GameInput.keyPressed > GameInput.ESCAPE) 
 			{
 				if (currentTool == TOOLBOX)
 					currentTool = GameInput.keyPressed;
 				else
 					updateTool();
 			}
-			else if (GameInput.keyPressed == GameInput.SPECIAL)
+			else if (GameInput.keyPressed == GameInput.ESCAPE)
 			{
 				currentTool = TOOLBOX;
 			}
