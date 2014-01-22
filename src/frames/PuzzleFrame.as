@@ -30,6 +30,9 @@ package frames
 		{
 			super.resetElements(Width, Height, DefaultColor);
 			
+			_flashRect.copyFrom(target.startFrameRects[target.currentFrame]);
+			elements.framePixels.copyPixels(target.elements.pixels, _flashRect, _flashPointZero);
+			
 			var _i:int;
 			var _color:uint;
 			for (var _x:int = 0; _x < element.width; _x++)

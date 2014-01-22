@@ -13,6 +13,11 @@ package
 		
 		public static var keyPressed:int = -1;
 		public static var mouseJustClicked:Boolean;
+		public static var inputStream:String = "";
+		public static var playbackStream:String = "";
+		public static var playbackMode:Boolean = false;
+		public static var playbackDelay:Number = 0.25;
+		public static var playbackTimeLeft:Number;
 		
 		public static const NONE:int = -1;
 		public static const ESCAPE:int = 0;
@@ -62,8 +67,34 @@ package
 			super();
 		}
 		
+		public static function beginPlayback():void
+		{
+			playbackTimeLeft = playbackDelay;
+			playbackMode = true;
+			playbackStream = "357405602605454440260610554085";
+		}
+		
+		public static function fetchPlayback():int
+		{
+			var Value:int = -1;
+			if (playbackStream.length > 0)
+			{
+				var _char:int = playbackStream.charCodeAt(0);
+				playbackStream = playbackStream.substr(1);
+				if (_char >= 48 && _char <= 57)
+					Value =  _char - 48;
+			}
+			FlxG.log(Value);
+			return Value;
+		}
+		
 		public static function update():void
 		{
+			if (FlxG.keys.justPressed("C"))
+			{
+				beginPlayback();
+			}
+				
 			keyEscape = false;
 			keyCenter = false;
 			keyUp = false;
@@ -76,57 +107,46 @@ package
 			keyUpLeft = false;
 			
 			keyPressed = -1;
-			mouseJustClicked = FlxG.mouse.justPressed();
+			mouseJustClicked = false;
 			
-			if (FlxG.keys.justPressed(keymap[ESCAPE]))
+			if (playbackMode)
 			{
-				keyEscape = true;
-				keyPressed = ESCAPE;
+				playbackTimeLeft -= FlxG.elapsed;
+				if (playbackTimeLeft <= 0)
+				{
+					playbackTimeLeft = playbackDelay;
+					keyPressed = fetchPlayback();
+					if (keyPressed == -1)
+						playbackMode = false;
+				}
 			}
-			else if (FlxG.keys.justPressed(keymap[CENTER]))
+			else
 			{
-				keyCenter = true;
-				keyPressed = CENTER;
+				mouseJustClicked = FlxG.mouse.justPressed();
+				if (FlxG.keys.justPressed(keymap[ESCAPE])) 			keyPressed = ESCAPE;
+				else if (FlxG.keys.justPressed(keymap[CENTER])) 	keyPressed = CENTER;
+				else if (FlxG.keys.justPressed(keymap[UP])) 		keyPressed = UP;
+				else if (FlxG.keys.justPressed(keymap[RIGHT])) 		keyPressed = RIGHT;
+				else if (FlxG.keys.justPressed(keymap[DOWN]))		keyPressed = DOWN;
+				else if (FlxG.keys.justPressed(keymap[LEFT]))		keyPressed = LEFT;
+				else if (FlxG.keys.justPressed(keymap[UP_RIGHT]))	keyPressed = UP_RIGHT;
+				else if (FlxG.keys.justPressed(keymap[DOWN_RIGHT])) keyPressed = DOWN_RIGHT;
+				else if (FlxG.keys.justPressed(keymap[DOWN_LEFT]))	keyPressed = DOWN_LEFT;
+				else if (FlxG.keys.justPressed(keymap[UP_LEFT]))	keyPressed = UP_LEFT;
 			}
-			else if (FlxG.keys.justPressed(keymap[UP]))
+			
+			switch (keyPressed)
 			{
-				keyUp = true;
-				keyPressed = UP;
-			}
-			else if (FlxG.keys.justPressed(keymap[RIGHT]))
-			{
-				keyRight = true;
-				keyPressed = RIGHT;
-			}
-			else if (FlxG.keys.justPressed(keymap[DOWN]))
-			{
-				keyDown = true;
-				keyPressed = DOWN;
-			}
-			else if (FlxG.keys.justPressed(keymap[LEFT]))
-			{
-				keyLeft = true;
-				keyPressed = LEFT;
-			}
-			else if (FlxG.keys.justPressed(keymap[UP_RIGHT]))
-			{
-				keyUpRight = true;
-				keyPressed = UP_RIGHT;
-			}
-			else if (FlxG.keys.justPressed(keymap[DOWN_RIGHT]))
-			{
-				keyDownRight = true;
-				keyPressed = DOWN_RIGHT;
-			}
-			else if (FlxG.keys.justPressed(keymap[DOWN_LEFT]))
-			{
-				keyDownLeft = true;
-				keyPressed = DOWN_LEFT;
-			}
-			else if (FlxG.keys.justPressed(keymap[UP_LEFT]))
-			{
-				keyUpLeft = true;
-				keyPressed = UP_LEFT;
+				case ESCAPE: keyEscape = true; break;
+				case CENTER: keyCenter = true; break;
+				case UP: keyUp = true; break;
+				case RIGHT: keyRight = true; break;
+				case DOWN: keyDown = true; break;
+				case LEFT: keyLeft = true; break;
+				case UP_RIGHT: keyUpRight = true; break;
+				case DOWN_RIGHT: keyDownRight = true; break;
+				case DOWN_LEFT: keyDownLeft = true; break;
+				case UP_LEFT: keyUpLeft = true; break;
 			}
 			
 			x = y = 0;
@@ -141,7 +161,15 @@ package
 				x = 1;
 			
 			if (keyPressed >= 0)
+			{
 				FlxG.score++;
+				inputStream += keyPressed;
+				if (inputStream.length > 20)
+				{
+					FlxG.log(inputStream);
+					inputStream = "";
+				}
+			}
 		}
 	}
 }

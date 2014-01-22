@@ -21,16 +21,16 @@ package frames
 		
 		// the bounding boxes for the various images within the imgPixelArt spritesheet itself
 		protected var frameRects:Array = [
-			new Rectangle(0, 27, 40, 36),
-			new Rectangle(0, 0, 9, 9),
-			new Rectangle(9, 0, 9, 9),
-			new Rectangle(18, 0, 8, 8),
-			new Rectangle(26, 0, 11, 12),
-			new Rectangle(37, 0, 10, 12),
-			new Rectangle(37, 0, 10, 12),
-			new Rectangle(37, 0, 10, 12),
-			new Rectangle(37, 0, 10, 12),
-			new Rectangle(37, 0, 10, 12)
+			new Rectangle(0, 91, 40, 36),
+			new Rectangle(0, 64, 9, 9),
+			new Rectangle(9, 64, 9, 9),
+			new Rectangle(18, 64, 8, 8),
+			new Rectangle(26, 64, 11, 12),
+			new Rectangle(38, 0, 10, 12),
+			new Rectangle(38, 0, 10, 12),
+			new Rectangle(38, 0, 10, 12),
+			new Rectangle(38, 0, 10, 12),
+			new Rectangle(38, 0, 10, 12)
 		];
 		
 		protected var _currentFrame:int;

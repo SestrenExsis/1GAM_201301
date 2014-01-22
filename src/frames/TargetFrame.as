@@ -18,18 +18,32 @@ package frames
 		protected static const LEAF:uint = 4;
 		protected static const TREASURE_CHEST:uint = 5;
 		
-		// the bounding boxes for the various images within the imgPixelArt spritesheet itself
-		protected var frameRects:Array = [
+		// the bounding boxes for the starting images in the spriteSheet
+		public var startFrameRects:Array = [
 			new Rectangle(0, 27, 40, 36),
 			new Rectangle(0, 0, 9, 9),
 			new Rectangle(9, 0, 9, 9),
 			new Rectangle(18, 0, 8, 8),
 			new Rectangle(26, 0, 11, 12),
-			new Rectangle(37, 0, 10, 12),
-			new Rectangle(37, 0, 10, 12),
-			new Rectangle(37, 0, 10, 12),
-			new Rectangle(37, 0, 10, 12),
-			new Rectangle(37, 0, 10, 12)
+			new Rectangle(37, 0, 21, 13),
+			new Rectangle(38, 0, 10, 12),
+			new Rectangle(38, 0, 10, 12),
+			new Rectangle(38, 0, 10, 12),
+			new Rectangle(38, 0, 10, 12)
+		];
+		
+		// the bounding boxes for the target images in the spritesheet
+		protected var targetFrameRects:Array = [
+			new Rectangle(0, 91, 40, 36),
+			new Rectangle(0, 64, 9, 9),
+			new Rectangle(9, 64, 9, 9),
+			new Rectangle(18, 64, 8, 8),
+			new Rectangle(26, 64, 11, 12),
+			new Rectangle(37, 64, 21, 13),
+			new Rectangle(38, 64, 10, 12),
+			new Rectangle(38, 64, 10, 12),
+			new Rectangle(38, 64, 10, 12),
+			new Rectangle(38, 64, 10, 12)
 		];
 		
 		protected var _currentFrame:int;
@@ -54,14 +68,14 @@ package frames
 		
 		public function set currentFrame(Value:int):void
 		{
-			if (Value >= frameRects.length)
+			if (Value >= targetFrameRects.length)
 				_currentFrame = 0;
 			else if (Value < 0)
-				_currentFrame = frameRects.length - 1;
+				_currentFrame = targetFrameRects.length - 1;
 			else
 				_currentFrame = Value;
 			
-			var _rect:Rectangle = frameRects[_currentFrame];
+			var _rect:Rectangle = targetFrameRects[_currentFrame];
 			if((elements.framePixels == null) || (elements.framePixels.width != _rect.width) || (elements.framePixels.height != _rect.height))
 				elements.framePixels = new BitmapData(_rect.width, _rect.height);
 			_flashRect.x = _rect.x;
