@@ -25,13 +25,13 @@ package screens
 		{
 			super.create();
 			
-			FlxG.score = 0;
+			GameInfo.actions = 0;
 			FlxG.bgColor = 0xff464646;
 			
 			background = new ScrollingSprite(0, 0, "candy");
 			add(background);
 			
-			var target:TargetFrame = new TargetFrame(8, 8, 208, 208, FlxG.level);
+			var target:TargetFrame = new TargetFrame(8, 8, 208, 208, GameInfo.level);
 			add(target);
 			
 			puzzle = new PuzzleFrame(288, 8, 336, 336, target);
@@ -68,7 +68,7 @@ package screens
 			
 			if (tracker.solved)
 			{
-				ScreenState.infoText = "\nActions Previous Level: " + FlxG.score;
+				ScreenState.infoText = "\nActions Previous Level: " + GameInfo.actions;
 				fadeToMenu();
 			}
 		}

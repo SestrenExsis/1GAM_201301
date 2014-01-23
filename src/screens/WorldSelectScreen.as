@@ -1,8 +1,10 @@
 package screens
 {
-	import frames.ButtonFrame;
-	import org.flixel.*;
 	import flash.geom.Rectangle;
+	
+	import frames.ButtonFrame;
+	
+	import org.flixel.*;
 	
 	public class WorldSelectScreen extends ScreenState
 	{
@@ -49,7 +51,7 @@ package screens
 			{
 				_x = (_i - 1) % 3;
 				_y = 2 - (int)((_i - 1) / 3);
-				_button = new ButtonFrame(64 + _x * 104, 8 + _y * 104, 96, 96, _i, fadeToLevelSelect);
+				_button = new ButtonFrame(64 + _x * 104, 8 + _y * 104, 96, 96, _i, "world");
 				_button.loadButtonImage(imgButtons, frameRects[_i]);
 				add(_button);
 			}
@@ -61,7 +63,7 @@ package screens
 			super.update();
 			if (GameInput.keyPressed >= 0)
 			{
-				FlxG.level = GameInput.keyPressed;
+				GameInfo.world = GameInput.keyPressed;
 				fadeToLevelSelect();
 			}
 		}

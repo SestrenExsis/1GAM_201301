@@ -162,7 +162,7 @@ package
 			
 			if (keyPressed >= 0)
 			{
-				FlxG.score++;
+				GameInfo.actions++;
 				inputStream += keyPressed;
 				if (inputStream.length > 20)
 				{

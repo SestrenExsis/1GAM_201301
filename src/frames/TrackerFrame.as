@@ -23,7 +23,7 @@ package frames
 			resetElements(target.elements.frameWidth, target.elements.frameHeight);
 			solved = false;
 			
-			labelName = new FlxText(X, Y - 8, 100, "Moves: " + FlxG.score);
+			labelName = new FlxText(X, Y - 8, 100, "Actions: " + GameInfo.actions);
 			labelName.setFormat(null, 8, 0xffff00, "left");
 		}
 		
@@ -31,7 +31,7 @@ package frames
 		{
 			super.update();
 			
-			labelName.text = "Actions: " + FlxG.score;
+			labelName.text = "Actions: " + GameInfo.actions;
 		}
 		
 		override public function draw():void

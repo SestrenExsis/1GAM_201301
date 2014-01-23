@@ -19,9 +19,10 @@ package frames
 		protected static const TREASURE_CHEST:uint = 5;
 		
 		protected var numbers:FlxSprite;
+		protected var type:String;
 		protected var clickFunction:Function;
 		
-		public function ButtonFrame(X:Number, Y:Number, Width:Number, Height:Number, ButtonID:uint, OnClick:Function = null)
+		public function ButtonFrame(X:Number, Y:Number, Width:Number, Height:Number, ButtonID:uint, Type:String)
 		{
 			super(X, Y, Width, Height);
 			
@@ -29,7 +30,11 @@ package frames
 			numbers.loadGraphic(imgNumbers, true, false, 14, 17);
 			
 			ID = ButtonID;
-			clickFunction = OnClick;
+			type = Type;
+			if (type == "level")
+				clickFunction = ScreenState.fadeToGame;
+			else if (type == "world")
+				clickFunction = ScreenState.fadeToLevelSelect;
 		}
 		
 		public function loadButtonImage(Image:Class, SourceRect:Rectangle):void
@@ -62,7 +67,10 @@ package frames
 			
 			if (FlxG.mouse.justPressed() && overlapsPoint(FlxG.mouse))
 			{
-				FlxG.level = ID;
+				if (type == "level")
+					GameInfo.level = ID;
+				else if (type == "world")
+					GameInfo.world = ID;
 				clickFunction();
 			}
 		}

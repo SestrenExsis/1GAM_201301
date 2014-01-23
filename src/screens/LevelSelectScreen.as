@@ -36,7 +36,7 @@ package screens
 		{
 			super.create();
 			
-			background = new ScrollingSprite(0, 0, worldNames[FlxG.level]);
+			background = new ScrollingSprite(0, 0, worldNames[GameInfo.world]);
 			add(background);
 			 
 			displayTimer = new FlxTimer();
@@ -54,7 +54,7 @@ package screens
 			{
 				_x = (_i - 1) % 3;
 				_y = 2 - (int)((_i - 1) / 3);
-				_button = new ButtonFrame(64 + _x * 104, 8 + _y * 104, 96, 96, _i, fadeToGame);
+				_button = new ButtonFrame(64 + _x * 104, 8 + _y * 104, 96, 96, _i, "level");
 				_button.loadButtonImage(imgButtons, frameRects[_i]);
 				add(_button);
 			}
@@ -66,7 +66,8 @@ package screens
 			super.update();
 			if (GameInput.keyPressed >= 0)
 			{
-				FlxG.level = GameInput.keyPressed;
+				GameInfo.level = GameInput.keyPressed;
+				FlxG.log("level" + GameInfo.level);
 				fadeToGame();
 			}
 		}

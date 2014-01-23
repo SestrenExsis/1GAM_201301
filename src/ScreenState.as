@@ -15,7 +15,6 @@ package
 		public function ScreenState()
 		{
 			super();
-			
 		}
 		
 		override public function create():void
