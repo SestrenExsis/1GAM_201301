@@ -28,7 +28,7 @@ package screens
 			FlxG.score = 0;
 			FlxG.bgColor = 0xff464646;
 			
-			background = new ScrollingSprite(0, 0, "hills");
+			background = new ScrollingSprite(0, 0, "candy");
 			add(background);
 			
 			var target:TargetFrame = new TargetFrame(8, 8, 208, 208, FlxG.level);

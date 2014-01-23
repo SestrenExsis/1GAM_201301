@@ -11,7 +11,7 @@ package
 	
 	public class ScrollingSprite extends FlxSprite
 	{
-		[Embed(source="../assets/images/background.png")] public var imgBackground:Class;
+		[Embed(source="../assets/images/backgrounds.png")] public var imgBackground:Class;
 		
 		protected var scrollPosition:FlxPoint;
 		protected var scrollSpeed:FlxPoint;
@@ -20,8 +20,9 @@ package
 		{
 			super(X, Y);
 			
-			loadGraphic(imgBackground, true, false, FlxG.width, FlxG.height);
+			loadGraphic(imgBackground, true, false, 640, 360);
 			addAnimation("hills",[0]);
+			addAnimation("candy",[2]);
 			play(Animation);
 			
 			scrollPosition = new FlxPoint();
