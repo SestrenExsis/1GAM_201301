@@ -1,11 +1,31 @@
 package screens
 {
+	import flash.geom.Rectangle;
+	
 	import frames.ButtonFrame;
 	
 	import org.flixel.*;
 	
 	public class LevelSelectScreen extends ScreenState
 	{
+		[Embed(source="../assets/images/pixelart.png")] public var imgButtons:Class;
+		
+		// the bounding boxes for the button images
+		protected var frameRects:Array = [
+			new Rectangle(0, 91, 40, 36),
+			new Rectangle(0, 64, 9, 9),
+			new Rectangle(9, 64, 9, 9),
+			new Rectangle(18, 64, 8, 8),
+			new Rectangle(26, 64, 11, 12),
+			new Rectangle(38, 0, 10, 12),
+			new Rectangle(38, 0, 10, 12),
+			new Rectangle(38, 0, 10, 12),
+			new Rectangle(38, 0, 10, 12),
+			new Rectangle(38, 0, 10, 12)
+		];
+		
+		public static const backgroundLayers:int = 2;
+		public static var worldNames:Array = ["none","hills","candy","none","none","none","none","none","none","none"]
 		
 		public function LevelSelectScreen()
 		{
@@ -16,7 +36,7 @@ package screens
 		{
 			super.create();
 			
-			background = new ScrollingSprite(0, 0, "hills");
+			background = new ScrollingSprite(0, 0, worldNames[FlxG.level]);
 			add(background);
 			 
 			displayTimer = new FlxTimer();
@@ -34,7 +54,8 @@ package screens
 			{
 				_x = (_i - 1) % 3;
 				_y = 2 - (int)((_i - 1) / 3);
-				_button = new ButtonFrame(64 + _x * 104, 8 + _y * 104, 96, 96, _i);
+				_button = new ButtonFrame(64 + _x * 104, 8 + _y * 104, 96, 96, _i, fadeToGame);
+				_button.loadButtonImage(imgButtons, frameRects[_i]);
 				add(_button);
 			}
 		}

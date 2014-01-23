@@ -16,7 +16,7 @@ package screens
 			FlxG.bgColor = 0xff464646;
 			UserSettings.load();
 			
-			add(new FlxButton(FlxG.width / 2 - 40, FlxG.height / 2 + 10, "Play Game", onButtonLevelSelect));
+			add(new FlxButton(FlxG.width / 2 - 40, FlxG.height / 2 + 10, "Play Game", onButtonWorldSelect));
 			add(new FlxButton(FlxG.width / 2 - 40, FlxG.height / 2 + 32, "Configure", onButtonSettings));
 		}
 		

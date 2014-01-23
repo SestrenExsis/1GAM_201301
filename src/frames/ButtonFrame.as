@@ -8,7 +8,6 @@ package frames
 	
 	public class ButtonFrame extends FrameSprite
 	{
-		[Embed(source="../assets/images/pixelart.png")] public var imgPixelArt:Class;
 		[Embed(source="../assets/images/numbers.png")] public var imgNumbers:Class;
 				
 		// references for the frameRects array below
@@ -19,56 +18,27 @@ package frames
 		protected static const LEAF:uint = 4;
 		protected static const TREASURE_CHEST:uint = 5;
 		
-		// the bounding boxes for the various images within the imgPixelArt spritesheet itself
-		protected var frameRects:Array = [
-			new Rectangle(0, 91, 40, 36),
-			new Rectangle(0, 64, 9, 9),
-			new Rectangle(9, 64, 9, 9),
-			new Rectangle(18, 64, 8, 8),
-			new Rectangle(26, 64, 11, 12),
-			new Rectangle(38, 0, 10, 12),
-			new Rectangle(38, 0, 10, 12),
-			new Rectangle(38, 0, 10, 12),
-			new Rectangle(38, 0, 10, 12),
-			new Rectangle(38, 0, 10, 12)
-		];
-		
-		protected var _currentFrame:int;
 		protected var numbers:FlxSprite;
+		protected var clickFunction:Function;
 		
-		public function ButtonFrame(X:Number, Y:Number, Width:Number, Height:Number, CurrentFrame:uint)
+		public function ButtonFrame(X:Number, Y:Number, Width:Number, Height:Number, ButtonID:uint, OnClick:Function = null)
 		{
 			super(X, Y, Width, Height);
 			
 			numbers = new FlxSprite();
 			numbers.loadGraphic(imgNumbers, true, false, 14, 17);
 			
-			elements.loadGraphic(imgPixelArt);
-			currentFrame = CurrentFrame;
+			ID = ButtonID;
+			clickFunction = OnClick;
 		}
 		
-		public function get currentFrame():int
+		public function loadButtonImage(Image:Class, SourceRect:Rectangle):void
 		{
-			return _currentFrame;
-		}
-		
-		public function set currentFrame(Value:int):void
-		{
-			if (Value >= frameRects.length)
-				_currentFrame = 0;
-			else if (Value < 0)
-				_currentFrame = frameRects.length - 1;
-			else
-				_currentFrame = Value;
+			elements.loadGraphic(Image);
 			
-			var _rect:Rectangle = frameRects[_currentFrame];
-			if((elements.framePixels == null) || (elements.framePixels.width != _rect.width) || (elements.framePixels.height != _rect.height))
-				elements.framePixels = new BitmapData(_rect.width, _rect.height);
-			_flashRect.x = _rect.x;
-			_flashRect.y = _rect.y;
-			_flashRect.width = _rect.width;
-			_flashRect.height = _rect.height;
-			elements.framePixels.copyPixels(elements.pixels, _flashRect, _flashPointZero, null, null, false);
+			if((elements.framePixels == null) || (elements.framePixels.width != SourceRect.width) || (elements.framePixels.height != SourceRect.height))
+				elements.framePixels = new BitmapData(SourceRect.width, SourceRect.height);
+			elements.framePixels.copyPixels(elements.pixels, SourceRect, _flashPointZero, null, null, false);
 			elements.frameWidth = elements.framePixels.width;
 			elements.frameHeight = elements.framePixels.height;
 			
@@ -92,8 +62,8 @@ package frames
 			
 			if (FlxG.mouse.justPressed() && overlapsPoint(FlxG.mouse))
 			{
-				FlxG.level = _currentFrame;
-				ScreenState.fadeToGame();
+				FlxG.level = ID;
+				clickFunction();
 			}
 		}
 		
@@ -101,7 +71,7 @@ package frames
 		{
 			super.draw();
 			
-			_flashRect.x = numbers.width * (_currentFrame % 10);
+			_flashRect.x = numbers.width * (ID % 10);
 			_flashRect.y = 0;
 			_flashRect.width = numbers.width;
 			_flashRect.height = numbers.height;

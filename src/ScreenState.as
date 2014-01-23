@@ -68,6 +68,21 @@ package
 			FlxG.switchState(new SettingsScreen);
 		}
 		
+		public static function onButtonWorldSelect():void
+		{
+			fadeToWorldSelect();
+		}
+		
+		public static function fadeToWorldSelect(Timer:FlxTimer = null):void
+		{
+			FlxG.fade(0xff000000, 0.5, goToWorldSelect);
+		}
+		
+		public static function goToWorldSelect():void
+		{
+			FlxG.switchState(new WorldSelectScreen);
+		}
+		
 		public static function onButtonGame():void
 		{
 			fadeToGame();
