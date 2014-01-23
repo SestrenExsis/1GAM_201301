@@ -13,6 +13,7 @@ package
 	public class FrameSprite extends FlxSprite
 	{
 		[Embed(source="../assets/images/frame.png")] public var imgFrame:Class;
+		[Embed(source="../assets/images/numbers.png")] public var imgNumbers:Class;
 		
 		private static const WINDOW_FRAME_TILE_SIZE:int = 32;
 		
@@ -34,6 +35,7 @@ package
 		public var spacing:FlxPoint;
 		public var puzzle:PuzzleFrame;
 		public var target:TargetFrame;
+		protected var numbers:FlxSprite;
 		
 		public function FrameSprite(X:Number, Y:Number, Width:Number, Height:Number)
 		{
@@ -43,6 +45,9 @@ package
 			
 			windowFrame = new FlxSprite();
 			windowFrame.loadGraphic(imgFrame);
+			
+			numbers = new FlxSprite();
+			numbers.loadGraphic(imgNumbers, true, false, 14, 17);
 			
 			elements = new FlxSprite(X, Y);
 			buffer = new FlxPoint(8, 8);

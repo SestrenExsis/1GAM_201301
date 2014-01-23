@@ -8,6 +8,8 @@ package
 		public static var level:int = 0;
 		public static var actions:int = 0;
 		
+		public static var worldNames:Array = ["none","hills","candy","none","none","none","none","none","none","none"]
+		
 		public function GameInfo()
 		{
 			super();

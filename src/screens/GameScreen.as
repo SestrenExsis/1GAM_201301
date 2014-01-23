@@ -28,7 +28,7 @@ package screens
 			GameInfo.actions = 0;
 			FlxG.bgColor = 0xff464646;
 			
-			background = new ScrollingSprite(0, 0, "candy");
+			background = new ScrollingSprite(0, 0, GameInfo.worldNames[GameInfo.world]);
 			add(background);
 			
 			var target:TargetFrame = new TargetFrame(8, 8, 208, 208, GameInfo.level);
@@ -69,7 +69,7 @@ package screens
 			if (tracker.solved)
 			{
 				ScreenState.infoText = "\nActions Previous Level: " + GameInfo.actions;
-				fadeToMenu();
+				fadeToLevelSelect();
 			}
 		}
 	}

@@ -272,6 +272,14 @@ package frames
 				_flashRect.y = 10 * element.height;
 			}
 			FlxG.camera.buffer.copyPixels(elements.framePixels, _flashRect, _flashPoint, null, null, true);
+			
+			_flashRect.x = numbers.width * _i;
+			_flashRect.y = 0;
+			_flashRect.width = numbers.width;
+			_flashRect.height = numbers.height;
+			_flashPoint.x = x + buffer.x + element.width * X;
+			_flashPoint.y = y + buffer.y + element.height * (elements.frameHeight - Y) - numbers.height;
+			FlxG.camera.buffer.copyPixels(numbers.pixels, _flashRect, _flashPoint, null, null, true);
 		}
 	}
 }

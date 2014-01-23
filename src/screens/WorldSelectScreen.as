@@ -61,7 +61,11 @@ package screens
 		{	
 			GameInput.update();
 			super.update();
-			if (GameInput.keyPressed >= 0)
+			if (GameInput.keyPressed == 0)
+			{
+				fadeToMenu();
+			}
+			else if (GameInput.keyPressed > 0)
 			{
 				GameInfo.world = GameInput.keyPressed;
 				fadeToLevelSelect();

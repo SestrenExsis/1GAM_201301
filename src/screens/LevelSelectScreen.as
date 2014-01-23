@@ -25,7 +25,6 @@ package screens
 		];
 		
 		public static const backgroundLayers:int = 2;
-		public static var worldNames:Array = ["none","hills","candy","none","none","none","none","none","none","none"]
 		
 		public function LevelSelectScreen()
 		{
@@ -36,7 +35,7 @@ package screens
 		{
 			super.create();
 			
-			background = new ScrollingSprite(0, 0, worldNames[GameInfo.world]);
+			background = new ScrollingSprite(0, 0, GameInfo.worldNames[GameInfo.world]);
 			add(background);
 			 
 			displayTimer = new FlxTimer();
@@ -64,7 +63,11 @@ package screens
 		{	
 			GameInput.update();
 			super.update();
-			if (GameInput.keyPressed >= 0)
+			if (GameInput.keyPressed == 0)
+			{
+				fadeToWorldSelect();
+			}
+			else if (GameInput.keyPressed > 0)
 			{
 				GameInfo.level = GameInput.keyPressed;
 				FlxG.log("level" + GameInfo.level);

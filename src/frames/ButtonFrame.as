@@ -7,18 +7,7 @@ package frames
 	import org.flixel.*;
 	
 	public class ButtonFrame extends FrameSprite
-	{
-		[Embed(source="../assets/images/numbers.png")] public var imgNumbers:Class;
-				
-		// references for the frameRects array below
-		protected static const TITLE:uint = 0;
-		protected static const FLOWER:uint = 1;
-		protected static const HEART:uint = 2;
-		protected static const LOG:uint = 3;
-		protected static const LEAF:uint = 4;
-		protected static const TREASURE_CHEST:uint = 5;
-		
-		protected var numbers:FlxSprite;
+	{		
 		protected var type:String;
 		protected var clickFunction:Function;
 		
