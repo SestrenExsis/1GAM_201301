@@ -18,7 +18,7 @@ package screens
 			new Rectangle(18, 64, 8, 8),
 			new Rectangle(26, 64, 11, 12),
 			new Rectangle(38, 0, 10, 12),
-			new Rectangle(38, 0, 10, 12),
+			new Rectangle(40, 76, 20, 20),
 			new Rectangle(38, 0, 10, 12),
 			new Rectangle(38, 0, 10, 12),
 			new Rectangle(38, 0, 10, 12)

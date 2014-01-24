@@ -26,7 +26,7 @@ package frames
 			new Rectangle(18, 0, 8, 8),
 			new Rectangle(26, 0, 11, 12),
 			new Rectangle(37, 0, 21, 13),
-			new Rectangle(38, 0, 10, 12),
+			new Rectangle(40, 12, 20, 20),
 			new Rectangle(38, 0, 10, 12),
 			new Rectangle(38, 0, 10, 12),
 			new Rectangle(38, 0, 10, 12)
@@ -40,7 +40,7 @@ package frames
 			new Rectangle(18, 64, 8, 8),
 			new Rectangle(26, 64, 11, 12),
 			new Rectangle(37, 64, 21, 13),
-			new Rectangle(38, 64, 10, 12),
+			new Rectangle(40, 76, 20, 20),
 			new Rectangle(38, 64, 10, 12),
 			new Rectangle(38, 64, 10, 12),
 			new Rectangle(38, 64, 10, 12)
