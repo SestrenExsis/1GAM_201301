@@ -20,7 +20,6 @@ package frames
 		
 		// the bounding boxes for the starting images in the spriteSheet
 		public var startFrameRects:Array = [
-			new Rectangle(0, 27, 40, 36),
 			new Rectangle(0, 0, 9, 9),
 			new Rectangle(9, 0, 9, 9),
 			new Rectangle(18, 0, 8, 8),
@@ -34,7 +33,6 @@ package frames
 		
 		// the bounding boxes for the target images in the spritesheet
 		protected var targetFrameRects:Array = [
-			new Rectangle(0, 91, 40, 36),
 			new Rectangle(0, 64, 9, 9),
 			new Rectangle(9, 64, 9, 9),
 			new Rectangle(18, 64, 8, 8),

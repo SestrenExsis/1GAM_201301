@@ -12,7 +12,6 @@ package screens
 		
 		// the bounding boxes for the button images
 		protected var frameRects:Array = [
-			new Rectangle(0, 91, 40, 36),
 			new Rectangle(0, 64, 9, 9),
 			new Rectangle(9, 64, 9, 9),
 			new Rectangle(18, 64, 8, 8),
@@ -21,7 +20,7 @@ package screens
 			new Rectangle(40, 77, 20, 20),
 			new Rectangle(38, 0, 10, 12),
 			new Rectangle(38, 0, 10, 12),
-			new Rectangle(38, 0, 10, 12)
+			new Rectangle(0, 91, 40, 36)
 		];
 		
 		public static const backgroundLayers:int = 2;
@@ -49,10 +48,10 @@ package screens
 			var _x:int;
 			var _y:int;
 			var _button:ButtonFrame;
-			for (var _i:int = 1; _i <= 9; _i++)
+			for (var _i:int = 0; _i < 9; _i++)
 			{
-				_x = (_i - 1) % 3;
-				_y = 2 - (int)((_i - 1) / 3);
+				_x = _i % 3;
+				_y = 2 - (int)(_i / 3);
 				_button = new ButtonFrame(64 + _x * 104, 8 + _y * 104, 96, 96, _i, "level");
 				_button.loadButtonImage(imgButtons, frameRects[_i]);
 				add(_button);
@@ -69,8 +68,7 @@ package screens
 			}
 			else if (GameInput.keyPressed > 0)
 			{
-				GameInfo.level = GameInput.keyPressed;
-				FlxG.log("level" + GameInfo.level);
+				GameInfo.level = GameInput.keyPressed - 1;
 				fadeToGame();
 			}
 		}

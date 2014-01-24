@@ -12,7 +12,6 @@ package screens
 		
 		// the bounding boxes for the button images
 		protected var frameRects:Array = [
-			new Rectangle(0, 200, 80, 80),
 			new Rectangle(0, 8, 80, 80),
 			new Rectangle(0, 104, 80, 80),
 			new Rectangle(0, 200, 80, 80),
@@ -21,7 +20,7 @@ package screens
 			new Rectangle(0, 200, 80, 80),
 			new Rectangle(0, 200, 80, 80),
 			new Rectangle(0, 200, 80, 80),
-			new Rectangle(0, 200, 80, 80),
+			new Rectangle(0, 200, 80, 80)
 		];
 		
 		public function WorldSelectScreen()
@@ -47,10 +46,10 @@ package screens
 			var _x:int;
 			var _y:int;
 			var _button:ButtonFrame;
-			for (var _i:int = 1; _i <= 9; _i++)
+			for (var _i:int = 0; _i < 9; _i++)
 			{
-				_x = (_i - 1) % 3;
-				_y = 2 - (int)((_i - 1) / 3);
+				_x = _i % 3;
+				_y = 2 - (int)(_i / 3);
 				_button = new ButtonFrame(64 + _x * 104, 8 + _y * 104, 96, 96, _i, "world");
 				_button.loadButtonImage(imgButtons, frameRects[_i]);
 				add(_button);
@@ -62,14 +61,7 @@ package screens
 			GameInput.update();
 			super.update();
 			if (GameInput.keyPressed == 0)
-			{
 				fadeToMenu();
-			}
-			else if (GameInput.keyPressed > 0)
-			{
-				GameInfo.world = GameInput.keyPressed;
-				fadeToLevelSelect();
-			}
 		}
 	}
 }

@@ -54,12 +54,13 @@ package frames
 		{
 			super.update();
 			
-			if (FlxG.mouse.justPressed() && overlapsPoint(FlxG.mouse))
+			if ((GameInput.mouseJustClicked && overlapsPoint(FlxG.mouse)) || GameInput.keyPressed == (ID + 1))
 			{
 				if (type == "level")
 					GameInfo.level = ID;
 				else if (type == "world")
 					GameInfo.world = ID;
+				FlxG.log(GameInfo.world + "-" + GameInfo.level);
 				clickFunction();
 			}
 		}
@@ -68,7 +69,7 @@ package frames
 		{
 			super.draw();
 			
-			_flashRect.x = numbers.width * (ID % 10);
+			_flashRect.x = numbers.width * ((ID + 1) % 10);
 			_flashRect.y = 0;
 			_flashRect.width = numbers.width;
 			_flashRect.height = numbers.height;
