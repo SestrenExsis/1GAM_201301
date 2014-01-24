@@ -188,33 +188,33 @@ package frames
 			}
 		}
 		
-		public function updateClone():void
+		public function updateClone(SelectionMode:int):void
 		{
 			_flashPoint.x = selection.x;
 			_flashPoint.y = selection.y;
-			selection.x += GameInput.x * selection.width;
-			selection.y += GameInput.y * selection.height;
+			if (SelectionMode == ToolboxFrame.SELECTION_BOX)
+			{
+				selection.x += GameInput.x * selection.width;
+				selection.y += GameInput.y * selection.height;
+			}
+			else
+			{
+				selection.x += GameInput.x;
+				selection.y += GameInput.y;
+			}
 			cloneArea(_flashPoint, selection);
 		}
 		
 		public function cloneArea(SourcePoint:Point, DestinationArea:Rectangle):void
 		{
-			var _fill:uint;
-			var _destX:Number;
-			var _destY:Number;
-			for (var _x:int = 0; _x < DestinationArea.width; _x++)
-			{
-				for (var _y:int = 0; _y < DestinationArea.height; _y++)
-				{
-					_destX = DestinationArea.x + _x;
-					_destY = DestinationArea.y + _y;
-					if (_destX >= 0 && _destX < elements.framePixels.width && _destY >= 0 && _destY < elements.framePixels.height)
-					{
-						_fill = elements.framePixels.getPixel32(SourcePoint.x + _x, SourcePoint.y + _y);
-						elements.framePixels.setPixel32(_destX, _destY, _fill);
-					}
-				}
-			}
+			_flashRect.x = SourcePoint.x
+			_flashRect.y = SourcePoint.y;
+			_flashRect.width = DestinationArea.width;
+			_flashRect.height = DestinationArea.height;
+			
+			_flashPoint.x = DestinationArea.x;
+			_flashPoint.y = DestinationArea.y;
+			elements.framePixels.copyPixels(elements.framePixels, _flashRect, _flashPoint);
 		}
 		
 		public function updateOrientation():void

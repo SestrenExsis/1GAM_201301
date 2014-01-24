@@ -171,7 +171,7 @@ package frames
 		protected function updateTool():void
 		{
 			// If one of the selection tools is active, the center key toggles the selection mode.
-			if ((currentTool % 2) == 1 && GameInput.keyCenter)
+			if (((currentTool % 2) == 1 || currentTool == CLONE) && GameInput.keyCenter)
 			{
 				currentSelectionMode += 1;
 				if (currentSelectionMode > SELECTION_BOX)
@@ -184,7 +184,7 @@ package frames
 					puzzle.updateSelection(currentTool, currentSelectionMode);
 					break;
 				case CLONE:
-					puzzle.updateClone();
+					puzzle.updateClone(currentSelectionMode);
 					break;
 				case SELECTION_DRAG_LOWER_RIGHT:
 					puzzle.updateSelection(currentTool, currentSelectionMode);
@@ -265,8 +265,9 @@ package frames
 			_flashPoint.x = x + buffer.x + element.width * X;
 			_flashPoint.y = y + buffer.y + element.height * (elements.frameHeight - Y - 1);
 			
-			// all the selection tools are odd-numbered tools, and their center key is reserved for toggling the selection mode
-			if ((currentTool % 2) == 1 && _i == 5)
+			// all the selection tools are odd-numbered tools, and their center key is reserved for toggling the selection mode.
+			// The clone tool also uses the selection mode.
+			if (((currentTool % 2) == 1 || currentTool == CLONE) && _i == 5)
 			{
 				_flashRect.x = currentSelectionMode * element.width;
 				_flashRect.y = 10 * element.height;
