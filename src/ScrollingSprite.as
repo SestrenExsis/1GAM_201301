@@ -21,8 +21,8 @@ package
 			super(X, Y);
 			
 			loadGraphic(imgBackground, true, false, 640, 360);
-			addAnimation("hills",[0]);
-			addAnimation("candy",[2]);
+			addAnimation("The Hills Familiar",[0]);
+			addAnimation("In a Candy Jam",[2]);
 			play(Animation);
 			
 			scrollPosition = new FlxPoint();

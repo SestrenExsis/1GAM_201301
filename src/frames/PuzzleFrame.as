@@ -19,11 +19,11 @@ package frames
 			super(X, Y, Width, Height);
 			
 			target = Target;
-			spacing.x = spacing.y = 2;
+			spacing.x = spacing.y = 0;
 			resetElements(target.elements.frameWidth, target.elements.frameHeight);
 			setSelection(0, 0, elements.frameWidth, elements.frameHeight);
 			
-			showGrid = true;
+			//showGrid = true;
 		}
 		
 		override public function resetElements(Width:uint, Height:uint, DefaultColor:uint = 0x00000000):void
@@ -332,6 +332,21 @@ package frames
 				_flashPoint.y = _flashRect.y;
 				_flashRect.x = _flashRect.y = 0;
 				FlxG.camera.buffer.copyPixels(element.pixels, _flashRect, _flashPoint, null, null, true);
+				_flashRect.x = _flashPoint.x;
+				_flashRect.y = _flashPoint.y;
+			}
+			
+			_pixelColor = target.elements.framePixels.getPixel32(X, Y);
+			_pixelAlpha = 0xff & (_pixelColor >> 24);
+			if (_pixelAlpha > 0)
+			{
+				for (var _x:int = 0; _x < element.frameWidth; _x += 2)
+				{
+					for (var _y:int = 0; _y < element.frameHeight; _y += 2)
+					{
+						FlxG.camera.buffer.setPixel32(_flashRect.x + _x, _flashRect.y + _y, _pixelColor);
+					}
+				}
 			}
 		}
 	}
