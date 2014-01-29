@@ -69,6 +69,34 @@ package screens
 			if (tracker.solved)
 			{
 				ScreenState.infoText = "\nActions Previous Level: " + GameInfo.actions;
+				var _stage:int = GameInfo.world * 9 + GameInfo.level;
+				var _levelPar:Array = GameInfo.levelParForMedals[_stage].slice();
+				
+				if (GameInfo.actions <= _levelPar[0] && GameInfo.levelStats[_stage].medals < 3)
+				{ // You now have 3 medals for this stage
+					GameInfo.levelStats[_stage].medals = 3;
+					FlxG.log("You now have 3 medals for stage " + GameInfo.world + "-" + GameInfo.level);
+				}
+				else if (GameInfo.actions <= _levelPar[1] && GameInfo.levelStats[_stage].medals < 2)
+				{ // You now have 2 medals for this stage
+					GameInfo.levelStats[_stage].medals = 2;
+					FlxG.log("You now have 2 medals for stage " + GameInfo.world + "-" + GameInfo.level);
+				}
+				else if (GameInfo.actions <= _levelPar[2] && GameInfo.levelStats[_stage].medals < 1)
+				{ // You now have 1 medal for this stage
+					GameInfo.levelStats[_stage].medals = 1;
+					FlxG.log("You now have 1 medals for stage " + GameInfo.world + "-" + GameInfo.level);
+				}
+				
+				if (GameInfo.actions < GameInfo.levelStats[_stage].fewestActions)
+				{
+					GameInfo.levelStats[_stage].fewestActions = GameInfo.actions;
+					FlxG.log("Your fewest moves for stage " + GameInfo.world + "-" + GameInfo.level + " is now " + GameInfo.actions);
+				}
+				
+				UserSettings.levelStats = GameInfo.levelStats.slice();
+				displayText.text = "Game statistics have been saved.";
+				
 				fadeToLevelSelect();
 			}
 		}

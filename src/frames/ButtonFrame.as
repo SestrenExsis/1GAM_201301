@@ -7,9 +7,12 @@ package frames
 	import org.flixel.*;
 	
 	public class ButtonFrame extends FrameSprite
-	{		
+	{
+		[Embed(source="../assets/images/objects.png")] public var imgObjects:Class;
+		
 		protected var type:String;
 		protected var clickFunction:Function;
+		protected var medals:FlxSprite;
 		
 		public function ButtonFrame(X:Number, Y:Number, Width:Number, Height:Number, ButtonID:uint, Type:String)
 		{
@@ -17,6 +20,9 @@ package frames
 			
 			numbers = new FlxSprite();
 			numbers.loadGraphic(imgNumbers, true, false, 14, 17);
+			
+			medals = new FlxSprite();
+			medals.loadGraphic(imgObjects, true, false, 24, 24);
 			
 			ID = ButtonID;
 			type = Type;
@@ -60,7 +66,7 @@ package frames
 					GameInfo.level = ID;
 				else if (type == "world")
 					GameInfo.world = ID;
-				FlxG.log(GameInfo.world + "-" + GameInfo.level);
+				FlxG.log("Loading stage " + GameInfo.world + "-" + GameInfo.level);
 				clickFunction();
 			}
 		}
@@ -76,6 +82,21 @@ package frames
 			_flashPoint.x = x + buffer.x;
 			_flashPoint.y = y + height - buffer.y - numbers.height;
 			FlxG.camera.buffer.copyPixels(numbers.pixels, _flashRect, _flashPoint, null, null, true);
+			
+			if (type == "level")
+			{
+				var _medals:int = GameInfo.levelStats[GameInfo.world * 9 + ID].medals;
+				for (var i:int = 1; i <= _medals; i++)
+				{
+					_flashRect.x = 0;
+					_flashRect.y = 0;
+					_flashRect.width = medals.width;
+					_flashRect.height = medals.height;
+					_flashPoint.x = x + buffer.x + width - medals.width;
+					_flashPoint.y = y + buffer.y + height - i * medals.height;
+					FlxG.camera.buffer.copyPixels(medals.pixels, _flashRect, _flashPoint, null, null, true);
+				}
+			}
 		}
 		
 		override public function drawElement(X:uint, Y:uint):void
