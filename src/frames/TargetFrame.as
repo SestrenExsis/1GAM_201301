@@ -8,40 +8,43 @@ package frames
 	
 	public class TargetFrame extends FrameSprite
 	{
-		[Embed(source="../assets/images/pixelart.png")] public var imgPixelArt:Class;
+		[Embed(source="../assets/images/world1.png")] public var imgPixelArt:Class;
 				
 		// references for the frameRects array below
-		protected static const TITLE:uint = 0;
-		protected static const FLOWER:uint = 1;
-		protected static const HEART:uint = 2;
-		protected static const LOG:uint = 3;
-		protected static const LEAF:uint = 4;
-		protected static const TREASURE_CHEST:uint = 5;
+		protected static const DAISY:uint = 0;
+		protected static const LOG:uint = 1;
+		protected static const TOADSTOOL:uint = 2;
+		protected static const BEANSTALK:uint = 3;
+		protected static const DIRT_BLOCK:uint = 4;
+		protected static const ACORN:uint = 5;
+		protected static const ROCKS:uint = 6;
+		protected static const LEAF:uint = 7;
+		protected static const OAK_TREE:uint = 8;
 		
 		// the bounding boxes for the starting images in the spriteSheet
 		public var startFrameRects:Array = [
 			new Rectangle(0, 0, 9, 9),
-			new Rectangle(9, 0, 9, 9),
-			new Rectangle(18, 0, 8, 8),
-			new Rectangle(26, 0, 11, 12),
-			new Rectangle(37, 0, 21, 13),
-			new Rectangle(40, 13, 20, 20),
-			new Rectangle(100, 28, 18, 36),
-			new Rectangle(60, 24, 40, 40),
-			new Rectangle(38, 0, 10, 12)
+			new Rectangle(0, 0, 8, 8),
+			new Rectangle(37, 0, 11, 12),
+			new Rectangle(18, 16, 20, 20),
+			new Rectangle(0, 0, 12, 12),
+			new Rectangle(0, 0, 12, 12),
+			new Rectangle(0, 0, 18, 14),
+			new Rectangle(0, 0, 20, 20),
+			new Rectangle(0, 0, 18, 36)
 		];
 		
 		// the bounding boxes for the target images in the spritesheet
 		protected var targetFrameRects:Array = [
-			new Rectangle(0, 64, 9, 9),
-			new Rectangle(9, 64, 9, 9),
-			new Rectangle(18, 64, 8, 8),
-			new Rectangle(26, 64, 11, 12),
-			new Rectangle(37, 64, 21, 13),
-			new Rectangle(40, 77, 20, 20),
-			new Rectangle(100, 92, 18, 36),
-			new Rectangle(60, 88, 40, 40),
-			new Rectangle(38, 64, 10, 12)
+			new Rectangle(20, 0, 9, 9),
+			new Rectangle(29, 0, 8, 8),
+			new Rectangle(48, 0, 11, 12),
+			new Rectangle(38, 16, 20, 20),
+			new Rectangle(59, 0, 12, 12),
+			new Rectangle(59, 24, 12, 12),
+			new Rectangle(71, 0, 18, 14),
+			new Rectangle(71, 16, 20, 20),
+			new Rectangle(91, 0, 18, 36)
 		];
 		
 		protected var _currentFrame:int;

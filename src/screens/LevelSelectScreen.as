@@ -8,19 +8,19 @@ package screens
 	
 	public class LevelSelectScreen extends ScreenState
 	{
-		[Embed(source="../assets/images/pixelart.png")] public var imgButtons:Class;
+		[Embed(source="../assets/images/world1.png")] public var imgButtons:Class;
 		
 		// the bounding boxes for the button images
 		protected var frameRects:Array = [
-			new Rectangle(0, 64, 9, 9),
-			new Rectangle(9, 64, 9, 9),
-			new Rectangle(18, 64, 8, 8),
-			new Rectangle(26, 64, 11, 12),
-			new Rectangle(38, 0, 10, 12),
-			new Rectangle(40, 77, 20, 20),
-			new Rectangle(100, 92, 18, 36),
-			new Rectangle(60, 88, 40, 40),
-			new Rectangle(0, 91, 40, 36)
+			new Rectangle(20, 0, 9, 9),
+			new Rectangle(29, 0, 8, 8),
+			new Rectangle(48, 0, 11, 12),
+			new Rectangle(38, 16, 20, 20),
+			new Rectangle(59, 0, 12, 12),
+			new Rectangle(59, 24, 12, 12),
+			new Rectangle(71, 0, 18, 14),
+			new Rectangle(71, 16, 20, 20),
+			new Rectangle(91, 0, 18, 36)
 		];
 		
 		public static const backgroundLayers:int = 2;
