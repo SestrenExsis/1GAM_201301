@@ -4,10 +4,10 @@ REDRAWN
 My January 2014 Entry for One Game a Month. The optional theme is RESPAWN.
 
 The latest (mostly) stable build can be played at:
-https://dl.dropboxusercontent.com/u/24565598/repositories/1gam_201301/bin-release/OneGameAMonth.html
+https://dl.dropboxusercontent.com/u/24565598/repositories/1gam_201401/bin-release/OneGameAMonth.html
 
 Progress is posted regularly at:
-http://twitter.com/JshCrrgn
+https://twitter.com/JshCrrgn
 
 Most levels begin with a blank canvas and the entire canvas selected, although a few levels begin with some artwork already on the canvas. The goal of the game is to use the NUMPAD to interface with the toolset and recreate the target pixel art from the starting canvas.
 
