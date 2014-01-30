@@ -23,6 +23,11 @@ package screens
 		override public function update():void
 		{	
 			super.update();
+			
+			if (FlxG.keys.justPressed("P"))
+			{
+				UserSettings.erase();
+			}
 		}
 	}
 }

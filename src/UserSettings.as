@@ -19,7 +19,7 @@ package
 		{
 			if (_loaded) _save.data.keymap = Value;
 			else _tempKeymap = Value;
-			FlxG.log("keyMap set");
+			FlxG.log("keymap set");
 		}
 		
 		public static function get levelStats():Array
@@ -65,6 +65,7 @@ package
 						_levelStatArray[i] = levelStat;
 					}
 					_save.data.levelStats = _levelStatArray.slice();
+					FlxG.log("Loading default levelStats.");
 				}
 				else
 				{
@@ -77,6 +78,12 @@ package
 		public static function save():void
 		{
 			_save.flush();
+		}
+		
+		public static function erase():void
+		{
+			_save.erase();
+			FlxG.log("Saved data erased ...");
 		}
 	}
 }

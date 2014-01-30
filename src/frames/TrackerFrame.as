@@ -12,6 +12,7 @@ package frames
 		protected static const INCORRECT_COLOR:uint = 0xffff0000;
 		
 		private var incorrectPixelCount:int;
+		public var wasSolved:Boolean;
 		public var solved:Boolean;
 		
 		public function TrackerFrame(X:Number, Y:Number, Target:TargetFrame, Puzzle:PuzzleFrame)
@@ -21,7 +22,7 @@ package frames
 			target = Target;
 			puzzle = Puzzle;
 			resetElements(target.elements.frameWidth, target.elements.frameHeight);
-			solved = false;
+			solved = wasSolved = false;
 			
 			labelName = new FlxText(X, Y - 8, 100, "Actions: " + GameInfo.actions);
 			labelName.setFormat(null, 8, 0xffff00, "left");
@@ -41,6 +42,7 @@ package frames
 			
 			labelName.draw();
 			
+			wasSolved = solved;
 			if (incorrectPixelCount == 0)
 				solved = true;
 			else

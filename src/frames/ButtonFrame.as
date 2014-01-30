@@ -22,7 +22,7 @@ package frames
 			numbers.loadGraphic(imgNumbers, true, false, 14, 17);
 			
 			medals = new FlxSprite();
-			medals.loadGraphic(imgObjects, true, false, 24, 24);
+			medals.loadGraphic(imgObjects, true, false, 32, 32);
 			
 			ID = ButtonID;
 			type = Type;
@@ -85,7 +85,8 @@ package frames
 			
 			if (type == "level")
 			{
-				var _medals:int = GameInfo.levelStats[GameInfo.world * 9 + ID].medals;
+				var _i:int = GameInfo.world * 9 + ID;
+				var _medals:int = GameInfo.levelStats[_i].medals;
 				for (var i:int = 1; i <= _medals; i++)
 				{
 					_flashRect.x = 0;

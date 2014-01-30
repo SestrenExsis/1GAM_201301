@@ -66,7 +66,7 @@ package screens
 			cursor.x = _cursorPos.x - 0.5 * cursor.width;
 			cursor.y = _cursorPos.y - 0.5 * cursor.height;
 			
-			if (tracker.solved)
+			if (!tracker.wasSolved && tracker.solved)
 			{
 				ScreenState.infoText = "\nActions Previous Level: " + GameInfo.actions;
 				var _stage:int = GameInfo.world * 9 + GameInfo.level;
@@ -94,8 +94,8 @@ package screens
 					FlxG.log("Your fewest moves for stage " + GameInfo.world + "-" + GameInfo.level + " is now " + GameInfo.actions);
 				}
 				
-				UserSettings.levelStats = GameInfo.levelStats.slice();
-				displayText.text = "Game statistics have been saved.";
+				UserSettings.levelStats[_stage] = GameInfo.levelStats[_stage];
+				FlxG.log("Game statistics have been saved.");
 				
 				fadeToLevelSelect();
 			}

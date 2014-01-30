@@ -32,7 +32,7 @@ package screens
 		{
 			super.create();
 			
-			background = new ScrollingSprite(0, 0, "hills");
+			background = new ScrollingSprite(0, 0, "The Hills Familiar");
 			add(background);
 			 
 			displayTimer = new FlxTimer();
