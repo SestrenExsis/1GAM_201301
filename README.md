@@ -1,7 +1,7 @@
 REDRAWN
 ===========
 
-My January 2013 Entry for One Game a Month. The optional theme is RESPAWN.
+My January 2014 Entry for One Game a Month. The optional theme is RESPAWN.
 
 The latest (mostly) stable build can be played at:
 https://dl.dropboxusercontent.com/u/24565598/repositories/1gam_201301/bin-release/OneGameAMonth.html
