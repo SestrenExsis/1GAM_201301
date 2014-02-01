@@ -36,9 +36,18 @@ package frames
 		{
 			elements.loadGraphic(Image);
 			
-			if((elements.framePixels == null) || (elements.framePixels.width != SourceRect.width) || (elements.framePixels.height != SourceRect.height))
-				elements.framePixels = new BitmapData(SourceRect.width, SourceRect.height);
-			elements.framePixels.copyPixels(elements.pixels, SourceRect, _flashPointZero, null, null, false);
+			var _width:Number = SourceRect.width;
+			var _height:Number = SourceRect.height;
+			if (_width < _height)
+				_width = _height;
+			else if (_height < _width)
+				_height = _width;
+			
+			if((elements.framePixels == null) || (elements.framePixels.width != _width) || (elements.framePixels.height != _height))
+				elements.framePixels = new BitmapData(_width, _height, true, 0x00000000);
+			_flashPoint.x = (int)(0.5 * (_width - SourceRect.width));
+			_flashPoint.y = (int)(0.5 * (_height - SourceRect.height));
+			elements.framePixels.copyPixels(elements.pixels, SourceRect, _flashPoint, null, null, false);
 			elements.frameWidth = elements.framePixels.width;
 			elements.frameHeight = elements.framePixels.height;
 			

@@ -11,16 +11,16 @@ package screens
 		[Embed(source="../assets/images/world1.png")] public var imgButtons:Class;
 		
 		// the bounding boxes for the button images
-		protected var frameRects:Array = [
-			new Rectangle(20, 0, 9, 9),
-			new Rectangle(29, 0, 8, 8),
-			new Rectangle(48, 0, 11, 12),
-			new Rectangle(38, 16, 20, 20),
-			new Rectangle(59, 0, 12, 12),
-			new Rectangle(59, 24, 12, 12),
-			new Rectangle(71, 0, 18, 14),
-			new Rectangle(71, 16, 20, 20),
-			new Rectangle(91, 0, 18, 36)
+		public static var frameRects:Array = [
+			new Rectangle(39, 0, 9, 9),
+			new Rectangle(48, 0, 8, 8),
+			new Rectangle(57, 16, 20, 20),
+			new Rectangle(50, 36, 24, 24),
+			new Rectangle(32, 36, 18, 36),
+			new Rectangle(0, 36, 32, 32),
+			new Rectangle(0, 0, 10, 10),
+			new Rectangle(0, 0, 10, 10),
+			new Rectangle(74, 36, 18, 18)
 		];
 		
 		public static const backgroundLayers:int = 2;
@@ -34,7 +34,7 @@ package screens
 		{
 			super.create();
 			
-			background = new ScrollingSprite(0, 0, GameInfo.worldNames[GameInfo.world]);
+			background = new ScrollingSprite(0, 0, "The Hills Familiar");
 			add(background);
 			 
 			displayTimer = new FlxTimer();
@@ -64,7 +64,8 @@ package screens
 			super.update();
 			if (GameInput.keyPressed == 0)
 			{
-				fadeToWorldSelect();
+				//fadeToWorldSelect();
+				fadeToMenu();
 			}
 			else if (GameInput.keyPressed > 0)
 			{

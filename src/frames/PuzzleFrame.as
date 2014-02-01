@@ -335,16 +335,18 @@ package frames
 				_flashRect.x = _flashPoint.x;
 				_flashRect.y = _flashPoint.y;
 			}
-			
-			_pixelColor = target.elements.framePixels.getPixel32(X, Y);
-			_pixelAlpha = 0xff & (_pixelColor >> 24);
-			if (_pixelAlpha > 0)
+			else
 			{
-				for (var _x:int = 0; _x < element.frameWidth; _x += 2)
+				_pixelColor = target.elements.framePixels.getPixel32(X, Y);
+				_pixelAlpha = 0xff & (_pixelColor >> 24);
+				if (_pixelAlpha > 0)
 				{
-					for (var _y:int = 0; _y < element.frameHeight; _y += 2)
+					for (var _x:int = 0; _x < element.frameWidth; _x += 2)
 					{
-						FlxG.camera.buffer.setPixel32(_flashRect.x + _x, _flashRect.y + _y, _pixelColor);
+						for (var _y:int = 0; _y < element.frameHeight; _y += 2)
+						{
+							FlxG.camera.buffer.setPixel32(_flashRect.x + _x, _flashRect.y + _y, _pixelColor);
+						}
 					}
 				}
 			}

@@ -28,7 +28,7 @@ package screens
 			GameInfo.actions = 0;
 			FlxG.bgColor = 0xff464646;
 			
-			background = new ScrollingSprite(0, 0, GameInfo.worldNames[GameInfo.world]);
+			background = new ScrollingSprite(0, 0, GameInfo.worldNames[(int)(GameInfo.level / 3)]);
 			add(background);
 			
 			var target:TargetFrame = new TargetFrame(8, 8, 208, 208, GameInfo.level);
