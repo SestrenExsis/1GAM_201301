@@ -9,13 +9,25 @@ package
 		public static var world:int = 0;
 		public static var level:int = 0;
 		public static var actions:int = 0;
+		public static var currentTime:int = 0;
 		
 		public static var NUM_LEVELS:int = 9;
+		
 		private static var i:int;
-		public static var levelStats:Array = new Array(NUM_LEVELS);
+		public static var coinsCollected:Array = new Array(NUM_LEVELS);
 		for (i = 0; i < NUM_LEVELS; i++)
 		{
-			levelStats[i] = {medals: 0, fewestActions: 999999, fastestTime: 999999};
+			coinsCollected[i] = 0;
+		}
+		public static var fewestActions:Array = new Array(NUM_LEVELS);
+		for (i = 0; i < NUM_LEVELS; i++)
+		{
+			fewestActions[i] = 999999;
+		}
+		public static var bestTimes:Array = new Array(NUM_LEVELS);
+		for (i = 0; i < NUM_LEVELS; i++)
+		{
+			bestTimes[i] = 999999999;
 		}
 		
 		protected static const DAISY:uint = 0;
@@ -36,7 +48,7 @@ package
 		levelParForMedals[LOG] = [60, 90, 99999];
 		levelParForMedals[BEANSTALK] = [60, 90, 99999];
 		levelParForMedals[CUPCAKE] = [140, 210, 99999];
-		levelParForMedals[CANDY_CANE] = [999, 9999, 99999];
+		levelParForMedals[CANDY_CANE] = [250, 375, 99999];
 		levelParForMedals[COOKIE] = [999, 9999, 99999];
 		levelParForMedals[LEVEL_7] = [999, 9999, 99999];
 		levelParForMedals[LEVEL_8] = [999, 9999, 99999];
@@ -57,6 +69,48 @@ package
 		public function GameInfo()
 		{
 			super();
+		}
+		
+		public static function updateStatistics():void
+		{
+			ScreenState.infoText = "\nActions Previous Level: " + actions;
+			var _stage:int = world * 9 + level;
+			var _levelPar:Array = levelParForMedals[_stage].slice();
+			var _newCoins:Boolean = false;
+			
+			if (actions <= _levelPar[0] && coinsCollected[_stage] < 3)
+			{ // You now have 3 medals for this stage.
+				_newCoins = true;
+				coinsCollected[_stage] = 3;
+				FlxG.log("You now have 3 medals for stage " + world + "-" + level);
+			}
+			else if (actions <= _levelPar[1] && coinsCollected[_stage] < 2)
+			{ // You now have 2 medals for this stage.
+				_newCoins = true;
+				coinsCollected[_stage] = 2;
+				FlxG.log("You now have 2 medals for stage " + world + "-" + level);
+			}
+			else if (actions <= _levelPar[2] && coinsCollected[_stage] < 1)
+			{ // You now have 1 medal for this stage.
+				_newCoins = true;
+				coinsCollected[_stage] = 1;
+				FlxG.log("You now have 1 medals for stage " + world + "-" + level);
+			}
+			
+			if (_newCoins)
+				UserSettings.coins[_stage] = coinsCollected[_stage];
+			
+			if (actions < fewestActions[_stage])
+			{
+				fewestActions[_stage] = actions;
+				UserSettings.fewestActions[_stage] = fewestActions[_stage];
+			}
+			
+			if (currentTime < bestTimes[_stage])
+			{
+				bestTimes[_stage] = currentTime;
+				UserSettings.bestTimes[_stage] = bestTimes[_stage];
+			}
 		}
 	}
 }

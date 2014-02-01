@@ -90,6 +90,8 @@ package
 		
 		public static function update():void
 		{
+			GameInfo.currentTime++;
+			
 			if (FlxG.keys.justPressed("C"))
 			{
 				beginPlayback();
@@ -164,7 +166,7 @@ package
 			{
 				GameInfo.actions++;
 				inputStream += keyPressed;
-				if (inputStream.length > 20)
+				if (inputStream.length > 10)
 				{
 					FlxG.log(inputStream);
 					inputStream = "";

@@ -95,8 +95,8 @@ package frames
 			if (type == "level")
 			{
 				var _i:int = GameInfo.world * 9 + ID;
-				var _medals:int = GameInfo.levelStats[_i].medals;
-				for (var i:int = 1; i <= _medals; i++)
+				var _coins:int = GameInfo.coinsCollected[_i];
+				for (var i:int = 1; i <= _coins; i++)
 				{
 					_flashRect.x = 0;
 					_flashRect.y = 0;
