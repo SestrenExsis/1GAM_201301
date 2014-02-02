@@ -36,12 +36,12 @@ package
 		protected static const CUPCAKE:uint = 3;
 		protected static const CANDY_CANE:uint = 4;
 		protected static const COOKIE:uint = 5;
-		protected static const LEVEL_7:uint = 6;
-		protected static const LEVEL_8:uint = 7;
-		protected static const TREASURE_CHEST:uint = 8;
+		protected static const PORTCULLIS:uint = 6;
+		protected static const TREASURE_CHEST:uint = 7;
+		protected static const CROWN:uint = 8;
 		
 		public static var worldNames:Array = ["The Hills Familiar","In a Candy Jam","Boo! Haunted House","none","none","none","none","none","none"];
-		public static var levelNames:Array =  ["Daisy","Log","Beanstalk","Cupcake","Cookie","Candy Cane","Level 7","Level 8","Treasure Chest"];
+		public static var levelNames:Array =  ["Daisy","Log","Beanstalk","Cupcake","Cookie","Candy Cane","Portcullis","Treasure Chest","Crown"];
 		
 		public static var levelParForMedals:Array = new Array(NUM_LEVELS);
 		levelParForMedals[DAISY] = [32, 48, 99999];
@@ -50,9 +50,9 @@ package
 		levelParForMedals[CUPCAKE] = [140, 210, 99999];
 		levelParForMedals[CANDY_CANE] = [250, 375, 99999];
 		levelParForMedals[COOKIE] = [999, 9999, 99999];
-		levelParForMedals[LEVEL_7] = [999, 9999, 99999];
-		levelParForMedals[LEVEL_8] = [999, 9999, 99999];
+		levelParForMedals[PORTCULLIS] = [250, 375, 99999];
 		levelParForMedals[TREASURE_CHEST] = [999, 9999, 99999];
+		levelParForMedals[CROWN] = [999, 9999, 99999];
 		
 		public static var frameRects:Array = [
 			new Rectangle(39, 0, 9, 9),
@@ -61,9 +61,9 @@ package
 			new Rectangle(50, 36, 24, 24),
 			new Rectangle(32, 36, 18, 36),
 			new Rectangle(0, 36, 32, 32),
-			new Rectangle(0, 0, 10, 10),
-			new Rectangle(0, 0, 10, 10),
-			new Rectangle(74, 36, 18, 18)
+			new Rectangle(40, 72, 40, 40),
+			new Rectangle(74, 36, 18, 18),
+			new Rectangle(96, 40, 32, 32)
 		];
 		
 		public function GameInfo()

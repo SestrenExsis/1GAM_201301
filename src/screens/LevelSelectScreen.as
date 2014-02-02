@@ -10,19 +10,6 @@ package screens
 	{
 		[Embed(source="../assets/images/world1.png")] public var imgButtons:Class;
 		
-		// the bounding boxes for the button images
-		public static var frameRects:Array = [
-			new Rectangle(39, 0, 9, 9),
-			new Rectangle(48, 0, 8, 8),
-			new Rectangle(57, 16, 20, 20),
-			new Rectangle(50, 36, 24, 24),
-			new Rectangle(32, 36, 18, 36),
-			new Rectangle(0, 36, 32, 32),
-			new Rectangle(0, 0, 10, 10),
-			new Rectangle(0, 0, 10, 10),
-			new Rectangle(74, 36, 18, 18)
-		];
-		
 		public static const backgroundLayers:int = 2;
 		
 		public function LevelSelectScreen()
@@ -53,7 +40,7 @@ package screens
 				_x = _i % 3;
 				_y = 2 - (int)(_i / 3);
 				_button = new ButtonFrame(64 + _x * 104, 8 + _y * 104, 96, 96, _i, "level");
-				_button.loadButtonImage(imgButtons, frameRects[_i]);
+				_button.loadButtonImage(imgButtons, GameInfo.frameRects[_i]);
 				add(_button);
 			}
 		}
