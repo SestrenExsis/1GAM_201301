@@ -40,19 +40,30 @@ package
 		protected static const TREASURE_CHEST:uint = 7;
 		protected static const CROWN:uint = 8;
 		
-		public static var worldNames:Array = ["The Hills Familiar","In a Candy Jam","Boo! Haunted House","none","none","none","none","none","none"];
-		public static var levelNames:Array =  ["Daisy","Log","Beanstalk","Cupcake","Cookie","Candy Cane","Portcullis","Treasure Chest","Crown"];
+		public static var worldNames:Array = ["The Hills Familiar","Stuck in a Candy Jam","Castle in the Clouds","none","none","none","none","none","none"];
+		public static var levelNames:Array =  ["Daisy","Log","Beanstalk","Cupcake","Cookie","Candy Cane","Portcullis","Treasure Chest","King's Crown"];
 		
-		public static var levelParForMedals:Array = new Array(NUM_LEVELS);
-		levelParForMedals[DAISY] = [32, 48, 99999];
-		levelParForMedals[LOG] = [60, 90, 99999];
-		levelParForMedals[BEANSTALK] = [60, 90, 99999];
-		levelParForMedals[CUPCAKE] = [140, 210, 99999];
-		levelParForMedals[CANDY_CANE] = [250, 375, 99999];
-		levelParForMedals[COOKIE] = [999, 9999, 99999];
-		levelParForMedals[PORTCULLIS] = [250, 375, 99999];
-		levelParForMedals[TREASURE_CHEST] = [999, 9999, 99999];
-		levelParForMedals[CROWN] = [999, 9999, 99999];
+		public static var maxActionsToEarnCoin:Array = new Array(NUM_LEVELS);
+		maxActionsToEarnCoin[DAISY] = 32;
+		maxActionsToEarnCoin[LOG] = 60;
+		maxActionsToEarnCoin[BEANSTALK] = 60;
+		maxActionsToEarnCoin[CUPCAKE] = 140;
+		maxActionsToEarnCoin[CANDY_CANE] = 250;
+		maxActionsToEarnCoin[COOKIE] = 999;
+		maxActionsToEarnCoin[PORTCULLIS] = 220;
+		maxActionsToEarnCoin[TREASURE_CHEST] = 999;
+		maxActionsToEarnCoin[CROWN] = 999;
+		
+		public static var maxTimeToEarnCoin:Array = new Array(NUM_LEVELS);
+		maxActionsToEarnCoin[DAISY] = 30;
+		maxActionsToEarnCoin[LOG] = 60;
+		maxActionsToEarnCoin[BEANSTALK] = 60;
+		maxActionsToEarnCoin[CUPCAKE] = 90;
+		maxActionsToEarnCoin[CANDY_CANE] = 120;
+		maxActionsToEarnCoin[COOKIE] = 150;
+		maxActionsToEarnCoin[PORTCULLIS] = 60;
+		maxActionsToEarnCoin[TREASURE_CHEST] = 150;
+		maxActionsToEarnCoin[CROWN] = 180;
 		
 		public static var frameRects:Array = [
 			new Rectangle(39, 0, 9, 9),
@@ -75,41 +86,43 @@ package
 		{
 			ScreenState.infoText = "\nActions Previous Level: " + actions;
 			var _stage:int = world * 9 + level;
-			var _levelPar:Array = levelParForMedals[_stage].slice();
+			var _maxActions:int = maxActionsToEarnCoin[_stage];
+			var _maxTime:int = maxTimeToEarnCoin[_stage];
 			var _newCoins:Boolean = false;
+			var _newRecord:Boolean = false;
 			
-			if (actions <= _levelPar[0] && coinsCollected[_stage] < 3)
-			{ // You now have 3 medals for this stage.
+			if (coinsCollected[_stage] == 0)
+			{ // You gained a coin for completing the stage for the first time.
+				coinsCollected[_stage]++;
 				_newCoins = true;
-				coinsCollected[_stage] = 3;
-				FlxG.log("You now have 3 medals for stage " + world + "-" + level);
-			}
-			else if (actions <= _levelPar[1] && coinsCollected[_stage] < 2)
-			{ // You now have 2 medals for this stage.
-				_newCoins = true;
-				coinsCollected[_stage] = 2;
-				FlxG.log("You now have 2 medals for stage " + world + "-" + level);
-			}
-			else if (actions <= _levelPar[2] && coinsCollected[_stage] < 1)
-			{ // You now have 1 medal for this stage.
-				_newCoins = true;
-				coinsCollected[_stage] = 1;
-				FlxG.log("You now have 1 medals for stage " + world + "-" + level);
 			}
 			
-			if (_newCoins)
+			if ((fewestActions[_stage] > _maxActions) && (actions <= _maxActions))
+			{ // You gained a coin for using less than or equal to the par number of actions.
+				coinsCollected[_stage]++;
 				UserSettings.coins[_stage] = coinsCollected[_stage];
+				_newCoins = true;
+			}
+			
+			if ((bestTimes[_stage] > _maxTime) && (currentTime <= _maxTime))
+			{ // You gained a coin for finishing in less than or equal to the par time.
+				coinsCollected[_stage]++;
+				UserSettings.coins[_stage] = coinsCollected[_stage];
+				_newCoins = true;
+			}
 			
 			if (actions < fewestActions[_stage])
 			{
 				fewestActions[_stage] = actions;
 				UserSettings.fewestActions[_stage] = fewestActions[_stage];
+				_newRecord = true;
 			}
 			
 			if (currentTime < bestTimes[_stage])
 			{
 				bestTimes[_stage] = currentTime;
 				UserSettings.bestTimes[_stage] = bestTimes[_stage];
+				_newRecord = true;
 			}
 		}
 	}

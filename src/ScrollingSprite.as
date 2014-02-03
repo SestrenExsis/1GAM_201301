@@ -13,20 +13,26 @@ package
 	{
 		[Embed(source="../assets/images/backgrounds.png")] public var imgBackground:Class;
 		
-		protected var scrollPosition:FlxPoint;
-		protected var scrollSpeed:FlxPoint;
+		public var scrollPosition:FlxPoint;
+		public var scrollSpeed:FlxPoint;
+		
+		public var maskWidth:Number;
+		public var maskHeight:Number;
 		
 		public function ScrollingSprite(X:Number, Y:Number, Animation:String)
 		{
 			super(X, Y);
 			
 			loadGraphic(imgBackground, true, false, 640, 360);
-			addAnimation("The Hills Familiar",[0]);
-			addAnimation("In a Candy Jam",[2]);
+			addAnimation(GameInfo.worldNames[0],[0]);
+			addAnimation(GameInfo.worldNames[1],[2]);
+			addAnimation(GameInfo.worldNames[2],[4]);
 			play(Animation);
 			
 			scrollPosition = new FlxPoint();
 			scrollSpeed = new FlxPoint(0.25, 0);
+			maskWidth = frameWidth;
+			maskHeight = frameHeight;
 		}
 		
 		override public function update():void
@@ -51,51 +57,53 @@ package
 			// Draw the scrolling background in 1, 2, or 4 pieces depending on scrolling position.
 			var _scrollX:Number = Math.floor(scrollPosition.x);
 			var _scrollY:Number = Math.floor(scrollPosition.y);
+			var _diffX:Number = Math.max(_scrollX - (frameWidth - maskWidth), 0);
+			var _diffY:Number = Math.max(_scrollY - (frameHeight - maskHeight), 0);
 			
 			// Draw the upper-left quadrant of the scrolling background.
 			_flashRect.x = _scrollX;
 			_flashRect.y = _scrollY;
-			_flashRect.width = frameWidth - _scrollX;
-			_flashRect.height = frameHeight - _scrollY;
-			_flashPoint.x = 0;
-			_flashPoint.y = 0;
+			_flashRect.width = maskWidth - _diffX;
+			_flashRect.height = maskHeight - _diffY;
+			_flashPoint.x = x;
+			_flashPoint.y = y;
 			FlxG.camera.buffer.copyPixels(framePixels, _flashRect, _flashPoint, null, null, true);
 			
 			// Split the background in half along the x-axis and/or y-axis if the scrollPosition is far enough along
 			
 			// Draw the upper-right quadrant of the scrolling background.
-			if (_scrollX > 0)
+			if (_diffX > 0)
 			{
 				_flashRect.x = 0;
 				_flashRect.y = _scrollY;
-				_flashRect.width = _scrollX;
-				_flashRect.height = frameHeight - _scrollY;
-				_flashPoint.x = frameWidth - _scrollX;
-				_flashPoint.y = 0;
+				_flashRect.width = _diffX;
+				_flashRect.height = maskHeight - _diffY;
+				_flashPoint.x = x + maskWidth - _diffX;
+				_flashPoint.y = y;
 				FlxG.camera.buffer.copyPixels(framePixels, _flashRect, _flashPoint, null, null, true);
 			}
 			
 			// Draw the lower-left quadrant of the scrolling background.
-			if (_scrollY > 0)
+			if (_diffY > 0)
 			{
 				_flashRect.x = _scrollX;
 				_flashRect.y = 0;
-				_flashRect.width = frameWidth - _scrollX;
-				_flashRect.height = _scrollY;
-				_flashPoint.x = 0;
-				_flashPoint.y = frameHeight - _scrollY;
+				_flashRect.width = frameWidth - _diffX;
+				_flashRect.height = _diffY;
+				_flashPoint.x = x;
+				_flashPoint.y = y + maskHeight - _diffY;
 				FlxG.camera.buffer.copyPixels(framePixels, _flashRect, _flashPoint, null, null, true);
 			}
 			
 			// Draw the lower-right quadrant of the scrolling background.
-			if (_scrollX > 0 && _scrollY > 0)
+			if (_diffX > 0 && _diffY > 0)
 			{
 				_flashRect.x = 0;
 				_flashRect.y = 0;
-				_flashRect.width = _scrollX;
-				_flashRect.height = _scrollY;
-				_flashPoint.x = frameWidth - _scrollX;
-				_flashPoint.y = frameHeight - _scrollY;
+				_flashRect.width = _diffX;
+				_flashRect.height = _diffY;
+				_flashPoint.x = x + maskWidth - _diffX;
+				_flashPoint.y = y + maskHeight - _diffY;
 				FlxG.camera.buffer.copyPixels(framePixels, _flashRect, _flashPoint, null, null, true);
 			}
 			

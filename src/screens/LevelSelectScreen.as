@@ -9,9 +9,7 @@ package screens
 	public class LevelSelectScreen extends ScreenState
 	{
 		[Embed(source="../assets/images/world1.png")] public var imgButtons:Class;
-		
-		public static const backgroundLayers:int = 2;
-		
+				
 		public function LevelSelectScreen()
 		{
 			super();
@@ -21,7 +19,23 @@ package screens
 		{
 			super.create();
 			
-			background = new ScrollingSprite(0, 0, "The Hills Familiar");
+			FlxG.bgColor = 0xff000000;
+			
+			background = new ScrollingSprite(2, 240, GameInfo.worldNames[0]);
+			background.scrollPosition.y = 180;
+			background.maskWidth = 636;
+			background.maskHeight = 118;
+			add(background);
+			background = new ScrollingSprite(2, 121, GameInfo.worldNames[1]);
+			background.scrollSpeed.x *= -1;
+			background.scrollPosition.y = 90;
+			background.maskWidth = 636;
+			background.maskHeight = 118;
+			add(background);
+			background = new ScrollingSprite(2, 2, GameInfo.worldNames[2]);
+			background.scrollPosition.y = 200;
+			background.maskWidth = 636;
+			background.maskHeight = 118;
 			add(background);
 			 
 			displayTimer = new FlxTimer();
@@ -51,7 +65,6 @@ package screens
 			super.update();
 			if (GameInput.keyPressed == 0)
 			{
-				//fadeToWorldSelect();
 				fadeToMenu();
 			}
 			else if (GameInput.keyPressed > 0)
