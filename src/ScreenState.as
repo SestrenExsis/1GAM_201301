@@ -45,6 +45,7 @@ package
 		
 		public static function fadeToLevelSelect(Timer:FlxTimer = null):void
 		{
+			GameSound.play(GameSound.sfxMenu);
 			FlxG.fade(0xff000000, 0.5, goToLevelSelect);
 		}
 		
@@ -61,6 +62,7 @@ package
 		
 		public static function fadeToSettings(Timer:FlxTimer = null):void
 		{
+			GameSound.play(GameSound.sfxMenu);
 			FlxG.fade(0xff000000, 0.5, goToSettings);
 		}
 		
@@ -76,6 +78,7 @@ package
 		
 		public static function fadeToWorldSelect(Timer:FlxTimer = null):void
 		{
+			GameSound.play(GameSound.sfxMenu);
 			FlxG.fade(0xff000000, 0.5, goToWorldSelect);
 		}
 		
@@ -91,6 +94,7 @@ package
 		
 		public static function fadeToGame(Timer:FlxTimer = null):void
 		{
+			GameSound.play(GameSound.sfxMenu);
 			FlxG.fade(0xff000000, 0.5, goToGame);
 		}
 		
@@ -106,6 +110,7 @@ package
 		
 		public static function fadeToMenu(Timer:FlxTimer = null):void
 		{
+			GameSound.play(GameSound.sfxMenu);
 			FlxG.fade(0xff000000, 0.5, goToMenu);
 		}
 		

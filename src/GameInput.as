@@ -87,7 +87,6 @@ package
 				if (_char >= 48 && _char <= 57)
 					Value =  _char - 48;
 			}
-			//FlxG.log(Value);
 			return Value;
 		}
 		

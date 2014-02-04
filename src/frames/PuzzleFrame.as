@@ -79,6 +79,7 @@ package frames
 		
 		public function updateSelection(CurrentTool:int, SelectionMode:int):void
 		{
+			GameSound.play(GameSound.sfxSelection);
 			var _originalX:int = selection.x;
 			var _originalY:int = selection.y;
 			var _originalWidth:int = selection.width;
@@ -168,6 +169,7 @@ package frames
 		
 		public function updateFill(Color:uint):void
 		{
+			GameSound.play(GameSound.sfxBrush);
 			selection.x += GameInput.x * selection.width;
 			selection.y += GameInput.y * selection.height;
 			

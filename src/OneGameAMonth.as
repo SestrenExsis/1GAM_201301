@@ -10,7 +10,7 @@ package
 		public function OneGameAMonth()
 		{
 			super(640, 360, MenuScreen, 1.0, 60, 60, true);
-			forceDebugger = true;
+			//forceDebugger = true;
 			useSoundHotKeys = false;
 		}
 	}

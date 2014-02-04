@@ -51,14 +51,14 @@ package
 		maxActionsToEarnCoin[CANDY_CANE] = 250;
 		maxActionsToEarnCoin[COOKIE] = 200;
 		maxActionsToEarnCoin[PORTCULLIS] = 220;
-		maxActionsToEarnCoin[TREASURE_CHEST] = 999;
-		maxActionsToEarnCoin[CROWN] = 999;
+		maxActionsToEarnCoin[TREASURE_CHEST] = 500;
+		maxActionsToEarnCoin[CROWN] = 500;
 		
 		public static var maxFramesToEarnCoin:Array = new Array(NUM_LEVELS);
-		maxFramesToEarnCoin[DAISY] = 900;
-		maxFramesToEarnCoin[LOG] = 1800;
-		maxFramesToEarnCoin[BEANSTALK] = 1800;
-		maxFramesToEarnCoin[CUPCAKE] = 2700;
+		maxFramesToEarnCoin[DAISY] = 1200;
+		maxFramesToEarnCoin[LOG] = 2400;
+		maxFramesToEarnCoin[BEANSTALK] = 2400;
+		maxFramesToEarnCoin[CUPCAKE] = 3600;
 		maxFramesToEarnCoin[CANDY_CANE] = 3600;
 		maxFramesToEarnCoin[COOKIE] = 9000;
 		maxFramesToEarnCoin[PORTCULLIS] = 3600;
@@ -125,7 +125,10 @@ package
 			}
 			
 			if (_newCoins)
+			{
 				UserSettings.coins[_stage] = coinsCollected[_stage];
+				GameSound.play(GameSound.sfxCoin);
+			}
 			
 			if (actions < fewestActions[_stage])
 			{
