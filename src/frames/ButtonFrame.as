@@ -12,7 +12,8 @@ package frames
 		
 		protected var type:String;
 		protected var clickFunction:Function;
-		protected var medals:FlxSprite;
+		protected var icons:FlxSprite;
+		protected var coinWidth:Number = 48;
 		
 		public function ButtonFrame(X:Number, Y:Number, Width:Number, Height:Number, ButtonID:uint, Type:String)
 		{
@@ -21,15 +22,28 @@ package frames
 			numbers = new FlxSprite();
 			numbers.loadGraphic(imgNumbers, true, false, 14, 17);
 			
-			medals = new FlxSprite();
-			medals.loadGraphic(imgObjects, true, false, 32, 32);
+			icons = new FlxSprite();
+			icons.loadGraphic(imgObjects, true, false, 32, 32);
 			
 			ID = ButtonID;
+			labelName = new FlxText(x + 2 * buffer.x + maxSize.x, y, 120, "");
+			labelName.setFormat(null, 16, 0xffffff, "left");
+			labelName.shadow = 0xff000000;
+			
+			labelDescription = new FlxText(x + 2 * buffer.x + maxSize.x + 32, y + 32, 90, "");
+			labelDescription.setFormat(null, 16, 0xffffff, "left");
+			labelDescription.shadow = 0xff000000;
+			
 			type = Type;
 			if (type == "level")
+			{
 				clickFunction = ScreenState.fadeToGame;
+				//labelName.text = GameInfo.levelNames[ID];
+				updateInfo();
+			}
 			else if (type == "world")
 				clickFunction = ScreenState.fadeToLevelSelect;
+			
 		}
 		
 		public function loadButtonImage(Image:Class, SourceRect:Rectangle):void
@@ -80,6 +94,22 @@ package frames
 			}
 		}
 		
+		public function updateInfo():void
+		{
+			var _actions:int = GameInfo.fewestActions[ID];
+			var _bestTime:int = GameInfo.bestTimes[ID];
+			
+			if (_actions > 9999)
+				labelDescription.text = "--";
+			else
+				labelDescription.text = _actions.toString();
+			
+			if (_bestTime > 99999)
+				labelDescription.text += "\n\n--";
+			else
+				labelDescription.text += "\n\n" + _bestTime.toString();
+		}
+		
 		override public function draw():void
 		{
 			super.draw();
@@ -96,16 +126,28 @@ package frames
 			{
 				var _i:int = GameInfo.world * 9 + ID;
 				var _coins:int = GameInfo.coinsCollected[_i];
-				for (var i:int = 1; i <= _coins; i++)
-				{
-					_flashRect.x = 0;
-					_flashRect.y = 0;
-					_flashRect.width = medals.width;
-					_flashRect.height = medals.height;
-					_flashPoint.x = x + buffer.x + width - medals.width;
-					_flashPoint.y = y + buffer.y + height - i * medals.height;
-					FlxG.camera.buffer.copyPixels(medals.pixels, _flashRect, _flashPoint, null, null, true);
-				}
+				_flashRect.x = _coins * coinWidth;
+				_flashRect.y = 0;
+				_flashRect.width = coinWidth;
+				_flashRect.height = icons.height;
+				_flashPoint.x = x + 2 * buffer.x + maxSize.x;
+				_flashPoint.y = y;
+				FlxG.camera.buffer.copyPixels(icons.pixels, _flashRect, _flashPoint, null, null, true);
+				
+				_flashRect.x = 7 * icons.width;
+				_flashRect.y = 0;
+				_flashRect.width = icons.width;
+				_flashRect.height = icons.height;
+				_flashPoint.x = x + 2 * buffer.x + maxSize.x;
+				_flashPoint.y = y + 32;
+				FlxG.camera.buffer.copyPixels(icons.pixels, _flashRect, _flashPoint, null, null, true);
+				
+				_flashRect.x = 8 * icons.width;
+				_flashPoint.y = y + 64;
+				FlxG.camera.buffer.copyPixels(icons.pixels, _flashRect, _flashPoint, null, null, true);
+				
+				labelName.draw();
+				labelDescription.draw();
 			}
 		}
 		

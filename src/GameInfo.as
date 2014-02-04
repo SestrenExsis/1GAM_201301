@@ -41,7 +41,7 @@ package
 		protected static const CROWN:uint = 8;
 		
 		public static var worldNames:Array = ["The Hills Familiar","Stuck in a Candy Jam","Castle in the Clouds","none","none","none","none","none","none"];
-		public static var levelNames:Array =  ["Daisy","Log","Beanstalk","Cupcake","Cookie","Candy Cane","Portcullis","Treasure Chest","King's Crown"];
+		public static var levelNames:Array =  ["Daisy","Log","Beanstalk","Cupcake","Candy Cane","Cookie","Portcullis","Chest","Crown"];
 		
 		public static var maxActionsToEarnCoin:Array = new Array(NUM_LEVELS);
 		maxActionsToEarnCoin[DAISY] = 32;

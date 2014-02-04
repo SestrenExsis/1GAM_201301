@@ -38,13 +38,13 @@ package screens
 			background.maskHeight = 118;
 			add(background);
 			 
-			displayTimer = new FlxTimer();
-			displayTimer.start(1, 1, onTimerFlickerDisplay);
+			//displayTimer = new FlxTimer();
+			//displayTimer.start(1, 1, onTimerFlickerDisplay);
 			
-			displayText = new FlxText(0, FlxG.height - 48, FlxG.width, "Press NUMPAD keys [1-9] to start a level.");
-			displayText.setFormat(null, 16, 0xffffff, "center");
-			displayText.text += ScreenState.infoText;
-			add(displayText);
+			//displayText = new FlxText(0, FlxG.height - 48, FlxG.width, "Press NUMPAD keys [1-9] to start a level.");
+			//displayText.setFormat(null, 16, 0xffffff, "center");
+			//displayText.text += ScreenState.infoText;
+			//add(displayText);
 			
 			var _x:int;
 			var _y:int;
@@ -53,7 +53,7 @@ package screens
 			{
 				_x = _i % 3;
 				_y = 2 - (int)(_i / 3);
-				_button = new ButtonFrame(64 + _x * 104, 8 + _y * 104, 96, 96, _i, "level");
+				_button = new ButtonFrame(8 + _x * 200, 12 + _y * 120, 96, 96, _i, "level");
 				_button.loadButtonImage(imgButtons, GameInfo.frameRects[_i]);
 				add(_button);
 			}
