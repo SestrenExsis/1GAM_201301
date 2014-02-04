@@ -43,6 +43,10 @@ package frames
 			}
 			else if (type == "world")
 				clickFunction = ScreenState.fadeToLevelSelect;
+			else if (type == "play")
+				clickFunction = ScreenState.fadeToLevelSelect;
+			else if (type == "settings")
+				clickFunction = ScreenState.fadeToSettings;
 			
 		}
 		
@@ -89,7 +93,7 @@ package frames
 					GameInfo.level = ID;
 				else if (type == "world")
 					GameInfo.world = ID;
-				FlxG.log("Loading stage " + GameInfo.world + "-" + GameInfo.level);
+				
 				clickFunction();
 			}
 		}
@@ -115,7 +119,8 @@ package frames
 		
 		override public function draw():void
 		{
-			super.draw();
+			//if (type == "level" || type == "world")
+				super.draw();
 			
 			_flashRect.x = numbers.width * ((ID + 1) % 10);
 			_flashRect.y = 0;

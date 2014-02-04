@@ -37,8 +37,8 @@ package frames
 		
 		// the bounding boxes for the target images in the spritesheet
 		public static var targetFrameRects:Array = [
-			new Rectangle(39, 0, 9, 9),
-			new Rectangle(48, 0, 8, 8),
+			new Rectangle(41, 0, 9, 9),
+			new Rectangle(50, 0, 8, 8),
 			new Rectangle(57, 16, 20, 20),
 			new Rectangle(50, 36, 24, 24),
 			new Rectangle(32, 36, 18, 36),

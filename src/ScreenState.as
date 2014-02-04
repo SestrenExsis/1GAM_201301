@@ -39,6 +39,7 @@ package
 		
 		public static function onButtonLevelSelect():void
 		{
+			GameInput.playbackMode = false;
 			fadeToLevelSelect();
 		}
 		
@@ -54,6 +55,7 @@ package
 		
 		public static function onButtonSettings():void
 		{
+			GameInput.playbackMode = false;
 			fadeToSettings();
 		}
 		

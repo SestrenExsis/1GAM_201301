@@ -9,7 +9,7 @@ package screens
 	
 	public class GameScreen extends ScreenState
 	{
-		[Embed(source="../assets/images/cursor.png")] public var imgCursor:Class;
+		[Embed(source="../assets/images/objects.png")] public var imgObjects:Class;
 
 		private var puzzle:PuzzleFrame;
 		private var tracker:TrackerFrame;
@@ -41,12 +41,12 @@ package screens
 			tracker = new TrackerFrame(148, 232, target, puzzle);
 			add(tracker);
 			
-			toolbox = new ToolboxFrame(8, 232, 104, 104, target, puzzle)
+			toolbox = new ToolboxFrame(8, 232, 104, 104, target, puzzle);
 			add(toolbox);
 			
 			cursor = new FlxSprite(-100, -100);
-			cursor.loadGraphic(imgCursor, true, false, 32, 32);
-			cursor.addAnimation("grab",[0]);
+			cursor.loadGraphic(imgObjects, true, false, 32, 32);
+			cursor.addAnimation("grab",[9]);
 			cursor.play("grab");
 			add(cursor);
 			

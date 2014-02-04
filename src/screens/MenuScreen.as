@@ -1,14 +1,17 @@
 package screens
 {
 	import org.flixel.*;
+	import frames.ButtonFrame;
 	import frames.PuzzleFrame;
 	import frames.TargetFrame;
 	import frames.ToolboxFrame;
 	import frames.TrackerFrame;
+	import flash.geom.Rectangle;
 	
 	public class MenuScreen extends ScreenState
 	{
-		[Embed(source="../assets/images/cursor.png")] public var imgCursor:Class;
+		[Embed(source="../assets/images/objects.png")] public var imgObjects:Class;
+		[Embed(source="../assets/images/buttons.png")] public var imgButtons:Class;
 		
 		private var puzzle:PuzzleFrame;
 		private var tracker:TrackerFrame;
@@ -43,12 +46,13 @@ package screens
 			tracker = new TrackerFrame(148, 232, target, puzzle);
 			add(tracker);
 			
-			toolbox = new ToolboxFrame(8, 232, 104, 104, target, puzzle)
+			toolbox = new ToolboxFrame(8, 232, 104, 104, target, puzzle);
+			toolbox.visible = false;
 			add(toolbox);
 			
 			cursor = new FlxSprite(-100, -100);
-			cursor.loadGraphic(imgCursor, true, false, 32, 32);
-			cursor.addAnimation("grab",[0]);
+			cursor.loadGraphic(imgObjects, true, false, 32, 32);
+			cursor.addAnimation("grab",[9]);
 			cursor.play("grab");
 			add(cursor);
 			
@@ -59,8 +63,17 @@ package screens
 				cursor.height *= cursor.scale.y;
 			}
 			
-			add(new FlxButton(FlxG.width / 2 - 40, FlxG.height / 2 + 10, "Play Game", onButtonLevelSelect));
-			add(new FlxButton(FlxG.width / 2 - 40, FlxG.height / 2 + 32, "Configure", onButtonSettings));
+			add(new FlxButton(8, 232, "Play Game", onButtonLevelSelect));
+			add(new FlxButton(8, 232 + 40, "Configure", onButtonSettings));
+			
+			/*var _button:ButtonFrame;
+			_button = new ButtonFrame(8, 232, 104, 48, 10, "play");
+			_button.loadButtonImage(imgButtons, new Rectangle(0, 0, 32, 32));
+			add(_button);
+			
+			_button = new ButtonFrame(8, 232 + 56, 104, 48, 11, "settings");
+			_button.loadButtonImage(imgButtons, new Rectangle(0, 32, 88, 32));
+			add(_button);*/
 			
 			GameInput.beginRandomPlayback();
 		}
