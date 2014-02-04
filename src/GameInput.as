@@ -16,7 +16,7 @@ package
 		public static var inputStream:String = "";
 		public static var playbackStream:String = "";
 		public static var playbackMode:Boolean = false;
-		public static var playbackDelay:Number = 0.25;
+		public static var playbackDelay:Number = 0.05;
 		public static var playbackTimeLeft:Number;
 		
 		public static const NONE:int = -1;
@@ -67,11 +67,14 @@ package
 			super();
 		}
 		
-		public static function beginPlayback():void
+		public static function beginRandomPlayback():void
 		{
 			playbackTimeLeft = playbackDelay;
 			playbackMode = true;
-			playbackStream = "357405602605454440260610554085";
+			for (var i:int = 0; i < 10000; i++)
+			{
+				playbackStream += (int)(FlxG.random() * 10).toString();
+			}
 		}
 		
 		public static function fetchPlayback():int
@@ -91,11 +94,6 @@ package
 		public static function update():void
 		{
 			GameInfo.currentTime++;
-			
-			if (FlxG.keys.justPressed("C"))
-			{
-				beginPlayback();
-			}
 				
 			keyEscape = false;
 			keyCenter = false;

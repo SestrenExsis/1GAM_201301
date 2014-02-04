@@ -27,21 +27,20 @@ package frames
 		public static const SELECTION_BOX:uint = 1;
 		
 		protected static const TOOLBOX_TIP:String = "  [0] : Return to the Toolbox.";
-		
 		protected static const COLOR_PALETTE_INDEXES:Array = [1, 2, 3, 4, 6, 7, 8, 9];
 		protected static const TOOL_NAMES:Array = ["Toolbox", "Drag Selection", "Clone",
 			"Drag Selection", "Flip/Rotate", "Move Selection", "Color Palette", "Drag Selection", "Paintbrush", "Drag Selection"]
 		protected static const TOOL_DESCRIPTIONS:Array = [
 			"[1-9] : Select a tool.",
-			"[1-4 or 6-9] : Move the LOWER LEFT corner of the selection box in that direction.",
-			"[1-4 or 6-9] : Copy the contents of the selection to an adjacent cell.",
-			"[1-4 or 6-9] : Move the LOWER RIGHT corner of the selection box in that direction.",
+			"[1-4 or 6-9] : Move the LOWER LEFT corner of the selection box in a direction.",
+			"[1-4 or 6-9] : Copy the contents of the selection to an adjacent area.",
+			"[1-4 or 6-9] : Move the LOWER RIGHT corner of the selection box in a direction.",
 			"[1-9] : Choose a new orientation and/or facing for the contents of the selection.",
-			"[1-4 or 6-9] : Move the entire selection box in that direction.",
+			"[1-4 or 6-9] : Move the entire selection box in a direction.",
 			"[1-9] : Choose a color.",
-			"[1-4 or 6-9] : Move the UPPER LEFT corner of the selection box in that direction.",
-			"[1-9] : Fill the selection area or an adjacent one with the current color.",
-			"[1-4 or 6-9] : Move the UPPER RIGHT corner of the selection box in that direction."];
+			"[1-4 or 6-9] : Move the UPPER LEFT corner of the selection box in a direction.",
+			"[1-9] : Fill the selection area or an adjacent area with the current color.",
+			"[1-4 or 6-9] : Move the UPPER RIGHT corner of the selection box in a direction."];
 						
 		public var currentTool:int = TOOLBOX;
 		public var lastToolSelected:int = 0;
@@ -233,7 +232,10 @@ package frames
 			}
 			else if (GameInput.keyPressed == GameInput.ESCAPE)
 			{
-				currentTool = TOOLBOX;
+				if (currentTool == TOOLBOX)
+					currentTool = GameInput.keyPressed;
+				else
+					currentTool = TOOLBOX;
 			}
 			labelName.text = TOOL_NAMES[currentTool];
 			labelDescription.text = TOOL_DESCRIPTIONS[currentTool];

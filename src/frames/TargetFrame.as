@@ -31,7 +31,8 @@ package frames
 			new Rectangle(0, 0, 32, 32),
 			new Rectangle(0, 72, 40, 40),
 			new Rectangle(0, 0, 18, 18),
-			new Rectangle(0, 0, 32, 32)
+			new Rectangle(0, 0, 32, 32),
+			new Rectangle(0, 0, 40, 36)
 		];
 		
 		// the bounding boxes for the target images in the spritesheet
@@ -44,7 +45,8 @@ package frames
 			new Rectangle(0, 36, 32, 32),
 			new Rectangle(40, 72, 40, 40),
 			new Rectangle(74, 36, 18, 18),
-			new Rectangle(96, 40, 32, 32)
+			new Rectangle(96, 40, 32, 32),
+			new Rectangle(80, 72, 40, 36)
 		];
 		
 		protected var _currentFrame:int;

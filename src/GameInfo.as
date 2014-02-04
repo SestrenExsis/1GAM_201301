@@ -30,15 +30,15 @@ package
 			bestTimes[i] = 999999999;
 		}
 		
-		protected static const DAISY:uint = 0;
-		protected static const LOG:uint = 1;
-		protected static const BEANSTALK:uint = 2;
-		protected static const CUPCAKE:uint = 3;
-		protected static const CANDY_CANE:uint = 4;
-		protected static const COOKIE:uint = 5;
-		protected static const PORTCULLIS:uint = 6;
-		protected static const TREASURE_CHEST:uint = 7;
-		protected static const CROWN:uint = 8;
+		public static const DAISY:uint = 0;
+		public static const LOG:uint = 1;
+		public static const BEANSTALK:uint = 2;
+		public static const CUPCAKE:uint = 3;
+		public static const CANDY_CANE:uint = 4;
+		public static const COOKIE:uint = 5;
+		public static const PORTCULLIS:uint = 6;
+		public static const TREASURE_CHEST:uint = 7;
+		public static const CROWN:uint = 8;
 		
 		public static var worldNames:Array = ["The Hills Familiar","Stuck in a Candy Jam","Castle in the Clouds","none","none","none","none","none","none"];
 		public static var levelNames:Array =  ["Daisy","Log","Beanstalk","Cupcake","Candy Cane","Cookie","Portcullis","Chest","Crown"];
@@ -49,21 +49,21 @@ package
 		maxActionsToEarnCoin[BEANSTALK] = 60;
 		maxActionsToEarnCoin[CUPCAKE] = 140;
 		maxActionsToEarnCoin[CANDY_CANE] = 250;
-		maxActionsToEarnCoin[COOKIE] = 999;
+		maxActionsToEarnCoin[COOKIE] = 200;
 		maxActionsToEarnCoin[PORTCULLIS] = 220;
 		maxActionsToEarnCoin[TREASURE_CHEST] = 999;
 		maxActionsToEarnCoin[CROWN] = 999;
 		
-		public static var maxTimeToEarnCoin:Array = new Array(NUM_LEVELS);
-		maxActionsToEarnCoin[DAISY] = 30;
-		maxActionsToEarnCoin[LOG] = 60;
-		maxActionsToEarnCoin[BEANSTALK] = 60;
-		maxActionsToEarnCoin[CUPCAKE] = 90;
-		maxActionsToEarnCoin[CANDY_CANE] = 120;
-		maxActionsToEarnCoin[COOKIE] = 150;
-		maxActionsToEarnCoin[PORTCULLIS] = 60;
-		maxActionsToEarnCoin[TREASURE_CHEST] = 150;
-		maxActionsToEarnCoin[CROWN] = 180;
+		public static var maxFramesToEarnCoin:Array = new Array(NUM_LEVELS);
+		maxFramesToEarnCoin[DAISY] = 900;
+		maxFramesToEarnCoin[LOG] = 1800;
+		maxFramesToEarnCoin[BEANSTALK] = 1800;
+		maxFramesToEarnCoin[CUPCAKE] = 2700;
+		maxFramesToEarnCoin[CANDY_CANE] = 3600;
+		maxFramesToEarnCoin[COOKIE] = 9000;
+		maxFramesToEarnCoin[PORTCULLIS] = 3600;
+		maxFramesToEarnCoin[TREASURE_CHEST] = 9000;
+		maxFramesToEarnCoin[CROWN] = 10800;
 		
 		public static var frameRects:Array = [
 			new Rectangle(39, 0, 9, 9),
@@ -82,34 +82,50 @@ package
 			super();
 		}
 		
+		public static function formatTime(TimeInFrames:int):String
+		{
+			var _tenths:int = (TimeInFrames % 60) / 6;
+			var _seconds:int = (TimeInFrames / 60) % 60;
+			var _minutes:int = (TimeInFrames / 3600);
+			var _leadingZero:String = "";
+			
+			if (_seconds < 10) _leadingZero = "0";
+			
+			return _minutes + ":" + _leadingZero + _seconds + "." + _tenths;
+		}
+		
 		public static function updateStatistics():void
 		{
-			ScreenState.infoText = "\nActions Previous Level: " + actions;
 			var _stage:int = world * 9 + level;
 			var _maxActions:int = maxActionsToEarnCoin[_stage];
-			var _maxTime:int = maxTimeToEarnCoin[_stage];
+			var _maxTime:int = maxFramesToEarnCoin[_stage];
 			var _newCoins:Boolean = false;
 			var _newRecord:Boolean = false;
 			
 			if (coinsCollected[_stage] == 0)
-			{ // You gained a coin for completing the stage for the first time.
+			{
+				FlxG.log("You gained a coin for completing the stage for the first time.");
 				coinsCollected[_stage]++;
 				_newCoins = true;
 			}
 			
 			if ((fewestActions[_stage] > _maxActions) && (actions <= _maxActions))
-			{ // You gained a coin for using less than or equal to the par number of actions.
+			{ 
+				FlxG.log("You gained a coin for using less than or equal to the par number of actions.");
 				coinsCollected[_stage]++;
-				UserSettings.coins[_stage] = coinsCollected[_stage];
 				_newCoins = true;
 			}
 			
+			FlxG.log("Previous best: " + bestTimes[_stage] + ", Par: " + _maxTime);
 			if ((bestTimes[_stage] > _maxTime) && (currentTime <= _maxTime))
-			{ // You gained a coin for finishing in less than or equal to the par time.
+			{ 
+				FlxG.log("You gained a coin for finishing in less than or equal to the par time.");
 				coinsCollected[_stage]++;
-				UserSettings.coins[_stage] = coinsCollected[_stage];
 				_newCoins = true;
 			}
+			
+			if (_newCoins)
+				UserSettings.coins[_stage] = coinsCollected[_stage];
 			
 			if (actions < fewestActions[_stage])
 			{

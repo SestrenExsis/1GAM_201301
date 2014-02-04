@@ -107,7 +107,10 @@ package frames
 			if (_bestTime > 99999)
 				labelDescription.text += "\n\n--";
 			else
-				labelDescription.text += "\n\n" + _bestTime.toString();
+			{
+				
+				labelDescription.text += "\n\n" + GameInfo.formatTime(_bestTime);
+			}
 		}
 		
 		override public function draw():void

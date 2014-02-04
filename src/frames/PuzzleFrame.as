@@ -22,8 +22,6 @@ package frames
 			spacing.x = spacing.y = 0;
 			resetElements(target.elements.frameWidth, target.elements.frameHeight);
 			setSelection(0, 0, elements.frameWidth, elements.frameHeight);
-			
-			//showGrid = true;
 		}
 		
 		override public function resetElements(Width:uint, Height:uint, DefaultColor:uint = 0x00000000):void

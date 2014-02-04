@@ -63,7 +63,7 @@ package screens
 		{	
 			GameInput.update();
 			super.update();
-			if (GameInput.keyPressed == 0)
+			if (GameInput.keyPressed == 0 || FlxG.keys["ESCAPE"])
 			{
 				fadeToMenu();
 			}

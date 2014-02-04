@@ -61,7 +61,8 @@ package screens
 		{	
 			super.update();
 			
-			if (FlxG.keys["ESCAPE"]) fadeToMenu();
+			if (FlxG.keys["ESCAPE"])
+				fadeToMenu();
 			
 			if (FlxG.keys.any() && listenForKey)
 			{

@@ -72,6 +72,9 @@ package screens
 				GameInfo.updateStatistics();
 				fadeToLevelSelect();
 			}
+			
+			if (FlxG.keys["ESCAPE"])
+				fadeToLevelSelect();
 		}
 	}
 }
